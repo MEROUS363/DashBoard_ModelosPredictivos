@@ -9,70 +9,67 @@ import {
   Tooltip,
   Legend,
   PointElement,
+  Filler,
 } from 'chart.js';
+import useConsumoTarjetasDebito, { hours } from './hooks/fetchConsumoTarjetasHook';
 
-import 'chartjs-plugin-annotation'; // Asegúrate de importar el plugin
+ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement, Filler);
 
-// Registra los componentes necesarios de Chart.js
-ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement);
-const getRandomNumber = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+const LineChart: React.FC = () => {
+  const { data, error, loading } = useConsumoTarjetasDebito(); // No need to call fetchScoresForDay manually
 
-const generateRandomData = (num: number, min: number, max: number) => 
-    Array.from({ length: num }, () => getRandomNumber(min, max));
-// Datos del gráfico
-const data = {
-    
-    labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),  
+  const chartData = {
+    labels: Object.keys(hours), // Las horas del día en el eje X
     datasets: [
-    {
-      label: 'Ventas', // Etiqueta del dataset
-      data: generateRandomData(24, 1000, 2000), // Datos aleatorios
-      borderColor: 'rgba(75, 192, 192, 1)', // Color de la línea
-      backgroundColor: 'rgba(75, 192, 192, 0.2)', // Color de fondo con opacidad para el área bajo la línea
-      borderWidth: 2,
-      tension: 0.1, // Suaviza las líneas
-      fill: true, // Rellena el área bajo la línea
-    },
-  ],
-};
+      {
+        label: 'Consumo Predicho',
+        data: Object.values(data), // Los valores predichos en el eje Y
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderWidth: 2,
+        tension: 0.1,
+        fill: true,
+      },
+    ],
+  };
 
-// Opciones del gráfico
-const options = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Cantidad Consumo  Tarjeta de Debito',
-    },
-  },
-  scales: {
-    x: {
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
       title: {
         display: true,
-        text: 'Horas', // Título del eje X
+        text: 'Cantidad Consumo Tarjeta de Débito',
       },
     },
-    y: {
-      title: {
-        display: true,
-        text: 'Consumo', // Título del eje Y
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Horas',
+        },
       },
-      beginAtZero: true, // Comienza el eje Y en 0
+      y: {
+        title: {
+          display: true,
+          text: 'Consumo',
+        },
+        beginAtZero: true,
+      },
     },
-    
-  },
-};
+  };
 
-// Componente del gráfico
-const LineChart: React.FC = () => (
-  
-    <div className="justify-center p-2  ml-16 h-[247px] max-w-[680px] rounded-lg shadow-xl bg-white">
-        <Line data={data} options={options} />
+  if (loading) return <p>Cargando...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  return (
+    <div className="justify-center p-2 ml-16 h-[247px] max-w-[680px] rounded-lg shadow-xl bg-white">
+      <Line data={chartData} options={options} />
     </div>
-);
+  );
+};
 
 export default LineChart;
