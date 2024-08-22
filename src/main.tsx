@@ -18,7 +18,7 @@ createRoot(document.getElementById("root")!).render(
       <NavBar />
       <div className="bg-gray-100 min-h-screen">
         <Picos />
-        <div className="flex space-x-4 p-4">
+        <div className="flex space-x-4 pl-10 pb-4">
           <div className="flex-1">
             <CantModulos />
           </div>
@@ -26,7 +26,9 @@ createRoot(document.getElementById("root")!).render(
             <CanrTransf />
           </div>*/}
         </div>
+        <div className="pl-10">
         <ConsumoTarjetaDeb />
+        </div>
         <div>
       </div>
       </div>

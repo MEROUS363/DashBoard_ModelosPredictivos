@@ -22,15 +22,14 @@ function Picos() {
             />
           </div>
           <div className="absolute top-0 right-0 text-xs text-foreground font-medium text-right bg-slate-200 rounded-r-full" style={{ width: `${100 - (data?.bffProcessorScore ?? 0)}%` }}>
-            {data?.bffProcessorScore}%
           </div>
           <div className="absolute top-0 left-0 text-xs text-muted-foreground font-medium">% CPU</div>
         </div>
-        <p className="mt-2 text-muted-foreground">{data?.bffProcessorScore} CPU%</p>
+        <p className="mt-2 text-muted-foreground">{data?.bffProcessorScore ? Math.round(data.bffProcessorScore) : 'N/A'} CPU%</p>
       </div>
 
       <div className="p-4 bg-white rounded-lg shadow-lg w-80 m-4 border-l-4 border-green-400 transition-transform transform hover:scale-105">
-        <h2 className="text-lg font-bold text-foreground text-emerald-700">Memoria BFF</h2>
+        <h2 className="text-lg font-bold text-foreground text-emerald-700">Promedio de Memoria BFF</h2>
         <p className="text-muted-foreground">Uso de Memoria BFF</p>
         <div className="relative m-2 bg-slate-200 rounded-full">
           <div className="h-4 bg-muted rounded-full overflow-hidden">
@@ -40,11 +39,10 @@ function Picos() {
             />
           </div>
           <div className="absolute top-0 right-0 text-xs text-foreground font-medium text-right bg-slate-200 rounded-r-full" style={{ width: `${100 - (data?.bffMemoryScore ?? 0)}%` }}>
-            {data?.bffMemoryScore}%
           </div>
           <div className="absolute top-0 left-0 text-xs text-muted-foreground font-medium">% Memoria</div>
         </div>
-        <p className="mt-2 text-muted-foreground">{data?.bffMemoryScore} Memoria%</p>
+        <p className="mt-2 text-muted-foreground">{data?.bffMemoryScore ? Math.round(data.bffMemoryScore) : 'N/A'} Memoria%</p>
       </div>
 
       <div className="p-4 bg-white rounded-lg shadow-lg w-80 m-4 border-l-4 border-green-400 transition-transform transform hover:scale-105">
@@ -58,11 +56,10 @@ function Picos() {
             />
           </div>
           <div className="absolute top-0 right-0 text-xs text-foreground font-medium text-right bg-slate-200 rounded-r-full" style={{ width: `${100 - (data?.microProcessorScore ?? 0)}%` }}>
-            {data?.microProcessorScore}%
           </div>
           <div className="absolute top-0 left-0 text-xs text-muted-foreground font-medium">% CPU</div>
         </div>
-        <p className="mt-2 text-muted-foreground">{data?.microProcessorScore} CPU%</p>
+        <p className="mt-2 text-muted-foreground">{data?.microProcessorScore ? Math.round(data.microProcessorScore) : 'N/A'} CPU%</p>
       </div>
 
       <div className="p-4 bg-white rounded-lg shadow-lg w-80 m-4 border-l-4 border-green-400 transition-transform transform hover:scale-105">
@@ -76,11 +73,10 @@ function Picos() {
             />
           </div>
           <div className="absolute top-0 right-0 text-xs text-foreground font-medium text-right bg-slate-200 rounded-r-full" style={{ width: `${100 - (data?.microMemoryScore ?? 0)}%` }}>
-            {data?.microMemoryScore}%
           </div>
           <div className="absolute top-0 left-0 text-xs text-muted-foreground font-medium">% Memoria</div>
         </div>
-        <p className="mt-2 text-muted-foreground">{data?.microMemoryScore} Memoria%</p>
+        <p className="mt-2 text-muted-foreground">{data?.microMemoryScore ? Math.round(data.microMemoryScore) : 'N/A'} Memoria%</p>
       </div>
       
     </div>

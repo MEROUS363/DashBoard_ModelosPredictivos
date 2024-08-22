@@ -9,6 +9,8 @@ interface ConsumoTarjetasDebitoInput {
 
 interface ConsumoTarjetasDebitoOutput {
   score: number;
+  maxScore: number; 
+  peakHour: number;
 }
 
 type Hours = {
@@ -51,6 +53,9 @@ const useConsumoTarjetasDebito = () => {
     return format(now, 'dd/MM/yyyy');
   });
 
+  const [maxScore, setMaxScore] = useState<number | null>(null);
+  const [peakHour, setPeakHour] = useState<string | null>(null);
+
   const fetchScoresForDay = async (fecha: string) => {
     setLoading(true);
     setError(null);
@@ -78,6 +83,11 @@ const useConsumoTarjetasDebito = () => {
       }
 
       setData(updatedHours);
+      const maxScore = Math.max(...Object.values(updatedHours).filter((score): score is number => score !== null));
+      const peakHour = Object.keys(updatedHours).find(hour => updatedHours[hour] === maxScore) || null;
+
+      setMaxScore(maxScore);
+      setPeakHour(peakHour);
     } catch (err) {
       setError('Error al realizar la petición');
       console.error(err);
@@ -103,6 +113,8 @@ const useConsumoTarjetasDebito = () => {
     error,
     loading,
     fetchScoresForDay,
+    maxScore, 
+    peakHour
   };
 };
 
