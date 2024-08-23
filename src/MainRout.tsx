@@ -8,7 +8,8 @@ import "./index.css";
 import Picos from "./PicosRendimiento.tsx";
 import Filtro from "./Filtro.tsx";
 import { useState } from "react";
-
+import Top10Days from "./Top10.tsx";
+import TransSPI2 from "./CantTransferenciasSPI2.tsx";
 const MainRouter: React.FC = () => {
   const [date, setdate] = useState<string>("");
 
@@ -19,21 +20,23 @@ const MainRouter: React.FC = () => {
   return (
     <div className="flex">
       <NavBar />
-      <div className="bg-gray-100 min-h-screen">
+      <div className="bg-gray-200 min-h-screen">
         <Picos />
         <div className="flex space-x-4 pl-10 pb-4">
           <div className="flex-1">
             <CantModulos />
           </div>
-          {/*<div className="flex-1">
-            <CanrTransf />
-          </div>*/}
+          <div className="flex-2">
+          <Top10Days/>
+            {/* <CanrTransf /> */}
+          </div>
           <div className="flex1">
             <Filtro onFilter={filterDataByDate} />
           </div>
         </div>
-        <div className="pl-10">
+        <div className="flex pl-10">
           <ConsumoTarjetaDeb />
+          < TransSPI2/>
         </div>
         <div></div>
       </div>

@@ -3,7 +3,7 @@ import usePredictAll from './hooks/fetchPicosRendimientoHooh';
 
 
 function Picos() {
-  const { data, currentHour, loading, error } = usePredictAll();
+  const { data, loading, error } = usePredictAll();
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;

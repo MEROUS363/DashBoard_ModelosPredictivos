@@ -55,7 +55,7 @@ const LineChart: React.FC = () => {
       },
       title: {
         display: true,
-        text: "Cantidad Consumo Tarjeta de Débito",
+        text: "Cantidad de Consumo Tarjeta de Débito",
       },
     },
     scales: {
@@ -79,7 +79,7 @@ const LineChart: React.FC = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="flex bg-white max-w-[805px] h-[247px] shadow-xl rounded-lg">
+    <div className="flex bg-white max-w-[790px] h-[247px] shadow-xl rounded-lg">
       <div className="justify-center p-2 ml-10 h-[247px] w-full rounded-lg  bg-white">
         <Line data={chartData} options={options} />
       </div>
