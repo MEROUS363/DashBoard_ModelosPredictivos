@@ -11,7 +11,7 @@ interface AccesoBancaMovilOutput {
   score: number;
 }
 
-const useAccesoBancaMovil = () => {
+const useAccesoBancaMovil = (filterDate: string) => {
   const [data, setData] = useState<AccesoBancaMovilOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -40,7 +40,7 @@ const useAccesoBancaMovil = () => {
 
     try {
       const requestData: AccesoBancaMovilInput = {
-        fecha: todayDate,
+        fecha: filterDate,
         hora: nextHour,
       };
 

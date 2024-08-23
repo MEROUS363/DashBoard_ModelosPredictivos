@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import useAccesoBancaMovil from "./hooks/fetchAccesosBancaMovilHook";
 import useAccesoProducNet from "./hooks/fetchAcesoProdunetHook";
+import { useDateContext } from "../contexts/DateContext";
 
 ChartJS.register(
   CategoryScale,
@@ -22,16 +23,17 @@ ChartJS.register(
 );
 
 const HorizontalBarChart: React.FC = () => {
+  const { date, loadingContext } = useDateContext();
   const {
     data: movilData,
     loading: movilLoading,
     error: movilError,
-  } = useAccesoBancaMovil(); // Usa el hook de Banca Movil
+  } = useAccesoBancaMovil(date); // Usa el hook de Banca Movil
   const {
     data: producNetData,
     loading: producNetLoading,
     error: producNetError,
-  } = useAccesoProducNet(); // Usa el hook de ProducNet
+  } = useAccesoProducNet(date); // Usa el hook de ProducNet
 
   // Si los valores devueltos por las APIs están disponibles, los usamos; de lo contrario, mostramos un valor por defecto
   const movilScore = movilData?.score ?? 19;
@@ -66,7 +68,7 @@ const HorizontalBarChart: React.FC = () => {
     },
   };
 
-  if (movilLoading || producNetLoading) return <p>Cargando...</p>;
+  if (movilLoading || producNetLoading || loadingContext) return <p>Cargando...</p>;
   if (movilError || producNetError)
     return <p>Error: {movilError || producNetError}</p>;
 

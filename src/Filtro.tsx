@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import React, { useState } from "react";
+import { useDateContext } from '../contexts/DateContext';
 //import startPro from '../images/startPro.png';
 
 // import ImgTransaccion from '../ico/Transaccion.svg';
@@ -25,17 +26,23 @@ const Filtro: React.FC<HourSelectProps> = ({onFilter}) => {
     const [selectedDate, setSelectedDate] = useState(getCurrentDate());
     const [selectedHour, setSelectedHour] = useState(getCurrentHour());
 
+    const {setDate} = useDateContext();
+
   const hours = Array.from({ length: 24 }, (_, index) => {
     const hour = String(index).padStart(2, '0');
     return `${hour}:00`;
   });
 
+
   const handleFilterClick = () => {
     const date = format(selectedDate,'MM/dd/yyyy')
     console.log(date)
+    setDate(date);
     onFilter(date)
     return true;
   };
+
+  
   return (
     <div className="bg-emerald-700 pt-3  p-6 rounded-l-xl h-[247px] shadow-xl max-w-sm mx-auto">
     <h2 className="text-xl font-bold text-white pb-2">Filtro de Predicción</h2>

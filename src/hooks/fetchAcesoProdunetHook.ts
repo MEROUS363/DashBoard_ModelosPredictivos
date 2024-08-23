@@ -11,7 +11,7 @@ interface AccesoProducNetOutput {
   score: number;
 }
 
-const useAccesoProducNet = () => {
+const useAccesoProducNet = (filterDate: string) => {
   const [data, setData] = useState<AccesoProducNetOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,11 +36,11 @@ const useAccesoProducNet = () => {
     const todayDate = getTodayDate();
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
 
-    console.log(`Making API call for date: ${todayDate} and hour: ${nextHour}`);
+    console.log(`Making API call for date: ${filterDate} and hour: ${nextHour}`);
 
     try {
       const requestData: AccesoProducNetInput = {
-        date: todayDate,
+        date: filterDate,
         time: nextHour,
       };
 
@@ -103,7 +103,7 @@ const useAccesoProducNet = () => {
 
     // Limpiar el timeout si el componente se desmonta
     return () => clearTimeout(timeoutId);
-  }, []);
+  }, [filterDate]);
 
   return {
     data,
