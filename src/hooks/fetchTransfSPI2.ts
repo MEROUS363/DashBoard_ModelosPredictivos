@@ -29,7 +29,6 @@ const TransSPI2 = () => {
 
     const todayDate = getTodayDate();
 
-    console.log(`Making API call for date: ${todayDate} and cut-off number: ${corte}`);
 
     try {
       const dataToSend = {
@@ -53,7 +52,7 @@ const TransSPI2 = () => {
         }
       );
 
-      console.log('API Response SPI2:', response.data);
+      console.log('API Response SPI2 corte:',corte , response.data);
 
       setData(prevData => ({ ...prevData, [corte]: response.data }));
     } catch (err) {
@@ -93,12 +92,10 @@ const TransSPI2 = () => {
     };
 
     const timeoutId = setTimeout(() => {
-      console.log("Initial timeout triggered");
 
       fetchAllCutOffs();
 
       const intervalId = setInterval(() => {
-        console.log("Interval triggered");
         fetchAllCutOffs();
       }, 3600000); // 3600000 ms = 1 hora
 

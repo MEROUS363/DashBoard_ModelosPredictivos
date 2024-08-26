@@ -32,10 +32,14 @@ const HorizontalBarChart: React.FC = () => {
     loading: producNetLoading,
     error: producNetError,
   } = useAccesoProducNet(); // Usa el hook de ProducNet
+  
 
   // Si los valores devueltos por las APIs están disponibles, los usamos; de lo contrario, mostramos un valor por defecto
   const movilScore = movilData?.score ?? 19;
   const producNetScore = producNetData?.score ?? 12;
+  const producNetColor = producNetScore > 2000 ? "rgba(239, 68, 68, 1)" : producNetScore > 1000 ? "rgba(251, 191, 36, 1)" : "rgba(104, 211, 145, 1)";
+  const MovilColor = movilScore > 30000 ? "rgba(239, 68, 68, 1)" : movilScore > 1000 ? "rgba(251, 191, 36, 1)" : "rgba(104, 211, 145, 1)";
+
 
   const chartData = {
     labels: ["ProduNet", "Movil"],
@@ -44,8 +48,8 @@ const HorizontalBarChart: React.FC = () => {
         label: "Cantidad",
         data: [Math.round(producNetScore), Math.round(movilScore)],
         backgroundColor: [
-          "rgba(104, 211, 145, 1)", // Color para 'ProduNet'
-          "rgba(47, 133, 90, 1)", // Color para 'Movil'
+          producNetColor, // Color para 'ProduNet'
+          MovilColor, // Color para 'Movil'
         ],
       },
     ],
@@ -71,7 +75,7 @@ const HorizontalBarChart: React.FC = () => {
     return <p>Error: {movilError || producNetError}</p>;
 
   return (
-    <div className="flex bg-white max-w-[805px] h-[247px] shadow-xl rounded-lg">
+    <div className="flex bg-white max-w-[805px] ml-4 h-[247px] shadow-xl rounded-lg">
       <div className="justify-center h-[247px] w-full rounded-lg  bg-white">
         <Bar data={chartData} options={options} />
       </div>

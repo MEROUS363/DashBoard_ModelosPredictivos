@@ -22,19 +22,21 @@ const MainRouter: React.FC = () => {
       <NavBar />
       <div className="bg-gray-200 min-h-screen">
         <Picos />
-        <div className="flex space-x-4 pl-10 pb-4">
-          <div className="flex-1">
-            <CantModulos />
-          </div>
+        <div className="flex ">
           <div className="flex-2">
-          <Top10Days/>
+          <Filtro onFilter={filterDataByDate} />
+          </div>
+          <div className="flex-1">
+          <CantModulos />
+
             {/* <CanrTransf /> */}
           </div>
           <div className="flex1">
-            <Filtro onFilter={filterDataByDate} />
+          <Top10Days/>
+
           </div>
         </div>
-        <div className="flex pl-10">
+        <div className="flex">
           <ConsumoTarjetaDeb />
           < TransSPI2/>
         </div>

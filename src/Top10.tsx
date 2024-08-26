@@ -1,6 +1,7 @@
 // src/components/Top10Days.tsx
 
 import React, { useState, useEffect } from "react";
+import useAccesoBancaMovil from "./hooks/fetchAccesosBancaMovilHook";
 import useAccesoProducNet from "./hooks/fetchAcesoProdunetHook";
 import axios from "axios";
 
@@ -12,14 +13,17 @@ interface Prediction {
 interface AccesoProducNetOutput {
   score: number;
 }
+
 const Top10Days: React.FC = () => {
   const { error, loading } = useAccesoProducNet();
   const [predictions, setPredictions] = useState<Prediction[]>([]);
-
+  
   useEffect(() => {
     const fetchAllPredictions = async () => {
       const date = new Date();
-      const days = 30;
+      const endOfYear = new Date(date.getFullYear(), 11, 31);
+      const differenceInTime: number = endOfYear.getTime() - date.getTime();
+      const days = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
       let currentDate = new Date(date); // Clonar la fecha inicial
       let allPredictions: Prediction[] = [];
 
@@ -32,7 +36,6 @@ const Top10Days: React.FC = () => {
         for (let hour = 0; hour < 1; hour++) {
           const hora = `${hour.toString().padStart(2, "0")}:00:00`;
           const response = await fetchPrediction(fecha, hora);
-
           if (response) {
             dailyTotal = response.score;
             allPredictions.push({ fecha, hora, usuarios: dailyTotal });
@@ -71,6 +74,7 @@ const Top10Days: React.FC = () => {
       return null;
     }
   };
+  
 
   if (loading) {
     return <div>Cargando predicciones...</div>;
@@ -81,7 +85,7 @@ const Top10Days: React.FC = () => {
   }
 
   return (
-    <div className="w-96 h-[247px] overflow-x-auto rounded-lg shadow-xl">
+    <div className="w-96 h-[247px] overflow-x-auto mr-5  rounded-xl shadow-xl">
       <table className="text-center w-full bg-white text-black dark:bg-card border border-card dark:border-card">
         <thead>
           <tr className="bg-primary dark:bg-primary">
@@ -96,8 +100,14 @@ const Top10Days: React.FC = () => {
               key={`${prediction.fecha}-${prediction.hora}`}
               className="bg-card dark:bg-card"
             >
-              <td className=" px-4 py-2">{prediction.fecha}</td>
-              <td className="px-4 py-2 border-r-2 border-emerald-700">{prediction.hora}</td>
+              <td className=" px-4 py-2">{(() => {
+                const [month, day, year] = prediction.fecha.split('/').map(Number);
+                const dayFormatted = String(day).padStart(2, '0');
+                const monthFormatted = String(month).padStart(2, '0');
+                const yearFormatted = year;
+                return `${dayFormatted}/${monthFormatted}/${yearFormatted}`;
+              })()}</td>
+              <td className="px-4 py-2 border-r-2 border-emerald-700">{/*{prediction.hora}*/}24/7</td>
               <td className="px-4 py-2">{Math.round(prediction.usuarios)}</td>
             </tr>
             
