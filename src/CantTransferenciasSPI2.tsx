@@ -11,6 +11,13 @@ const CantTransd = () => {
       return <p>Error: {error}</p>;
 
 
+    console.log("data 1", data[1]);
+    console.log("data 2", data[2]);
+    console.log("data 3", data[3]);
+
+    if (loading || loadingContext) return <p>Cargando...</p>;
+    if (error)
+      return <p>Error: {error}</p>;
   return (
     <div className=" flex h-[247px] text-center items-center rounded-xl bg-emerald-700 justify-center mt-6">
         <div className=" gap-4 justify-center items-center m-2 ">
