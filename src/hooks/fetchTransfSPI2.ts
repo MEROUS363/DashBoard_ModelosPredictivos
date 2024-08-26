@@ -8,10 +8,10 @@ interface AccesoTransSPI2 {
 }
 
 interface AccesoTransSPI2OutPut {
-  score: number;
+  Results: number[];
 }
 
-const TransSPI2 = () => {
+const TransSPI2 = (filterDate:string) => {
   const [data, setData] = useState<Record<number, AccesoTransSPI2OutPut | null>>({});
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -29,14 +29,14 @@ const TransSPI2 = () => {
 
     const todayDate = getTodayDate();
 
-    console.log(`Making API call for date: ${todayDate} and cut-off number: ${corte}`);
+    console.log(`Making API call for date: ${filterDate} and cut-off number: ${corte}`);
 
     try {
       const dataToSend = {
         Inputs: {
           data: [
             {
-              FECHA: todayDate,
+              FECHA: filterDate,
               CORTE: corte,
             },
           ],
@@ -106,7 +106,7 @@ const TransSPI2 = () => {
     }, calculateTimeUntilNextHour());
 
     return () => clearTimeout(timeoutId);
-  }, []); // Dependencias vacías para ejecutar solo al montar
+  }, [filterDate]); // Dependencias vacías para ejecutar solo al montar
 
   return {
     data,

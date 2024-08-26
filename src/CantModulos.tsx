@@ -70,7 +70,7 @@ const HorizontalBarChart: React.FC = () => {
 
   if (movilLoading || producNetLoading || loadingContext) return <p>Cargando...</p>;
   if (movilError || producNetError)
-    return <p>Error: {movilError || producNetError}</p>;
+    return <p>Errooooooooor: {movilError || producNetError}</p>;
 
   return (
     <div className="flex bg-white max-w-[805px] h-[247px] shadow-xl rounded-lg">

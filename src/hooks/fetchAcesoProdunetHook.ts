@@ -59,7 +59,7 @@ const useAccesoProducNet = (filterDate: string) => {
       setData(response.data);
       setCurrentHour(nextHour);
     } catch (err) {
-      setError('Error during API request');
+      setError('ERROROOOOROROR PRODUCNET');
       console.error(err);
     } finally {
       setLoading(false);
@@ -67,7 +67,7 @@ const useAccesoProducNet = (filterDate: string) => {
   };
 
   useEffect(() => {
-    console.log("useEffect has been triggered");
+    console.log("se ejeucta el useefect del producnet");
 
     // Realiza la primera llamada inmediatamente con la hora redondeada a la siguiente hora completa
     fetchPredictionForNextHour();

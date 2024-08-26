@@ -1,9 +1,18 @@
 
+import { useDateContext } from "../contexts/DateContext";
 import TransSPI2 from "./hooks/fetchTransfSPI2";
 
 const CantTransd = () => {
-    const {data} = TransSPI2(); // No need to call fetchScoresForDay manually
+    const { date, loadingContext } = useDateContext();
+    const {data, error, loading} = TransSPI2(date); // No need to call fetchScoresForDay manually
 
+    console.log("data 1", data[1]);
+    console.log("data 2", data[2]);
+    console.log("data 3", data[3]);
+
+    if (loading || loadingContext) return <p>Cargando...</p>;
+    if (error)
+      return <p>Error: {error}</p>;
   return (
     <div className="pl-2">
         <h1 className="text-lg font-bold text-emerald-700 text-center p-2">Cantidad de Transferencia SPI2</h1>
@@ -14,7 +23,10 @@ const CantTransd = () => {
             <div className="flex items-center justify-center w-28 h-28 m-3 p-1">
                 <div className="relative w-full h-full">
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-4xl font-bold text-primary">__</div>
+                        <div className="text-1xl font-bold text-primary">
+                        {data[1] && <p>{Math.round(data[1].Results[0])}</p>}
+                           
+                        </div>
                     </div>
                     <div className="absolute inset-0 rounded-full border-[10px]  border-gray-400" />
                 </div>
@@ -23,7 +35,7 @@ const CantTransd = () => {
             <div className="flex items-center justify-center w-28 h-28 m-3 p-1">
                 <div className="relative w-full h-full">
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-4xl font-bold text-primary">__</div>
+                        <div className="text-1xl font-bold text-primary"> {data[2] && <p>{Math.round(data[2].Results[0])}</p>}</div>
                     </div>
                     <div className="absolute inset-0 rounded-full border-[10px]  border-gray-400" />
                 </div>
@@ -33,7 +45,7 @@ const CantTransd = () => {
             <div className="flex items-center justify-center w-28 h-28 m-3 p-1">
                 <div className="relative w-full h-full">
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-4xl font-bold text-primary">__</div>
+                        <div className="text-1xl font-bold text-primary"> {data[3] && <p>{Math.round(data[3].Results[0])}</p>}</div>
                     </div>
                     <div className="absolute inset-0 rounded-full border-[10px]  border-gray-400" />
                 </div>

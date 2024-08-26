@@ -36,7 +36,7 @@ const useAccesoBancaMovil = (filterDate: string) => {
     const todayDate = getTodayDate();
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
 
-    console.log(`Making API call for date: ${todayDate} and hour: ${nextHour}`);
+    console.log(`Making API call for date: ${filterDate} and hour: ${nextHour}`);
 
     try {
       const requestData: AccesoBancaMovilInput = {
@@ -103,7 +103,7 @@ const useAccesoBancaMovil = (filterDate: string) => {
 
     // Limpiar el timeout si el componente se desmonta
     return () => clearTimeout(timeoutId);
-  }, []);
+  }, [filterDate]);
 
   return {
     data,

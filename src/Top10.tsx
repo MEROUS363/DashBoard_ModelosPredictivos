@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import useAccesoProducNet from "./hooks/fetchAcesoProdunetHook";
 import axios from "axios";
+import { useDateContext } from "../contexts/DateContext";
 
 interface Prediction {
   fecha: string;
@@ -13,7 +14,9 @@ interface AccesoProducNetOutput {
   score: number;
 }
 const Top10Days: React.FC = () => {
-  const { error, loading } = useAccesoProducNet();
+
+
+
   const [predictions, setPredictions] = useState<Prediction[]>([]);
 
   useEffect(() => {
@@ -72,13 +75,6 @@ const Top10Days: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return <div>Cargando predicciones...</div>;
-  }
-
-  if (error) {
-    return <div>Ha ocurrido un error: {error}</div>;
-  }
 
   return (
     <div className="w-96 h-[247px] overflow-x-auto rounded-lg shadow-xl">
