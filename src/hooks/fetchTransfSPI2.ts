@@ -30,7 +30,6 @@ const TransSPI2 = (filterDate:string) => {
     const todayDate = getTodayDate();
 
 
-
     try {
       const dataToSend = {
         Inputs: {

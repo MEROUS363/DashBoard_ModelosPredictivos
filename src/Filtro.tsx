@@ -52,10 +52,10 @@ const Filtro: React.FC<HourSelectProps> = ({onFilter}) => {
 
   
   return (
-    <div className="bg-emerald-700 pt-3  p-6 rounded-l-xl h-[247px] shadow-xl max-w-sm mx-auto">
-    <h2 className="text-xl font-bold text-white pb-2">Filtro de Predicción</h2>
+    <div className="bg-emerald-700 pt-3 ml-6 p-4 rounded-xl h-[247px] shadow-xl w-[210px]">
+    <h2 className="text-sm font-bold text-white pb-2">Filtro de Predicción</h2>
     <div className="space-y-4">
-      <div className="bg-card  rounded-t-lg p-4 bg-white h-[200px]">
+      <div className="bg-card  rounded-lg p-4 bg-white h-[200px]">
         <label className="block text-sm font-medium text-primary">Seleccione el Día:</label>
         <input
           type="date"

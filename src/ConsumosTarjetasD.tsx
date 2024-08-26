@@ -28,7 +28,9 @@ ChartJS.register(
 
 const LineChart: React.FC = () => {
   const { data, error, loading, maxScore, peakHour } = useConsumoTarjetasDebito(); // No need to call fetchScoresForDay manually
-
+  const dataAdditional = Object.fromEntries(
+    Array.from({ length: 24 }, (_, i) => [i, 15000])
+  );
   const chartData = {
     labels: Object.keys(hours), // Las horas del día en el eje X
     datasets: [
@@ -42,6 +44,15 @@ const LineChart: React.FC = () => {
         borderWidth: 2,
         tension: 0.1,
         fill: true,
+      },
+      {
+        label: "Consumo Maximo", // Etiqueta para la nueva línea
+        data: Object.values(dataAdditional), 
+        borderColor: "rgba(255, 0, 0, 1)", 
+        pointRadius: 0, 
+        pointHoverRadius: 0,
+        borderWidth: 1, // Grosor de la línea predicha
+
       },
     ],
   };
@@ -79,7 +90,7 @@ const LineChart: React.FC = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="flex bg-white max-w-[790px] h-[247px] shadow-xl rounded-lg">
+    <div className="flex bg-white max-w-[790px] h-[247px] m-6 shadow-xl rounded-lg">
       <div className="justify-center p-2 ml-10 h-[247px] w-full rounded-lg  bg-white">
         <Line data={chartData} options={options} />
       </div>
