@@ -29,14 +29,14 @@ const TransSPI2 = (filterDate:string) => {
 
     const todayDate = getTodayDate();
 
-    console.log(`Making API call for date: ${filterDate} and cut-off number: ${corte}`);
+
 
     try {
       const dataToSend = {
         Inputs: {
           data: [
             {
-              FECHA: filterDate,
+              FECHA: filterDate ?? todayDate,
               CORTE: corte,
             },
           ],
@@ -53,7 +53,7 @@ const TransSPI2 = (filterDate:string) => {
         }
       );
 
-      console.log('API Response SPI2:', response.data);
+
 
       setData(prevData => ({ ...prevData, [corte]: response.data }));
     } catch (err) {
@@ -69,7 +69,7 @@ const TransSPI2 = (filterDate:string) => {
   };
 
   useEffect(() => {
-    console.log("useEffect has been triggered");
+
 
     const fetchAllCutOffs = async () => {
       // Ejecuta todas las llamadas API concurrentemente
@@ -93,12 +93,12 @@ const TransSPI2 = (filterDate:string) => {
     };
 
     const timeoutId = setTimeout(() => {
-      console.log("Initial timeout triggered");
+
 
       fetchAllCutOffs();
 
       const intervalId = setInterval(() => {
-        console.log("Interval triggered");
+
         fetchAllCutOffs();
       }, 3600000); // 3600000 ms = 1 hora
 

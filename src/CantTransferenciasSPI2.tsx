@@ -6,13 +6,11 @@ const CantTransd = () => {
     const { date, loadingContext } = useDateContext();
     const {data, error, loading} = TransSPI2(date); // No need to call fetchScoresForDay manually
 
-    console.log("data 1", data[1]);
-    console.log("data 2", data[2]);
-    console.log("data 3", data[3]);
-
     if (loading || loadingContext) return <p>Cargando...</p>;
     if (error)
       return <p>Error: {error}</p>;
+
+
   return (
     <div className="pl-2">
         <h1 className="text-lg font-bold text-emerald-700 text-center p-2">Cantidad de Transferencia SPI2</h1>

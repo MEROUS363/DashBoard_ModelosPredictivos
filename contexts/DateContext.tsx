@@ -16,10 +16,11 @@ export const DateContext = createContext<DateContextType | undefined>(
 );
 
 export const DateProvider: React.FC<DateProviderProps> = ({ children }) => {
-  const [date, setDate] = useState<string>('');
+  const [date, setDate] = useState<string>(format(new Date(),'MM/dd/yyyy'));
   const [loadingContext, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    console.log("ejecutando contexto")
     // Simulating an initial load or async operation
     const initialDate = format(new Date(),'MM/dd/yyyy'); // Replace this with any initial fetch or computation
     setDate(initialDate);

@@ -36,7 +36,6 @@ const useAccesoBancaMovil = (filterDate: string) => {
     const todayDate = getTodayDate();
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
 
-    console.log(`Making API call for date: ${filterDate} and hour: ${nextHour}`);
 
     try {
       const requestData: AccesoBancaMovilInput = {
@@ -54,7 +53,7 @@ const useAccesoBancaMovil = (filterDate: string) => {
         }
       );
 
-      console.log('API Response:', response.data);
+
 
       setData(response.data);
       setCurrentHour(nextHour);
@@ -67,7 +66,6 @@ const useAccesoBancaMovil = (filterDate: string) => {
   };
 
   useEffect(() => {
-    console.log("useEffect has been triggered");
 
     // Realiza la primera llamada inmediatamente con la hora redondeada a la siguiente hora completa
     fetchPredictionForNextHour();
@@ -86,14 +84,13 @@ const useAccesoBancaMovil = (filterDate: string) => {
     };
 
     const timeoutId = setTimeout(() => {
-      console.log("Initial timeout triggered");
 
       // Realiza la primera llamada en la siguiente hora completa
       fetchPredictionForNextHour();
 
       // Establece un intervalo para realizar la llamada cada hora completa
       const intervalId = setInterval(() => {
-        console.log("Interval triggered");
+
         fetchPredictionForNextHour();
       }, 3600000); // 3600000 ms = 1 hora
 
