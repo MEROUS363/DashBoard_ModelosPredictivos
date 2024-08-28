@@ -29,7 +29,7 @@ ChartJS.register(
 const LineChart: React.FC = () => {
   const { data, error, loading, maxScore, peakHour } = useConsumoTarjetasDebito(); // No need to call fetchScoresForDay manually
   const dataAdditional = Object.fromEntries(
-    Array.from({ length: 24 }, (_, i) => [i, 15000])
+    Array.from({ length: 24 }, (_, i) => [i, maxScore])
   );
   const chartData = {
     labels: Object.keys(hours), // Las horas del día en el eje X

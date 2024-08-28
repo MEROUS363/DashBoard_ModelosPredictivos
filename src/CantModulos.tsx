@@ -43,7 +43,6 @@ const HorizontalBarChart: React.FC = () => {
   const producNetColor = producNetScore > 2000 ? "rgba(239, 68, 68, 1)" : producNetScore > 1000 ? "rgba(251, 191, 36, 1)" : "rgba(104, 211, 145, 1)";
   const MovilColor = movilScore > 30000 ? "rgba(239, 68, 68, 1)" : movilScore > 1000 ? "rgba(251, 191, 36, 1)" : "rgba(104, 211, 145, 1)";
 
-
   const chartData = {
     labels: ["ProduNet", "Movil"],
     datasets: [

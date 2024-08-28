@@ -1,10 +1,9 @@
 // src/components/Top10Days.tsx
 
 import React, { useState, useEffect } from "react";
-import useAccesoBancaMovil from "./hooks/fetchAccesosBancaMovilHook";
-import useAccesoProducNet from "./hooks/fetchAcesoProdunetHook";
+
+
 import axios from "axios";
-import { useDateContext } from "../contexts/DateContext";
 
 interface Prediction {
   fecha: string;
@@ -14,35 +13,39 @@ interface Prediction {
 interface AccesoProducNetOutput {
   score: number;
 }
+interface AccesoBancaMovilOutput{
+  score: number
+}
+
+  
 
 const Top10Days: React.FC = () => {
-
-
 
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   
   useEffect(() => {
     const fetchAllPredictions = async () => {
       const date = new Date();
-      const endOfYear = new Date(date.getFullYear(), 11, 31);
-      const differenceInTime: number = endOfYear.getTime() - date.getTime();
-      const days = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
-      let currentDate = new Date(date); // Clonar la fecha inicial
-      let allPredictions: Prediction[] = [];
+        const endOfYear = new Date(date.getFullYear(), 11, 31);
+        const daysRemaining = Math.ceil((endOfYear.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+        let currentDate = new Date(date); // Clonar la fecha inicial
+        let allPredictions: Prediction[] = [];
 
-      for (let i = 0; i < days; i++) {
+      for (let i = 0; i < daysRemaining; i++) {
         const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
         const day = currentDate.getDate().toString().padStart(2, "0");
         const year = currentDate.getFullYear();
-        const fecha = `${month}/${day}/${year}`;
+        const fecha = `${month}/${day}/${year}` ;
         let dailyTotal = 0;
-        for (let hour = 0; hour < 1; hour++) {
+        for (let hour = 0; hour < 24; hour++) {
           const hora = `${hour.toString().padStart(2, "0")}:00:00`;
           const response = await fetchPrediction(fecha, hora);
-          if (response) {
-            dailyTotal = response.score;
-            allPredictions.push({ fecha, hora, usuarios: dailyTotal });
-            // Ajusta esto según la estructura de respuesta de tu API
+          const response2 = await fetchPredictionMovil(fecha, hora);
+
+          if (response && response2) {
+            console.log()
+            dailyTotal = response.score + response2.score;
+            allPredictions.push({ fecha, hora: hora, usuarios: dailyTotal });
           }
         }
 
@@ -77,6 +80,26 @@ const Top10Days: React.FC = () => {
       return null;
     }
   };
+  const fetchPredictionMovil = async (fecha: string, hora: string) => {
+    try {
+      const requestData2 = { fecha: fecha, hora: hora };
+
+
+      const response = await axios.post<AccesoBancaMovilOutput>(
+        'https://localhost:7123/api/Prediction/accesoBancaMovil',
+        requestData2,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching prediction:", error);
+      return null;
+    }
+  };
   
 
 
@@ -87,7 +110,7 @@ const Top10Days: React.FC = () => {
           <tr className="bg-primary dark:bg-primary">
             <th className="px-4 py-2 text-emerald-700 border-b-2 border-emerald-700">Fecha</th>
             <th className="px-4 py-2 text-emerald-700 border-b-2 border-r-2 border-emerald-700">Hora</th>
-            <th className="px-4 py-2 text-emerald-700 border-b-2 border-emerald-700">Cantidad de Accesos ProduNet</th>
+            <th className="px-4 py-2 text-emerald-700 border-b-2 border-emerald-700">Predicción de Accesos Totales</th>
           </tr>
         </thead>
         <tbody className=" overflow-y-scroll">
@@ -103,16 +126,12 @@ const Top10Days: React.FC = () => {
                 const yearFormatted = year;
                 return `${dayFormatted}/${monthFormatted}/${yearFormatted}`;
               })()}</td>
-              <td className="px-4 py-2 border-r-2 border-emerald-700">{/*{prediction.hora}*/}24/7</td>
+              <td className="px-4 py-2 border-r-2 border-emerald-700">{prediction.hora}</td>
               <td className="px-4 py-2">{Math.round(prediction.usuarios)}</td>
             </tr>
             
           ))}
-          <tr            >
-              <td className=" px-4 py-2"></td>
-              <td className="px-4 py-2 border-r-2 border-emerald-700">Total Maximo</td>
-              <td className="px-4 py-2">1500</td>
-            </tr>
+          
         </tbody>
       </table>
     </div>

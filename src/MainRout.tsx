@@ -37,10 +37,14 @@ const MainRouter: React.FC = () => {
           </div>
         </div>
         <div className="flex">
+          <div className="flex2">
           <ConsumoTarjetaDeb />
+
+          </div>
+          <div className="flex1">
           < TransSPI2/>
+          </div>
         </div>
-        <div></div>
       </div>
     </div>
   );
