@@ -5,6 +5,8 @@ interface DateContextType {
   date: string;
   setDate: (date: string) => void;
   loadingContext: boolean;
+  hour: string;
+  setHour: (hour: string) => void;
 }
 
 interface DateProviderProps {
@@ -16,7 +18,12 @@ export const DateContext = createContext<DateContextType | undefined>(
 );
 
 export const DateProvider: React.FC<DateProviderProps> = ({ children }) => {
+
+  const actualTime  = new Date();
+  actualTime.setHours(actualTime.getHours() + 1);
+
   const [date, setDate] = useState<string>(format(new Date(),'MM/dd/yyyy'));
+  const [hour, setHour] = useState<string>(format(actualTime,'HH:mm:ss'));
   const [loadingContext, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -28,7 +35,7 @@ export const DateProvider: React.FC<DateProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <DateContext.Provider value={{ date, setDate, loadingContext }}>
+    <DateContext.Provider value={{ date, setDate, loadingContext, hour, setHour }}>
       {children}
     </DateContext.Provider>
   );

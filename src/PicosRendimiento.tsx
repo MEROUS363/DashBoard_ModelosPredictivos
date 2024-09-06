@@ -1,12 +1,26 @@
+import { useEffect } from 'react';
+import { useDateContext } from '../contexts/DateContext';
 import './App.css';
 import usePredictAll from './hooks/fetchPicosRendimientoHooh';
 
 
 function Picos() {
-  const { data, loading, error } = usePredictAll();
+ 
+  const { date, hour, loadingContext } = useDateContext();
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+    
+ const { data, loading, error } = usePredictAll(date, hour);
+
+    
+
+  if (loading || loadingContext) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
 
   return (
     <div className='flex gap-2 justify-center p-4 m-2'>
@@ -25,7 +39,7 @@ function Picos() {
           </div>
           <div className="absolute top-0 left-0 text-xs text-muted-foreground font-medium">% CPU</div>
         </div>
-        <p className="mt-2 text-muted-foreground">{data?.bffProcessorScore ? Math.round(data.bffProcessorScore) : 'N/A'} CPU%</p>
+        <p className="mt-2 text-muted-foreground">{data?.bffProcessorScore ? Math.round(data.bffProcessorScore): 'N/A'} CPU%</p>
       </div>
 
       <div className="p-4 bg-white rounded-lg shadow-lg w-80 m-4 border-l-4 border-green-400 transition-transform transform hover:scale-105">

@@ -27,11 +27,11 @@ const Filtro: React.FC<HourSelectProps> = ({onFilter}) => {
     const [selectedDate, setSelectedDate] = useState(getCurrentDate());
     const [selectedHour, setSelectedHour] = useState(getCurrentHour());
 
-    const {setDate} = useDateContext();
+    const {setDate, setHour} = useDateContext();
 
   const hours = Array.from({ length: 24 }, (_, index) => {
     const hour = String(index).padStart(2, '0');
-    return `${hour}:00`;
+    return `${hour}:00:00`;
   });
 
 
@@ -46,6 +46,8 @@ const Filtro: React.FC<HourSelectProps> = ({onFilter}) => {
     const formattedDate = format(date, 'MM/dd/yyyy');
 
     setDate(formattedDate);
+    console.log("selectedHour", selectedHour); 
+    setHour(selectedHour);
     onFilter(formattedDate)
     return true;
   };

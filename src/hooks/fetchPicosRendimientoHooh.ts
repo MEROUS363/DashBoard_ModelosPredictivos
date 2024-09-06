@@ -14,7 +14,7 @@ interface PredictAllOutput {
   microMemoryScore: number;
 }
 
-const usePredictAll = () => {
+const usePredictAll = (filteredDate:string, filteredHour:string) => {
   const [data, setData] = useState<PredictAllOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -39,11 +39,11 @@ const usePredictAll = () => {
     const todayDate = getTodayDate();
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
 
-
+    console.log("haciendo peticion para en picos de rendimiento para", filteredDate, filteredHour);
     try {
       const requestData: PredictAllInput = {
-        fecha: todayDate,
-        hora: nextHour,
+        fecha: filteredDate,
+        hora: filteredHour,
       };
 
       const response = await axios.post<PredictAllOutput>(
@@ -104,7 +104,7 @@ const usePredictAll = () => {
 
     // Limpiar el timeout si el componente se desmonta
     return () => clearTimeout(timeoutId);
-  }, []);
+  }, [filteredDate, filteredHour]);
 
   return {
     data,
