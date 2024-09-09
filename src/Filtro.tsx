@@ -6,6 +6,7 @@ import { useDateContext } from '../contexts/DateContext';
 // import ImgTransaccion from '../ico/Transaccion.svg';
 // import ImgBanck from '../ico/Bancço.svg';
 // import ImgNone from '../ico/None.svg';
+
 interface HourSelectProps {
     
     onFilter:(date: string) => void;
@@ -22,8 +23,10 @@ interface HourSelectProps {
     const hour = String(now.getHours()).padStart(2, '0');
     return `${hour}:00`;
   };
+
 const Filtro: React.FC<HourSelectProps> = ({onFilter}) => {
-   
+    const { typeOfData } = useDateContext();
+
     const [selectedDate, setSelectedDate] = useState(getCurrentDate());
     const [selectedHour, setSelectedHour] = useState(getCurrentHour());
 
@@ -53,40 +56,66 @@ const Filtro: React.FC<HourSelectProps> = ({onFilter}) => {
   };
 
   
-  return (
-    <div className="bg-emerald-700 pt-3 ml-6 p-4 rounded-xl h-[247px] shadow-xl w-[210px]">
-    <h2 className="text-sm font-bold text-white pb-2">Filtro de Predicción</h2>
-    <div className="space-y-4">
-      <div className="bg-card  rounded-lg p-4 bg-white h-[200px]">
-        <label className="block text-sm font-medium text-primary">Seleccione el Día:</label>
-        <input
-          type="date"
-          id="date"
-          name="date"
-          className="block w-full mt-1 p-2 border border-input rounded-md focus:outline-none focus:ring focus:ring-primary"
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-        />
-        <label className="block mt-4 text-sm font-medium text-primary">Seleccione la Hora:</label>
-        <select
-            value={selectedHour}
-            onChange={(e) => setSelectedHour(e.target.value)}
+  if(typeOfData==="FiltroXHora"){
+    return (
+      <div className="bg-emerald-700 pt-3 ml-6 p-4 rounded-xl h-[247px] shadow-xl w-[210px]">
+      <h2 className="text-sm font-bold text-white pb-2">Filtro de Predicción</h2>
+      <div className="space-y-4">
+        <div className="bg-card  rounded-lg p-4 bg-white h-[200px]">
+          <label className="block text-sm font-medium text-primary">Seleccione el Día:</label>
+          <input
+            type="date"
+            id="date"
+            name="date"
             className="block w-full mt-1 p-2 border border-input rounded-md focus:outline-none focus:ring focus:ring-primary"
-            >
-            {hours.map(hour => (
-                <option key={hour} value={hour}>
-                {hour}:00
-                </option>
-            ))}
-        </select>
-        <button onClick={handleFilterClick}>
-            Buscar
-        </button>
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
+          <label className="block mt-4 text-sm font-medium text-primary">Seleccione la Hora:</label>
+          <select
+              value={selectedHour}
+              onChange={(e) => setSelectedHour(e.target.value)}
+              className="block w-full mt-1 p-2 border border-input rounded-md focus:outline-none focus:ring focus:ring-primary"
+              >
+              {hours.map(hour => (
+                  <option key={hour} value={hour}>
+                  {hour}:00
+                  </option>
+              ))}
+          </select>
+          <button onClick={handleFilterClick}>
+              Buscar
+          </button>
+        </div>
       </div>
+      
     </div>
-    
-  </div>
-  );
+    );
+  }
+  if(typeOfData==="FiltroXFecha"){
+    return (
+      <div className="bg-emerald-700 pt-3 ml-6 p-4 rounded-xl h-[247px] shadow-xl w-[210px]">
+      <h2 className="text-sm font-bold text-white pb-2">Filtro de Predicción</h2>
+      <div className="space-y-4">
+        <div className="bg-card  rounded-lg p-4 bg-white h-[200px]">
+          <label className="block text-sm font-medium text-primary">Seleccione el Día:</label>
+          <input
+            type="date"
+            id="date"
+            name="date"
+            className="block w-full mt-1 p-2 border border-input rounded-md focus:outline-none focus:ring focus:ring-primary"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
+          <button className="pt-2" onClick={handleFilterClick}>
+              Buscar
+          </button>
+        </div>
+      </div>
+      
+    </div>
+    );
+  }
 };
 
 export default Filtro;

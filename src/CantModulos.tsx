@@ -23,7 +23,8 @@ ChartJS.register(
 );
 
 const HorizontalBarChart: React.FC = () => {
-  const { date, loadingContext } = useDateContext();
+
+  const { date, loadingContext,typeOfData  } = useDateContext();
   console.log("fecha inicial", date);
   
   const {
@@ -40,8 +41,8 @@ const HorizontalBarChart: React.FC = () => {
   // Si los valores devueltos por las APIs están disponibles, los usamos; de lo contrario, mostramos un valor por defecto
   const movilScore = movilData?.score ?? 19;
   const producNetScore = producNetData?.score ?? 12;
-  const producNetColor = producNetScore > 2000 ? "rgba(239, 68, 68, 1)" : producNetScore > 1000 ? "rgba(251, 191, 36, 1)" : "rgba(104, 211, 145, 1)";
-  const MovilColor = movilScore > 30000 ? "rgba(239, 68, 68, 1)" : movilScore > 1000 ? "rgba(251, 191, 36, 1)" : "rgba(104, 211, 145, 1)";
+  const TotalMovilProduct = movilScore + producNetScore;
+  const BarColor = TotalMovilProduct > 20000 ? "rgba(239, 68, 68, 1)" : TotalMovilProduct > 25000 ? "rgba(251, 191, 36, 1)" : "rgba(104, 211, 145, 1)";
 
   const chartData = {
     labels: ["ProduNet", "Movil"],
@@ -50,8 +51,8 @@ const HorizontalBarChart: React.FC = () => {
         label: "Cantidad",
         data: [Math.round(producNetScore), Math.round(movilScore)],
         backgroundColor: [
-          producNetColor, // Color para 'ProduNet'
-          MovilColor, // Color para 'Movil'
+          BarColor, // Color para 'ProduNet'
+          BarColor, // Color para 'Movil'
         ],
       },
     ],
@@ -67,7 +68,11 @@ const HorizontalBarChart: React.FC = () => {
       },
       title: {
         display: true,
-        text: "Cantidad de Accesos al Módulo",
+        text: typeOfData === "FiltroXHora"
+      ? "Cantidad de Accesos al Módulo" 
+      : typeOfData === "FiltroXFecha"
+      ? "Accesos Totales en el Módulo" 
+      : "Título por Defecto" // opcional, para manejar otros casos
       },
     },
   };
@@ -76,23 +81,44 @@ const HorizontalBarChart: React.FC = () => {
   if (movilError || producNetError)
     return <p>Errooooooooor: {movilError || producNetError}</p>;
 
-  return (
-    <div className="flex bg-white max-w-[805px] ml-4 h-[247px] shadow-xl rounded-lg">
-      <div className="justify-center h-[247px] w-full rounded-lg  bg-white">
-        <Bar data={chartData} options={options} />
+  if(typeOfData==="FiltroXHora"){
+    return (
+      <div className="flex bg-white max-w-[805px] ml-4 mr-4 h-[247px] shadow-xl rounded-lg">
+        <div className="justify-center h-[247px] w-full rounded-lg  bg-white">
+          <Bar data={chartData} options={options} />
+        </div>
+        <div className=" p-4 rounded-lg">
+          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">ProduNet</h2>
+          <p className="text-lg  ">
+            <span className="font-bold">{Math.round(producNetScore)}</span>
+          </p>
+          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-10">Movil</h2>
+          <p className="text-lg">
+            <span className="font-bold">{Math.round(movilScore)}</span>
+          </p>
+        </div>   
       </div>
-      <div className=" p-4 rounded-lg">
-        <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">ProduNet</h2>
-        <p className="text-lg  ">
-          <span className="font-bold">{Math.round(producNetScore)}</span>
-        </p>
-        <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-10">Movil</h2>
-        <p className="text-lg">
-          <span className="font-bold">{Math.round(movilScore)}</span>
-        </p>
-      </div>   
-    </div>
-  );
+    );
+  }
+  if(typeOfData==="FiltroXFecha"){
+    return (
+      <div className="flex bg-white max-w-[805px] ml-4 mr-4 h-[247px] shadow-xl rounded-lg">
+        <div className="justify-center h-[247px] w-full rounded-lg  bg-white">
+          <Bar data={chartData} options={options} />
+        </div>
+        <div className="pt-2 rounded-lg">
+          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-2">Total Accesos ProduNet</h2>
+          <p className="text-lg  ">
+            <span className="font-bold">{Math.round(producNetScore)}</span>
+          </p>
+          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-10">Total Accesos Movil</h2>
+          <p className="text-lg">
+            <span className="font-bold">{Math.round(movilScore)}</span>
+          </p>
+        </div>   
+      </div>
+    );
+  }
 };
 
 export default HorizontalBarChart;

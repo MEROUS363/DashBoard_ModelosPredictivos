@@ -7,6 +7,8 @@ interface DateContextType {
   loadingContext: boolean;
   hour: string;
   setHour: (hour: string) => void;
+  typeOfData: string,
+  setTypeOfData: (typeOfData: string) => void;
 }
 
 interface DateProviderProps {
@@ -25,6 +27,9 @@ export const DateProvider: React.FC<DateProviderProps> = ({ children }) => {
   const [date, setDate] = useState<string>(format(new Date(),'MM/dd/yyyy'));
   const [hour, setHour] = useState<string>(format(actualTime,'HH:mm:ss'));
   const [loadingContext, setLoading] = useState<boolean>(true);
+  const [typeOfData, setTypeOfData] = useState<string>("FiltroXFecha");
+
+
 
   useEffect(() => {
     console.log("ejecutando contexto")
@@ -35,7 +40,7 @@ export const DateProvider: React.FC<DateProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <DateContext.Provider value={{ date, setDate, loadingContext, hour, setHour }}>
+    <DateContext.Provider value={{ date, setDate, loadingContext, hour, setHour, typeOfData,setTypeOfData }}>
       {children}
     </DateContext.Provider>
   );

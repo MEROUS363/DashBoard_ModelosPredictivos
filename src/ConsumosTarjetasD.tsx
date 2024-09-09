@@ -31,6 +31,8 @@ const LineChart: React.FC = () => {
   const dataAdditional = Object.fromEntries(
     Array.from({ length: 24 }, (_, i) => [i, maxScore])
   );
+  const horizontalLineData = new Array(Object.keys(hours).length).fill(Object.values(dataAdditional)[1]);
+
   const chartData = {
     labels: Object.keys(hours), // Las horas del día en el eje X
     datasets: [
@@ -47,7 +49,7 @@ const LineChart: React.FC = () => {
       },
       {
         label: "Consumo Maximo", // Etiqueta para la nueva línea
-        data: Object.values(dataAdditional), 
+        data: horizontalLineData, 
         borderColor: "rgba(255, 0, 0, 1)", 
         pointRadius: 0, 
         pointHoverRadius: 0,
@@ -94,15 +96,10 @@ const LineChart: React.FC = () => {
       <div className="justify-center p-2 ml-10 h-[247px] w-full rounded-lg  bg-white">
         <Line data={chartData} options={options} />
       </div>
-      <div className=" p-4 rounded-lg">
-        <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">
-        Máximo Diario
-        </h2>
+      <div>
+      <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">Cantidad de Consumos</h2>
         <p className="text-lg  ">
-          Cantidad: <span className="font-bold">{maxScore !== null ? Math.round(maxScore) : 'Sin datos'}</span>
-        </p>
-        <p className="text-lg  ">
-          Hora: <span className="font-bold">{peakHour}</span>
+          <span className="font-bold">{maxScore !== null ? Math.round(maxScore) : 0}</span>
         </p>
       </div>
     </div>

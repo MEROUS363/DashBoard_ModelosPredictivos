@@ -42,6 +42,7 @@ export const hours: Hours = {
   '21:00:00': null,
   '22:00:00': null,
   '23:00:00': null,
+
 };
 
 const useConsumoTarjetasDebito = () => {

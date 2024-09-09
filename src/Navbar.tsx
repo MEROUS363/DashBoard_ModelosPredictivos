@@ -10,7 +10,7 @@ import startPro from "./assets/startPro.png";
 const NavBar: React.FC = () => {
 
   return (
-    <div className="h-screen w-24 pt-4 sticky top-0 left-0">
+    <div className="h-screen w-16 pt-4 sticky top-0 left-0">
       <img src={startPro} className="w-full" />
       <ul className="list-none mt-2.5">
         {/* <li
