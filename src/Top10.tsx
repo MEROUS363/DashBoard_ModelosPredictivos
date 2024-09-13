@@ -23,7 +23,7 @@ interface AccesoBancaMovilOutput {
 }
 
 const Top10Days: React.FC = () => {
-  const { typeOfData } = useDateContext();
+  const { typeOfData, date } = useDateContext();
   const [predictions, setPredictions] = useState<Prediction[]>([]);
 
   useEffect(() => {
@@ -37,19 +37,19 @@ const Top10Days: React.FC = () => {
   
           for (let hour = 0; hour < 24; hour++) {
             const hora = `${hour.toString().padStart(2, "0")}:00:00`;
-            const response = await fetchPrediction(fechaxDia, hora);
-            const response2 = await fetchPredictionMovil(fechaxDia, hora);
+            const response = await fetchPrediction(date, hora);
+            const response2 = await fetchPredictionMovil(date, hora);
             let dailyTotal = 0;
   
             if (response && response2) {
               dailyTotal = Math.round(response.score) + Math.round(response2.score);
               allPredictions.push({
-                fecha: fechaxDia,
+                fecha: date,
                 hora: hora,
                 usuarios: dailyTotal,
               });
             } else {
-              console.error(`Error fetching data for ${fechaxDia} ${hora}`);
+              console.error(`Error fetching data for ${date} ${hora}`);
             }
           }
   
@@ -110,7 +110,7 @@ const Top10Days: React.FC = () => {
     } else {
       console.warn("typeOfData is not defined");
     }
-  }, [typeOfData]);
+  }, [typeOfData, date]);
   
   
 
