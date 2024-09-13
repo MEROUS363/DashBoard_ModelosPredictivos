@@ -1,10 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDateContext } from '../contexts/DateContext';
 import './App.css';
 import usePredictAll from './hooks/fetchPicosRendimientoHooh';
+import ModalServidor from './ModalServidor';
+import { CircleEllipsis } from 'lucide-react';
 
 const Picos: React.FC = () => {
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
   const { date, hour, loadingContext, typeOfData } = useDateContext();
  const { data, loading, error } = usePredictAll(date, hour);
   console.log("Valor en Componente ====>",typeOfData)
@@ -91,7 +96,21 @@ const Picos: React.FC = () => {
           </div>
           <p className="mt-2 text-muted-foreground">{data?.microMemoryScore ? Math.round(data.microMemoryScore) : 'N/A'} Memoria%</p>
         </div>
+        <CircleEllipsis className='flex items-center justify-center bg-blue-500 rounded-full h-16 w-9 mt-[60px] transition-transform transform hover:scale-105 text-sm text-white' onClick={toggleModal} />
         
+        {/* Modal */}
+        {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50 ">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <ModalServidor></ModalServidor>
+            <button 
+              onClick={toggleModal} 
+              className="mt-4 h-10 w-20 bg-blue-500 text-white  rounded">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
       </div>
     );
   }
@@ -149,7 +168,6 @@ const Picos: React.FC = () => {
           </div>
           <p className="mt-2 text-muted-foreground">{data?.microProcessorScore ? Math.round(data.microProcessorScore) : 'N/A'} CPU% a las 00:00:00</p>
         </div>
-  
         <div className="p-4 bg-white rounded-lg shadow-lg w-80 m-4 border-l-4 border-green-400 transition-transform transform hover:scale-105">
           <h2 className="text-lg font-bold text-foreground text-emerald-700">Memoria Micro</h2>
           <p className="text-muted-foreground">Pico Mas Alto de Memoria Micro</p>
@@ -166,7 +184,7 @@ const Picos: React.FC = () => {
           </div>
           <p className="mt-2 text-muted-foreground">{data?.microMemoryScore ? Math.round(data.microMemoryScore) : 'N/A'} Memoria% a las 00:00:00</p>
         </div>
-        
+       
       </div>
     );
 
