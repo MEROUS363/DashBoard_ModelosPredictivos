@@ -8,12 +8,6 @@ interface Prediction {
   usuarios: number;
 }
 
-interface PredictionDate {
-  fecha: string;
-  hora: string;
-  usuarios: number;
-}
-
 interface AccesoProducNetOutput {
   score: number;
 }
@@ -152,7 +146,6 @@ const Top10Days: React.FC = () => {
       return null;
     }
   };
-
   return (
     <div className="w-96 h-[247px] overflow-x-auto mr-5 rounded-xl shadow-xl">
       <table className="text-center w-full bg-white text-black dark:bg-card border border-card dark:border-card">
