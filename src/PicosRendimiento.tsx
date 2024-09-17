@@ -12,11 +12,6 @@ const Picos: React.FC = () => {
   };
   const { date, hour, loadingContext, typeOfData } = useDateContext();
  const { data, loading, error } = usePredictAll(date, hour);
-  console.log("Valor en Componente ====>",typeOfData)
-    
-  useEffect(()=>{
-    console.log(typeOfData);
-  })
 
   if (loading || loadingContext) {
     return <p>Loading...</p>;

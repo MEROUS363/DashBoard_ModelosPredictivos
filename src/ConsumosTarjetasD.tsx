@@ -14,6 +14,7 @@ import {
 import useConsumoTarjetasDebito, {
   hours,
 } from "./hooks/fetchConsumoTarjetasHook";
+import { useDateContext } from "../contexts/DateContext";
 
 ChartJS.register(
   CategoryScale,
@@ -27,7 +28,10 @@ ChartJS.register(
 );
 
 const LineChart: React.FC = () => {
-  const { data, error, loading, maxScore, peakHour } = useConsumoTarjetasDebito(); // No need to call fetchScoresForDay manually
+  const { date, hour, loadingContext } = useDateContext();
+  const { data, error, loading, maxScore, peakHour } = useConsumoTarjetasDebito(date, hour); // No need to call fetchScoresForDay manually
+
+
   const dataAdditional = Object.fromEntries(
     Array.from({ length: 24 }, (_, i) => [i, maxScore])
   );
@@ -88,7 +92,7 @@ const LineChart: React.FC = () => {
     },
   };
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading || loadingContext) return <p>Cargando...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (

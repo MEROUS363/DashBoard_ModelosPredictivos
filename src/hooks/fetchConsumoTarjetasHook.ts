@@ -45,19 +45,15 @@ export const hours: Hours = {
 
 };
 
-const useConsumoTarjetasDebito = () => {
+const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
   const [data, setData] = useState<Hours>(hours);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [currentDate, setCurrentDate] = useState<string>(() => {
-    const now = new Date();
-    return format(now, 'dd/MM/yyyy');
-  });
 
   const [maxScore, setMaxScore] = useState<number | null>(null);
   const [peakHour, setPeakHour] = useState<string | null>(null);
 
-  const fetchScoresForDay = async (fecha: string) => {
+  const fetchScoresForDay = async () => {
     setLoading(true);
     setError(null);
 
@@ -69,7 +65,7 @@ const useConsumoTarjetasDebito = () => {
           fecha: fecha,
           hora: hour,
         };
-
+        console.log("consultando tarjetas para", requestData.fecha, requestData.hora);
         const response = await axios.post<ConsumoTarjetasDebitoOutput>(
           'https://localhost:7123/api/Prediction/consumoTarjetasDebito',
           requestData,
@@ -98,16 +94,8 @@ const useConsumoTarjetasDebito = () => {
   };
 
   useEffect(() => {
-    const now = format(new Date(), 'dd/MM/yyyy');
-    
-    if (now !== currentDate) {
-      setCurrentDate(now);
-      fetchScoresForDay(now);
-    } else {
-      // This ensures the fetch happens once on mount if the date matches
-      fetchScoresForDay(now);
-    }
-  }, [currentDate]);
+      fetchScoresForDay();
+  }, [fecha, hora]);
 
   return {
     data,

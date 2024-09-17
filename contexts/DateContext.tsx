@@ -22,6 +22,9 @@ export const DateContext = createContext<DateContextType | undefined>(
 export const DateProvider: React.FC<DateProviderProps> = ({ children }) => {
 
   const actualTime  = new Date();
+  actualTime.setMinutes(0, 0, 0);
+
+// Increment the hour by one if desired
   actualTime.setHours(actualTime.getHours() + 1);
 
   const [date, setDate] = useState<string>(format(new Date(),'MM/dd/yyyy'));
