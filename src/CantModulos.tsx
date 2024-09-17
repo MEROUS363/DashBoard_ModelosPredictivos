@@ -79,7 +79,7 @@ const HorizontalBarChart: React.FC = () => {
 
   if (movilLoading || producNetLoading || loadingContext) return <p>Cargando...</p>;
   if (movilError || producNetError)
-    return <p>Errooooooooor: {movilError || producNetError}</p>;
+    return <p>Error: {movilError || producNetError}</p>;
 
   if(typeOfData==="FiltroXHora"){
     return (
@@ -89,7 +89,7 @@ const HorizontalBarChart: React.FC = () => {
         </div>
         <div className=" p-4 rounded-lg">
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">ProduNet</h2>
-          <p className="text-lg  ">
+          <p className="text-lg">
             <span className="font-bold">{Math.round(producNetScore)}</span>
           </p>
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-10">Movil</h2>
@@ -107,11 +107,11 @@ const HorizontalBarChart: React.FC = () => {
           <Bar data={chartData} options={options} />
         </div>
         <div className="pt-2 rounded-lg">
-          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-2">Total Accesos ProduNet</h2>
-          <p className="text-lg  ">
+          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-2">Accesos ProduNet</h2>
+          <p className="text-lg">
             <span className="font-bold">{Math.round(producNetScore)}</span>
           </p>
-          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-10">Total Accesos Movil</h2>
+          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-4">Accesos Movil</h2>
           <p className="text-lg">
             <span className="font-bold">{Math.round(movilScore)}</span>
           </p>

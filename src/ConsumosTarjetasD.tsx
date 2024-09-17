@@ -1,5 +1,5 @@
 import React from "react";
-import { Line } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -28,8 +28,12 @@ ChartJS.register(
 );
 
 const LineChart: React.FC = () => {
-  const { date, hour, loadingContext } = useDateContext();
+  const { date, hour, loadingContext, typeOfData } = useDateContext();
   const { data, error, loading, maxScore, peakHour } = useConsumoTarjetasDebito(date, hour); // No need to call fetchScoresForDay manually
+
+  Object.keys(data).forEach((key) => {
+    console.log(`Key: ${key}, Value: ${data[key]}`);
+  });
 
 
   const dataAdditional = Object.fromEntries(
@@ -92,9 +96,42 @@ const LineChart: React.FC = () => {
     },
   };
 
+
+  //options for bar data 
+
+  //const BarColor = sumOfScores > 20000 ? "rgba(239, 68, 68, 1)" : sumOfScores > 25000 ? "rgba(251, 191, 36, 1)" : "rgba(104, 211, 145, 1)";
+  const chartDataBar = {
+    labels: ["Consumos Tarjeta de Débito"],
+    datasets: [
+      {
+        label: "Cantidad",
+        data: [Math.round(data[hour])],
+        backgroundColor: [
+          "rgba(239, 68, 68, 1)"
+        ],
+      },
+    ],
+  };
+
+  const barOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: "y" as const,
+    plugins: {
+      legend: {
+        position: "right" as const,
+      },
+      title: {
+        display: true,
+        text: "Cantidad de Consumos Tarjeta de Débito",
+      },
+    },
+  };
+
   if (loading || loadingContext) return <p>Cargando...</p>;
   if (error) return <p>Error: {error}</p>;
 
+  if(typeOfData==="FiltroXFecha"){
   return (
     <div className="flex bg-white max-w-[790px] h-[247px] m-6 shadow-xl rounded-lg">
       <div className="justify-center p-2 ml-10 h-[247px] w-full rounded-lg  bg-white">
@@ -107,7 +144,22 @@ const LineChart: React.FC = () => {
         </p>
       </div>
     </div>
-  );
+  );}
+  if(typeOfData === "FiltroXHora"){
+    return (
+      <div className="flex bg-white max-w-[790px] h-[247px] m-6 shadow-xl rounded-lg">
+        <div className="justify-center p-2 ml-10 h-[247px] w-full rounded-lg  bg-white">
+          <Bar data={chartDataBar} options={barOptions} />
+        </div>
+        <div>
+        <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">Cantidad de Consumos</h2>
+          <p className="text-lg  ">
+            <span className="font-bold">{maxScore !== null ? Math.round(data[hour]) : 0}</span>
+          </p>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default LineChart;

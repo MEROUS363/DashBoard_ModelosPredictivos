@@ -14,34 +14,34 @@ interface ConsumoTarjetasDebitoOutput {
 }
 
 type Hours = {
-  [key: string]: number | null;
+  [key: string]: number;
 };
 
 export const hours: Hours = {
-  '00:00:00': null,
-  '01:00:00': null,
-  '02:00:00': null,
-  '03:00:00': null,
-  '04:00:00': null,
-  '05:00:00': null,
-  '06:00:00': null,
-  '07:00:00': null,
-  '08:00:00': null,
-  '09:00:00': null,
-  '10:00:00': null,
-  '11:00:00': null,
-  '12:00:00': null,
-  '13:00:00': null,
-  '14:00:00': null,
-  '15:00:00': null,
-  '16:00:00': null,
-  '17:00:00': null,
-  '18:00:00': null,
-  '19:00:00': null,
-  '20:00:00': null,
-  '21:00:00': null,
-  '22:00:00': null,
-  '23:00:00': null,
+  '00:00:00': 0,
+  '01:00:00': 0,
+  '02:00:00': 0,
+  '03:00:00': 0,
+  '04:00:00': 0,
+  '05:00:00': 0,
+  '06:00:00': 0,
+  '07:00:00': 0,
+  '08:00:00': 0,
+  '09:00:00': 0,
+  '10:00:00': 0,
+  '11:00:00': 0,
+  '12:00:00': 0,
+  '13:00:00': 0,
+  '14:00:00': 0,
+  '15:00:00': 0,
+  '16:00:00': 0,
+  '17:00:00': 0,
+  '18:00:00': 0,
+  '19:00:00': 0,
+  '20:00:00': 0,
+  '21:00:00': 0,
+  '22:00:00': 0,
+  '23:00:00': 0,
 
 };
 
@@ -49,6 +49,7 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
   const [data, setData] = useState<Hours>(hours);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
 
   const [maxScore, setMaxScore] = useState<number | null>(null);
   const [peakHour, setPeakHour] = useState<string | null>(null);
