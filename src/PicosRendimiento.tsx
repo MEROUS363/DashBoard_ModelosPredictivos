@@ -14,7 +14,7 @@ const Picos: React.FC = () => {
  const { data, loading, error } = usePredictAll(date, hour);
 
   if (loading || loadingContext) {
-    return <p>Loading...</p>;
+    return <p>Cargando...</p>;
   }
 
   if (error) {

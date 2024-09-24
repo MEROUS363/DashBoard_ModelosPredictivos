@@ -5,14 +5,10 @@ const CantTransd = () => {
     const { date, loadingContext } = useDateContext();
     const {data, error, loading} = TransSPI2(date); // No need to call fetchScoresForDay manually
 
+    
     if (loading || loadingContext) return <p>Cargando...</p>;
     if (error)
       return <p>Error: {error}</p>;
-
-
-  console.log("data 1", data[1]);
-  console.log("data 2", data[2]);
-  console.log("data 3", data[3]);
 
   if (loading || loadingContext) return <p>Cargando...</p>;
   if (error) return <p>Error: {error}</p>;

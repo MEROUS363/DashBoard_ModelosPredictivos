@@ -33,6 +33,7 @@ const LineChart: React.FC = () => {
 
   Object.keys(data).forEach((key) => {
     console.log(`Key: ${key}, Value: ${data[key]}`);
+    
   });
 
 
@@ -107,7 +108,7 @@ const LineChart: React.FC = () => {
         label: "Cantidad",
         data: [Math.round(data[hour])],
         backgroundColor: [
-          "rgba(239, 68, 68, 1)"
+          "rgba(104, 211, 145, 1)"
         ],
       },
     ],
@@ -155,6 +156,7 @@ const LineChart: React.FC = () => {
         <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">Cantidad de Consumos</h2>
           <p className="text-lg  ">
             <span className="font-bold">{maxScore !== null ? Math.round(data[hour]) : 0}</span>
+            <span className="font-bold">{Object.K}</span>
           </p>
         </div>
       </div>
