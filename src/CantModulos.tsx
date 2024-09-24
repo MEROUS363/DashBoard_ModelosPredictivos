@@ -24,19 +24,19 @@ ChartJS.register(
 
 const HorizontalBarChart: React.FC = () => {
 
-  const { date, loadingContext,typeOfData  } = useDateContext();
+  const { date, loadingContext,typeOfData, hour  } = useDateContext();
   console.log("fecha inicial", date);
   
   const {
     data: movilData,
     loading: movilLoading,
     error: movilError,
-  } = useAccesoBancaMovil(date); // Usa el hook de Banca Movil
+  } = useAccesoBancaMovil(date, hour); // Usa el hook de Banca Movil
   const {
     data: producNetData,
     loading: producNetLoading,
     error: producNetError,
-  } = useAccesoProducNet(date); // Usa el hook de ProducNet
+  } = useAccesoProducNet(date, hour); // Usa el hook de ProducNet
 
   // Si los valores devueltos por las APIs están disponibles, los usamos; de lo contrario, mostramos un valor por defecto
   const movilScore = movilData?.score ?? 19;

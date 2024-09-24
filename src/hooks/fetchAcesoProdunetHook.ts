@@ -11,7 +11,7 @@ interface AccesoProducNetOutput {
   score: number;
 }
 
-const useAccesoProducNet = (filterDate: string) => {
+const useAccesoProducNet = (filterDate: string, filterHour: string) => {
   const [data, setData] = useState<AccesoProducNetOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,7 +41,7 @@ const useAccesoProducNet = (filterDate: string) => {
     try {
       const requestData: AccesoProducNetInput = {
         date: filterDate,
-        time: nextHour,
+        time: filterHour,
       };
 
       const response = await axios.post<AccesoProducNetOutput>(

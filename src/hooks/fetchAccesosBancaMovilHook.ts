@@ -11,7 +11,7 @@ interface AccesoBancaMovilOutput {
   score: number;
 }
 
-const useAccesoBancaMovil = (filterDate: string) => {
+const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
   const [data, setData] = useState<AccesoBancaMovilOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -40,9 +40,9 @@ const useAccesoBancaMovil = (filterDate: string) => {
     try {
       const requestData: AccesoBancaMovilInput = {
         fecha: filterDate,
-        hora: nextHour,
+        hora: filterHour,
       };
-
+      console.log("request date in hora en movil", requestData);
       const response = await axios.post<AccesoBancaMovilOutput>(
         'https://localhost:7123/api/Prediction/accesoBancaMovil',
         requestData,
@@ -100,7 +100,7 @@ const useAccesoBancaMovil = (filterDate: string) => {
 
     // Limpiar el timeout si el componente se desmonta
     return () => clearTimeout(timeoutId);
-  }, [filterDate]);
+  }, [filterDate, filterHour]);
 
   return {
     data,
