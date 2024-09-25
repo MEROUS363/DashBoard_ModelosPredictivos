@@ -12,6 +12,7 @@ import {
 import useAccesoBancaMovil from "./hooks/fetchAccesosBancaMovilHook";
 import useAccesoProducNet from "./hooks/fetchAcesoProdunetHook";
 import { useDateContext } from "../contexts/DateContext";
+import useProdunetAndMovil, { ProdunetAndBancaMovilOutput } from "./hooks/fetchProdunetandBancaMovil";
 
 ChartJS.register(
   CategoryScale,
@@ -22,10 +23,28 @@ ChartJS.register(
   Legend
 );
 
+// Función para sumar y redondear las predicciones de cada lista por separado
+function sumAndRoundPredictions(produnetResults:ProdunetAndBancaMovilOutput[], movilResults:ProdunetAndBancaMovilOutput[]) {
+  // Sumar los valores de sumPrediction de la lista produnetResults
+  const produnetSum = produnetResults.reduce((sum, item) => sum + item.sumPrediction, 0);
+  
+  // Sumar los valores de sumPrediction de la lista movilResults
+  const movilSum = movilResults.reduce((sum, item) => sum + item.sumPrediction, 0);
+
+  // Redondear ambas sumas
+  const roundedProdunetSum = Math.round(produnetSum);
+  const roundedMovilSum = Math.round(movilSum);
+
+  return {
+    produnetTotal: roundedProdunetSum,
+    movilTotal: roundedMovilSum
+  };
+}
+
 const HorizontalBarChart: React.FC = () => {
 
   const { date, loadingContext,typeOfData, hour  } = useDateContext();
-  console.log("fecha inicial", date);
+
   
   const {
     data: movilData,
@@ -38,18 +57,42 @@ const HorizontalBarChart: React.FC = () => {
     error: producNetError,
   } = useAccesoProducNet(date, hour); // Usa el hook de ProducNet
 
+  const {
+    data: produnetAndMovilData,
+    loading: produnetAndMovilLoading,
+    error: produnetAndMovilError,
+  } = useProdunetAndMovil(date,hour); // Usa el hook de ProducNet y Banca Movil
+
+  console.log("movilData", movilData);
+  console.log("producNetData", producNetData);
+  console.log("produnetAndMovilData", produnetAndMovilData);
+
   // Si los valores devueltos por las APIs están disponibles, los usamos; de lo contrario, mostramos un valor por defecto
-  const movilScore = movilData?.score ?? 19;
-  const producNetScore = producNetData?.score ?? 12;
-  const TotalMovilProduct = movilScore + producNetScore;
+  const movilScore = movilData? movilData.score : null;
+  const producNetScore = producNetData? producNetData.score : null;
+  const TotalMovilProduct = (movilScore && producNetScore)? movilScore + producNetScore : 0;
   const BarColor = TotalMovilProduct > 20000 ? "rgba(239, 68, 68, 1)" : TotalMovilProduct > 25000 ? "rgba(251, 191, 36, 1)" : "rgba(104, 211, 145, 1)";
 
-  const chartData = {
+  const {  produnetTotal,movilTotal } = sumAndRoundPredictions(produnetAndMovilData.produnetResults, produnetAndMovilData.movilResults);
+
+  const chartData = (movilScore && producNetScore)?  {
     labels: ["ProduNet", "Movil"],
     datasets: [
       {
         label: "Cantidad",
         data: [Math.round(producNetScore), Math.round(movilScore)],
+        backgroundColor: [
+          BarColor, // Color para 'ProduNet'
+          BarColor, // Color para 'Movil'
+        ],
+      },
+    ],
+  }:{
+    labels: ["ProduNet", "Movil"],
+    datasets: [
+      {
+        label: "Cantidad",
+        data: [Math.round(produnetTotal), Math.round(movilTotal)],
         backgroundColor: [
           BarColor, // Color para 'ProduNet'
           BarColor, // Color para 'Movil'
@@ -77,8 +120,8 @@ const HorizontalBarChart: React.FC = () => {
     },
   };
 
-  if (movilLoading || producNetLoading || loadingContext) return <p>Cargando...</p>;
-  if (movilError || producNetError)
+  if (movilLoading || producNetLoading || loadingContext || produnetAndMovilLoading) return <p>Cargando...</p>;
+  if (movilError || producNetError || produnetAndMovilError)
     return <p>Error: {movilError || producNetError}</p>;
 
   if(typeOfData==="FiltroXHora"){
@@ -109,11 +152,11 @@ const HorizontalBarChart: React.FC = () => {
         <div className="pt-2 rounded-lg">
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-2">Accesos ProduNet</h2>
           <p className="text-lg">
-            <span className="font-bold">{Math.round(producNetScore)}</span>
+            <span className="font-bold">{producNetScore? Math.round(producNetScore):Math.round(produnetTotal)}</span>
           </p>
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-4">Accesos Movil</h2>
           <p className="text-lg">
-            <span className="font-bold">{Math.round(movilScore)}</span>
+            <span className="font-bold">{movilScore? Math.round(movilScore): Math.round(movilTotal)}</span>
           </p>
         </div>   
       </div>
