@@ -39,7 +39,7 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
     const todayDate = getTodayDate();
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
 
-    console.log("haciendo peticion para en picos de rendimiento para", filteredDate, filteredHour);
+
     try {
       const requestData: PredictAllInput = {
         fecha: filteredDate,

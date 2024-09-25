@@ -14,7 +14,6 @@ const usePredictServers = (filteredDate:string, filteredHour:string) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
 
-  console.log("fecha y hora en servers", filteredDate, filteredHour);
   const getNextRoundedHour = (): string => {
     // Obtener la hora actual, redondearla a HH:00:00 y luego sumarle una hora
     const now = new Date();
@@ -35,7 +34,7 @@ const usePredictServers = (filteredDate:string, filteredHour:string) => {
         fecha: filteredDate,
         hora: filteredHour,
       };
-      console.log("haciendo peticion en servers para", requestData.fecha, requestData.hora);
+
       const response = await axios.post<ServerData[]>(
         'https://localhost:7123/api/Prediction/serverPredictions',
         requestData,

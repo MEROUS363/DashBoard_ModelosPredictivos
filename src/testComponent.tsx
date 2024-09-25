@@ -6,7 +6,6 @@ const TestComponent = () => {
   const { data, error, loading, fetchScoresForDay } = useConsumoTarjetasDebito();
 
   useEffect(() => {
-    console.log("TestComponent rendered");
   }, []);
 
   const handleFetchClick = () => {

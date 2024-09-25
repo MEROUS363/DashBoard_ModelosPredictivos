@@ -31,11 +31,6 @@ const LineChart: React.FC = () => {
   const { date, hour, loadingContext, typeOfData } = useDateContext();
   const { data, error, loading, maxScore, peakHour } = useConsumoTarjetasDebito(date, hour); // No need to call fetchScoresForDay manually
 
-  Object.keys(data).forEach((key) => {
-    console.log(`Key: ${key}, Value: ${data[key]}`);
-    
-  });
-
 
   const dataAdditional = Object.fromEntries(
     Array.from({ length: 24 }, (_, i) => [i, maxScore])
@@ -156,7 +151,6 @@ const LineChart: React.FC = () => {
         <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">Cantidad de Consumos</h2>
           <p className="text-lg  ">
             <span className="font-bold">{maxScore !== null ? Math.round(data[hour]) : 0}</span>
-            <span className="font-bold">{Object.K}</span>
           </p>
         </div>
       </div>

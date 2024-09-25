@@ -29,7 +29,6 @@ const TransSPI2 = (filterDate:string) => {
 
     const todayDate = getTodayDate();
 
-    console.log(`Making API call for date: ${filterDate} and cut-off number: ${corte}`);
 
     try {
       const dataToSend = {

@@ -35,7 +35,6 @@ export const DateProvider: React.FC<DateProviderProps> = ({ children }) => {
 
 
   useEffect(() => {
-    console.log("ejecutando contexto")
     // Simulating an initial load or async operation
     const initialDate = format(new Date(),'MM/dd/yyyy'); // Replace this with any initial fetch or computation
     setDate(initialDate);
