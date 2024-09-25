@@ -17,6 +17,8 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
 
+  console.log("fecha y en banca movil primera renderizacion", filterDate, filterHour);
+
   const getTodayDate = (): string => {
     return format(new Date(), 'MM/dd/yyyy');
   };
@@ -35,14 +37,13 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
 
     const todayDate = getTodayDate();
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
-
+    console.log("Ejecuntando el feasdasssssssssssssssssssssssssssssssssssss");
 
     try {
       const requestData: AccesoBancaMovilInput = {
         fecha: filterDate,
         hora: filterHour,
       };
-      console.log("request date in hora en movil", requestData);
       const response = await axios.post<AccesoBancaMovilOutput>(
         'https://localhost:7123/api/Prediction/accesoBancaMovil',
         requestData,
@@ -52,9 +53,6 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
           }
         }
       );
-
-
-
       setData(response.data);
       setCurrentHour(nextHour);
     } catch (err) {
@@ -66,41 +64,52 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
   };
 
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    let intervalId: ReturnType<typeof setInterval> | undefined;
 
-    // Realiza la primera llamada inmediatamente con la hora redondeada a la siguiente hora completa
-    fetchPredictionForNextHour();
+    if (filterHour === "Todo el día") {
+      setData(null);
+      setCurrentHour(null);
+      setError(null);
+      setLoading(false);
+    } else {
 
-    const calculateTimeUntilNextHour = (): number => {
-      const now = new Date();
-      const nextHour = addHours(now, 1);
-      const startOfNextHour = new Date(
-        nextHour.getFullYear(), 
-        nextHour.getMonth(), 
-        nextHour.getDate(), 
-        nextHour.getHours(), 
-        0, 0, 0 // Set to start of the next hour
-      );
-      return differenceInMilliseconds(startOfNextHour, now);
-    };
-
-    const timeoutId = setTimeout(() => {
-
-      // Realiza la primera llamada en la siguiente hora completa
+      // Llamada inmediata
       fetchPredictionForNextHour();
 
-      // Establece un intervalo para realizar la llamada cada hora completa
-      const intervalId = setInterval(() => {
+      const calculateTimeUntilNextHour = (): number => {
+        const now = new Date();
+        const nextHour = addHours(now, 1);
+        const startOfNextHour = new Date(
+          nextHour.getFullYear(),
+          nextHour.getMonth(),
+          nextHour.getDate(),
+          nextHour.getHours(),
+          0,
+          0,
+          0 // Establecer al inicio de la siguiente hora
+        );
+        return differenceInMilliseconds(startOfNextHour, now);
+      };
 
+      timeoutId = setTimeout(() => {
+        // Llamada en la siguiente hora completa
         fetchPredictionForNextHour();
-      }, 3600000); // 3600000 ms = 1 hora
 
-      // Limpiar el intervalo si el componente se desmonta
-      return () => clearInterval(intervalId);
-    }, calculateTimeUntilNextHour());
+        // Configurar intervalo para cada hora
+        intervalId = setInterval(() => {
+          fetchPredictionForNextHour();
+        }, 3600000); // 3600000 ms = 1 hora
+      }, calculateTimeUntilNextHour());
+    }
 
-    // Limpiar el timeout si el componente se desmonta
-    return () => clearTimeout(timeoutId);
+    // Función de limpieza que siempre se retorna
+    return () => {
+      if (timeoutId !== undefined) clearTimeout(timeoutId);
+      if (intervalId !== undefined) clearInterval(intervalId);
+    };
   }, [filterDate, filterHour]);
+  
 
   return {
     data,
