@@ -1,5 +1,6 @@
 import { Line } from "react-chartjs-2";
 import useTop10Graph, { Top10Output } from "./hooks/fetchTop10GraphHook";
+import { max } from "date-fns";
 
 
 interface LineGraphTop10Props {
@@ -15,7 +16,11 @@ const getScores = (data:Top10Output[]) => {
 }
 
 const getMaxScore = (data:Top10Output[]) => {
-  return Math.max(...data.map((d) => Math.round(d.sumPrediction)));
+  const maxNumber = Math.max(...data.map((d) => Math.round(d.sumPrediction)));
+  const hourOfmax = data.find((d) => Math.round(d.sumPrediction) === maxNumber);
+  return hourOfmax;
+
+  
 }
 
 
@@ -36,7 +41,7 @@ export const LineGraphTop10:React.FC<LineGraphTop10Props>  = ({date}) => {
 
   const hours = getHours(data);
   const scores = getScores(data);
-  const maxScore = getMaxScore(data);
+  const hourOfmax  = getMaxScore(data);
     const chartData = {
         labels: hours,
         datasets: [
@@ -89,7 +94,15 @@ export const LineGraphTop10:React.FC<LineGraphTop10Props>  = ({date}) => {
       <div>
       <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">Pico máximo</h2>
         <p className="text-lg  ">
-          <span className="font-bold">{maxScore !== null ? Math.round(maxScore) : 0}</span>
+          {
+            hourOfmax && <span className="font-bold">{Math.round(hourOfmax.sumPrediction)}</span>
+          }
+        </p>
+      <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">Hora</h2>
+      <p className="text-lg  ">
+      {
+            hourOfmax && <span className="font-bold">{hourOfmax.hour}</span>
+          }
         </p>
       </div>
     </div>

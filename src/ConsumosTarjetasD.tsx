@@ -27,10 +27,15 @@ ChartJS.register(
   Filler
 );
 
+const getSumOfScores = (data: Record<string, number>) => {
+  return Object.values(data).reduce((sum, value) => sum + value, 0);
+}
+
 const LineChart: React.FC = () => {
   const { date, hour, loadingContext, typeOfData } = useDateContext();
   const { data, error, loading, maxScore, peakHour } = useConsumoTarjetasDebito(date, hour); // No need to call fetchScoresForDay manually
 
+  const sumOfScores = getSumOfScores(data);
 
   const dataAdditional = Object.fromEntries(
     Array.from({ length: 24 }, (_, i) => [i, maxScore])
@@ -134,9 +139,9 @@ const LineChart: React.FC = () => {
         <Line data={chartData} options={options} />
       </div>
       <div>
-      <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">Cantidad de Consumos</h2>
+      <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">Total de Consumos</h2>
         <p className="text-lg  ">
-          <span className="font-bold">{maxScore !== null ? Math.round(maxScore) : 0}</span>
+          <span className="font-bold">{Math.round(sumOfScores)}</span>
         </p>
       </div>
     </div>
@@ -150,7 +155,7 @@ const LineChart: React.FC = () => {
         <div>
         <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">Cantidad de Consumos</h2>
           <p className="text-lg  ">
-            <span className="font-bold">{maxScore !== null ? Math.round(data[hour]) : 0}</span>
+            <span className="font-bold">{Math.round(sumOfScores)}</span>
           </p>
         </div>
       </div>

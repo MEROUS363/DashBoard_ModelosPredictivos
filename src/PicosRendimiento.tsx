@@ -20,7 +20,7 @@ const Picos: React.FC = () => {
   if (error) {
     return <p>Error: {error}</p>;
   }
-  if(typeOfData==="FiltroXHora"){
+  if(hour==="Todo el día"){
     return (
       <div className='flex gap-2 justify-center m-2'>
         
@@ -109,7 +109,7 @@ const Picos: React.FC = () => {
       </div>
     );
   }
-  if(typeOfData==="FiltroXFecha"){
+  if(hour!=="Todo el día"){
     return (
       <div className='flex gap-2 justify-center  m-2'>
         

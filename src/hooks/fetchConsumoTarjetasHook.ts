@@ -77,6 +77,7 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
         );
 
         updatedHours[hour] = response.data.score;
+        
       }
 
       setData(updatedHours);
@@ -96,6 +97,8 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
   useEffect(() => {
       fetchScoresForDay();
   }, [fecha, hora]);
+ 
+
 
   return {
     data,
