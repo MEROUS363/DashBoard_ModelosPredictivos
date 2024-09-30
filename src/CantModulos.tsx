@@ -124,26 +124,6 @@ const HorizontalBarChart: React.FC = () => {
   if (movilError || producNetError || produnetAndMovilError)
     return <p>Error: {movilError || producNetError}</p>;
 
-  if(typeOfData==="FiltroXHora"){
-    return (
-      <div className="flex bg-white max-w-[805px] ml-4 mr-4 h-[247px] shadow-xl rounded-lg">
-        <div className="justify-center h-[247px] w-full rounded-lg  bg-white">
-          <Bar data={chartData} options={options} />
-        </div>
-        <div className=" p-4 rounded-lg">
-          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">ProduNet</h2>
-          <p className="text-lg">
-            <span className="font-bold">{Math.round(producNetScore)}</span>
-          </p>
-          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-10">Movil</h2>
-          <p className="text-lg">
-            <span className="font-bold">{Math.round(movilScore)}</span>
-          </p>
-        </div>   
-      </div>
-    );
-  }
-  if(typeOfData==="FiltroXFecha"){
     return (
       <div className="flex bg-white max-w-[805px] ml-4 mr-4 h-[247px] shadow-xl rounded-lg">
         <div className="justify-center h-[247px] w-full rounded-lg  bg-white">
@@ -161,7 +141,6 @@ const HorizontalBarChart: React.FC = () => {
         </div>   
       </div>
     );
-  }
 };
 
 export default HorizontalBarChart;
