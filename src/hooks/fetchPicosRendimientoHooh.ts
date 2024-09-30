@@ -8,10 +8,10 @@ interface PredictAllInput {
 }
 
 interface PredictAllOutput {
-  bffProcessorScore: number;
-  microProcessorScore: number;
-  bffMemoryScore: number;
-  microMemoryScore: number;
+  bffProcessorScores: Record<string, number>;
+  microProcessorScores: Record<string, number>;
+  bffMemoryScores: Record<string, number>;
+  microMemoryScores: Record<string, number>;
 }
 
 const usePredictAll = (filteredDate:string, filteredHour:string) => {
@@ -20,9 +20,6 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
 
-  const getTodayDate = (): string => {
-    return format(new Date(), 'MM/dd/yyyy');
-  };
 
   const getNextRoundedHour = (): string => {
     // Obtener la hora actual, redondearla a HH:00:00 y luego sumarle una hora
@@ -36,7 +33,6 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
     setLoading(true);
     setError(null);
 
-    const todayDate = getTodayDate();
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
 
 
@@ -47,7 +43,7 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
       };
 
       const response = await axios.post<PredictAllOutput>(
-        'https://localhost:7123/api/Prediction/predictAll',
+        'https://localhost:7123/api/Prediction/predictMaxHourly',
         requestData,
         {
           headers: {
