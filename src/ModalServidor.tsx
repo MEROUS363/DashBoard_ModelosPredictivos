@@ -105,7 +105,7 @@ export default function ServerStatusCards() {
               </div>
             </div>
             <div className="p-3 flex flex-col items-center">
-              <DonutChart percentage={server.usage} />  
+              <DonutChart percentage={Math.round(server.usage)} />  
             </div>
           </div>
         ))}
