@@ -12,26 +12,14 @@ import Top10Days from "./Top10.tsx";
 import TransSPI2 from "./CantTransferenciasSPI2.tsx";
 import useValue from "./hooks/ContextValue.ts";
 import { useDateContext } from "../contexts/DateContext.tsx";
-interface MainRouterProps {
-  onValueChange: (value: string) => void;
-}
 
-const MainRouter: React.FC<MainRouterProps> = ({ onValueChange }) => {
+
+const MainRouter: React.FC = () => {
   const [date, setdate] = useState<string>("");
-  const { setTypeOfData, typeOfData } = useDateContext();
+
 
   const filterDataByDate = (dateFromFilter: string) => {
     setdate(dateFromFilter);
-  };
-  const handleButtonClick = (value: string) => {
-    try {
-      setTypeOfData(value);
-      if (onValueChange) {
-        onValueChange(value); // Llamar solo si está definida
-      }
-    } catch (error) {
-      console.error("Error in handleButtonClick:", error);
-    }
   };
 
   return (
