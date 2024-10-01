@@ -11,7 +11,7 @@ export interface Top10Output {
   sumPrediction: number; 
 }
 
-const useTop10Graph = (fecha: string) => {
+const useTop10Graph = (fecha: string, selectedTab: number) => {
   const [data, setData] = useState<Top10Output[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -22,11 +22,13 @@ const useTop10Graph = (fecha: string) => {
     setError(null);
 
     try {
+
+        const endpoint = selectedTab === 0 ? 'top10PredictionSum' : 'top10PredictionSumDebitCard';
         const requestData: Top10Input = {
           fecha: fecha,
         };
         const response = await axios.post<Top10Output[]>(
-          'https://localhost:7123/api/Prediction/top10PredictionSum',
+          `https://localhost:7123/api/Prediction/${endpoint}`,
           requestData,
           {
             headers: {

@@ -9,7 +9,7 @@ export interface ProdunetAndBancaMovilTop10 {
 }
 
 
-const useTop10Table = () => {
+const useTop10Table = (selectedTab:number) => {
   const [data, setData] = useState<ProdunetAndBancaMovilTop10[] | null >(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -20,8 +20,9 @@ const useTop10Table = () => {
     setError(null);
 
     try {
+        const endpoint = selectedTab === 0 ? 'yearlySum' : 'yearlySumDebitCard';
         const response = await axios.get<ProdunetAndBancaMovilTop10[]>(
-          'https://localhost:7123/api/Prediction/yearlySum'
+          `https://localhost:7123/api/Prediction/${endpoint}`,
         );
       setData(response.data);
     } catch (err) {
@@ -34,7 +35,7 @@ const useTop10Table = () => {
 
   useEffect(() => {
       fetchScoresForDay();
-  }, []);
+  }, [selectedTab]);
 
   return {
     data,
