@@ -7,7 +7,7 @@ interface PredictAllInput {
   hora: string;  // Time as string
 }
 
-interface PredictAllOutput {
+export interface PredictAllOutput {
   bffProcessorScores: Record<string, number>;
   microProcessorScores: Record<string, number>;
   bffMemoryScores: Record<string, number>;
