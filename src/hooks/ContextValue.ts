@@ -5,7 +5,6 @@ const useValue = (initialValue: string = "") => {  // Añadir valor inicial opci
 
   const updateValor = (newValue: string) => {
     setValor(newValue);
-    console.log(newValue)
   };
 
   return {

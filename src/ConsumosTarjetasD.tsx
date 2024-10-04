@@ -29,18 +29,23 @@ ChartJS.register(
 
 const getSumOfScores = (data: Record<string, number>) => {
   return Object.values(data).reduce((sum, value) => sum + value, 0);
-}
+};
 
 const LineChart: React.FC = () => {
   const { date, hour, loadingContext, typeOfData } = useDateContext();
-  const { data, error, loading, maxScore, peakHour } = useConsumoTarjetasDebito(date, hour); // No need to call fetchScoresForDay manually
+  const { data, error, loading, maxScore, peakHour } = useConsumoTarjetasDebito(
+    date,
+    hour
+  ); // No need to call fetchScoresForDay manually
 
   const sumOfScores = getSumOfScores(data);
 
   const dataAdditional = Object.fromEntries(
     Array.from({ length: 24 }, (_, i) => [i, maxScore])
   );
-  const horizontalLineData = new Array(Object.keys(hours).length).fill(Object.values(dataAdditional)[1]);
+  const horizontalLineData = new Array(Object.keys(hours).length).fill(
+    Object.values(dataAdditional)[1]
+  );
 
   const chartData = {
     labels: Object.keys(hours), // Las horas del día en el eje X
@@ -58,12 +63,11 @@ const LineChart: React.FC = () => {
       },
       {
         label: "Consumo Maximo", // Etiqueta para la nueva línea
-        data: horizontalLineData, 
-        borderColor: "rgba(255, 0, 0, 1)", 
-        pointRadius: 0, 
+        data: horizontalLineData,
+        borderColor: "rgba(255, 0, 0, 1)",
+        pointRadius: 0,
         pointHoverRadius: 0,
         borderWidth: 1, // Grosor de la línea predicha
-
       },
     ],
   };
@@ -97,8 +101,7 @@ const LineChart: React.FC = () => {
     },
   };
 
-
-  //options for bar data 
+  //options for bar data
 
   //const BarColor = sumOfScores > 20000 ? "rgba(239, 68, 68, 1)" : sumOfScores > 25000 ? "rgba(251, 191, 36, 1)" : "rgba(104, 211, 145, 1)";
   const chartDataBar = {
@@ -107,9 +110,7 @@ const LineChart: React.FC = () => {
       {
         label: "Cantidad",
         data: [Math.round(data[hour])],
-        backgroundColor: [
-          "rgba(104, 211, 145, 1)"
-        ],
+        backgroundColor: ["rgba(104, 211, 145, 1)"],
       },
     ],
   };
@@ -132,30 +133,35 @@ const LineChart: React.FC = () => {
   if (loading || loadingContext) return <p>Cargando...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  if(typeOfData==="FiltroXFecha"){
-  return (
-    <div className="flex bg-white max-w-[790px] h-[247px] m-6 shadow-xl rounded-lg">
-      <div className="justify-center p-2 ml-10 h-[247px] w-full rounded-lg  bg-white">
-        <Line data={chartData} options={options} />
-      </div>
-      <div>
-      <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">Total de Consumos</h2>
-        <p className="text-lg  ">
-          <span className="font-bold">{Math.round(sumOfScores)}</span>
-        </p>
-      </div>
-    </div>
-  );}
-  if(typeOfData === "FiltroXHora"){
+  if (hour === "Todo el día") {
     return (
-      <div className="flex bg-white max-w-[790px] h-[247px] m-6 shadow-xl rounded-lg">
-        <div className="justify-center p-2 ml-10 h-[247px] w-full rounded-lg  bg-white">
+      <div className="flex bg-white max-w-[790px] h-[200px]  rounded-lg">
+        <div className="justify-center ml-10 h-[200px] w-full rounded-lg  bg-white">
+          <Line data={chartData} options={options} />
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">
+            Total de Consumos
+          </h2>
+          <p className="text-lg  ">
+            <span className="font-bold">{Math.round(sumOfScores)}</span>
+          </p>
+        </div>
+      </div>
+    );
+  }
+  if (hour !== "FiltroXHora") {
+    return (
+      <div className="flex bg-white max-w-[790px] h-[200px]  rounded-lg">
+        <div className="justify-center ml-10 h-[200px] w-full rounded-lg  bg-white">
           <Bar data={chartDataBar} options={barOptions} />
         </div>
         <div>
-        <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">Cantidad de Consumos</h2>
+          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">
+            Cantidad de Consumos
+          </h2>
           <p className="text-lg  ">
-            <span className="font-bold">{Math.round(sumOfScores)}</span>
+            <span className="font-bold">{Math.round(data[hour])}</span>
           </p>
         </div>
       </div>

@@ -17,7 +17,7 @@ const useAccesoProducNet = (filterDate: string, filterHour: string) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
 
-  console.log("fecha y en produnet", filterDate, filterHour);
+
   const getTodayDate = (): string => {
     return format(new Date(), 'MM/dd/yyyy');
   };

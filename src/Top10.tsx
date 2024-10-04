@@ -4,15 +4,16 @@ import axios from "axios";
 import { Info } from "lucide-react";
 import { Line } from "react-chartjs-2";
 import { LineGraphTop10 } from "./LineGraphTop10";
-import useTop10Table, { ProdunetAndBancaMovilTop10 } from "./hooks/fetchTop10TableHook";
-
+import useTop10Table, {
+  ProdunetAndBancaMovilTop10,
+} from "./hooks/fetchTop10TableHook";
 
 const Top10Days: React.FC = () => {
   const [selectedPrediction, setSelectedPrediction] =
-    useState< ProdunetAndBancaMovilTop10| null>(null);
+    useState<ProdunetAndBancaMovilTop10 | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
- const {data,error,loading} = useTop10Table(); // No need to call fetchScoresForDay manually
+  const { data, error, loading } = useTop10Table(0); // No need to call fetchScoresForDay manually
 
   const openModal = (prediction: ProdunetAndBancaMovilTop10) => {
     setSelectedPrediction(prediction);
@@ -63,9 +64,7 @@ const Top10Days: React.FC = () => {
                   key={`${prediction.date}`}
                   className="hover:bg-emerald-50 cursor-pointer transition-colors duration-200"
                 >
-                  <td className="px-4 py-2 text-left">
-                    {prediction.date}
-                  </td>
+                  <td className="px-4 py-2 text-left">{prediction.date}</td>
                   <td className="px-4 py-2 border-l border-gray-300">
                     {Math.round(prediction.sumPrediction)}
                   </td>
@@ -95,7 +94,7 @@ const Top10Days: React.FC = () => {
             {!selectedPrediction ? (
               <h2>No existen datos para la fecha indicada</h2>
             ) : (
-              <LineGraphTop10 date={selectedPrediction.date} />
+              <LineGraphTop10 date={selectedPrediction.date} selectedTab={0} />
             )}
             <div className="modal-action mt-4">
               <button

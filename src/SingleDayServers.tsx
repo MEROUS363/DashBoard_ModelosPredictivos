@@ -10,7 +10,6 @@ interface SingleDayServersProps {
 const SingleDayServers: React.FC<SingleDayServersProps> = ({
   dataIndividual,
 }) => {
-  console.log(dataIndividual);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);

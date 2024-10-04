@@ -2,18 +2,16 @@ import { useDateContext } from "../contexts/DateContext";
 import TransSPI2 from "./hooks/fetchTransfSPI2";
 
 const CantTransd = () => {
-    const { date, loadingContext } = useDateContext();
-    const {data, error, loading} = TransSPI2(date); // No need to call fetchScoresForDay manually
+  const { date, loadingContext } = useDateContext();
+  const { data, error, loading } = TransSPI2(date); // No need to call fetchScoresForDay manually
 
-    
-    if (loading || loadingContext) return <p>Cargando...</p>;
-    if (error)
-      return <p>Error: {error}</p>;
+  if (loading || loadingContext) return <p>Cargando...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   if (loading || loadingContext) return <p>Cargando...</p>;
   if (error) return <p>Error: {error}</p>;
   return (
-    <div className=" flex h-[247px] w-[620px] text-center items-center rounded-xl shadow-xl bg-emerald-700 r mt-6">
+    <div className=" flex h-[200px] w-full text-center items-center rounded-xl  bg-emerald-700 ">
       <h1 className=" text-lg font-bold w-48 mr-6 text-white text-center">
         Cantidad de Transferencia SPI2
       </h1>

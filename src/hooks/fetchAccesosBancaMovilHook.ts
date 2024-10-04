@@ -17,7 +17,6 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
 
-  console.log("fecha y en banca movil primera renderizacion", filterDate, filterHour);
 
   const getTodayDate = (): string => {
     return format(new Date(), 'MM/dd/yyyy');
@@ -37,7 +36,7 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
 
     const todayDate = getTodayDate();
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
-    console.log("Ejecuntando el feasdasssssssssssssssssssssssssssssssssssss");
+
 
     try {
       const requestData: AccesoBancaMovilInput = {

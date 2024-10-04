@@ -4,6 +4,9 @@ import NavBar from "./Navbar";
 import Filtro from "./Filtro";
 import PicosServidores from "./PicosServidores";
 import TopTenTable from "./TopTenTable";
+import CantModulos from "./CantModulos";
+import ConsumoTarjetaDeb from "./ConsumosTarjetasD.tsx";
+import TransSPI2 from "./CantTransferenciasSPI2.tsx";
 
 const TestPage: React.FC = () => {
   const [date, setdate] = useState<string>("");
@@ -29,20 +32,18 @@ const TestPage: React.FC = () => {
         {/* Top 10 */}
         <TopTenTable />
         <div className="w-full h-[200px] bg-white col-span-6 rounded-lg shadow-st ">
-          {" "}
+          <ConsumoTarjetaDeb />
         </div>{" "}
         {/* Grafico */}
         <div className="w-full h-[200px] bg-white col-span-6 rounded-lg shadow-st ">
-          {" "}
+          <CantModulos />
         </div>{" "}
         {/* Grafico */}
         <div className="w-full h-[200px] bg-white col-span-4 rounded-lg shadow-st ">
-          {" "}
+          <TransSPI2 />
         </div>{" "}
         {/* SPI */}
-        <div className="w-full h-[200px] bg-white col-span-6 rounded-lg shadow-st ">
-          {" "}
-        </div>{" "}
+        <div className="w-full h-[200px] bg-white col-span-6 rounded-lg shadow-st "></div>{" "}
         {/* Grafico */}
       </div>
     </div>
