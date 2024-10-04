@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { addHours, differenceInMilliseconds } from 'date-fns';
 import { CommonInputDateandTime, PredicitionByHour } from '../types/predictionTypes';
-import { getNextRoundedHour } from '../helper/dateAndTimeHelpers';
+import { calculateTimeUntilNextHour, getNextRoundedHour } from '../helper/dateAndTimeHelpers';
 
 interface AccesoBancaMovilOutput {
   score: number;
@@ -86,20 +85,6 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
       // Llamada inmediata
       fetchPredictionForNextHour();
 
-      const calculateTimeUntilNextHour = (): number => {
-        const now = new Date();
-        const nextHour = addHours(now, 1);
-        const startOfNextHour = new Date(
-          nextHour.getFullYear(),
-          nextHour.getMonth(),
-          nextHour.getDate(),
-          nextHour.getHours(),
-          0,
-          0,
-          0 // Establecer al inicio de la siguiente hora
-        );
-        return differenceInMilliseconds(startOfNextHour, now);
-      };
 
       timeoutId = setTimeout(() => {
         // Llamada en la siguiente hora completa

@@ -1,4 +1,4 @@
-import { addHours, format, set } from "date-fns";
+import { addHours, differenceInMilliseconds, format, set } from "date-fns";
 
 export const convertToISO = (dateString:string) => {
     // Dividimos la cadena de entrada en mes, día y año
@@ -30,4 +30,18 @@ export const getNextRoundedHour = (): string => {
     const roundedHour = set(now, { minutes: 0, seconds: 0, milliseconds: 0 });
     const nextHour = addHours(roundedHour, 1); // Sumamos una hora
     return format(nextHour, 'HH:mm:ss');
+  };
+
+
+  export const calculateTimeUntilNextHour = (): number => {
+    const now = new Date();
+    const nextHour = addHours(now, 1);
+    const startOfNextHour = new Date(
+      nextHour.getFullYear(),
+      nextHour.getMonth(),
+      nextHour.getDate(),
+      nextHour.getHours(),
+      0, 0, 0 // Set to start of the next hour
+    );
+    return differenceInMilliseconds(startOfNextHour, now);
   };

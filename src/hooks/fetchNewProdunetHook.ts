@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {  addHours, differenceInMilliseconds} from 'date-fns';
-import { convertToISO } from '../helper/dateAndTimeHelpers';
+import { calculateTimeUntilNextHour, convertToISO } from '../helper/dateAndTimeHelpers';
 import { PredicitionByHour } from '../types/predictionTypes';
 
 
@@ -114,18 +113,6 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
 
     fetchProdunetPrediction();
 
-    const calculateTimeUntilNextHour = (): number => {
-      const now = new Date();
-      const nextHour = addHours(now, 1);
-      const startOfNextHour = new Date(
-        nextHour.getFullYear(),
-        nextHour.getMonth(),
-        nextHour.getDate(),
-        nextHour.getHours(),
-        0, 0, 0 // Set to start of the next hour
-      );
-      return differenceInMilliseconds(startOfNextHour, now);
-    };
 
       timeoutId = setTimeout(() => {
 

@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { addHours, differenceInMilliseconds} from 'date-fns';
 import { ServerData } from '../ModalServidor';
 import { CommonInputDateandTime } from '../types/predictionTypes';
-import { getNextRoundedHour } from '../helper/dateAndTimeHelpers';
+import { calculateTimeUntilNextHour, getNextRoundedHour } from '../helper/dateAndTimeHelpers';
 
 
 const usePredictServers = (filteredDate:string, filteredHour:string) => {
@@ -19,8 +18,6 @@ const usePredictServers = (filteredDate:string, filteredHour:string) => {
     setError(null);
 
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
-
-    
     try {
       const requestData: CommonInputDateandTime = {
         fecha: filteredDate,
@@ -53,18 +50,6 @@ const usePredictServers = (filteredDate:string, filteredHour:string) => {
     // Realiza la primera llamada inmediatamente con la hora redondeada a la siguiente hora completa
     fetchPredictionForNextHour();
 
-    const calculateTimeUntilNextHour = (): number => {
-      const now = new Date();
-      const nextHour = addHours(now, 1);
-      const startOfNextHour = new Date(
-        nextHour.getFullYear(), 
-        nextHour.getMonth(), 
-        nextHour.getDate(), 
-        nextHour.getHours(), 
-        0, 0, 0 // Set to start of the next hour
-      );
-      return differenceInMilliseconds(startOfNextHour, now);
-    };
 
     const timeoutId = setTimeout(() => {
 
