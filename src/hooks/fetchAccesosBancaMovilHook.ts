@@ -1,21 +1,14 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format, addHours, differenceInMilliseconds, set } from 'date-fns';
-
-interface AccesoBancaMovilInput {
-  fecha: string; // Date as string
-  hora: string;  // Time as string
-}
+import { CommonInputDateandTime, PredicitionByHour } from '../types/predictionTypes';
 
 interface AccesoBancaMovilOutput {
   score: number;
 }
 
-type MovilHours = {
-  [key: string]: number;
-};
 
-export const movilHours: MovilHours = {
+export const movilHours: PredicitionByHour = {
   '00:00:00': 0,
   '01:00:00': 0,
   '02:00:00': 0,
@@ -44,13 +37,12 @@ export const movilHours: MovilHours = {
 };
 
 const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
-  const [data, setData] = useState<MovilHours>(movilHours);
+  const [data, setData] = useState<PredicitionByHour>(movilHours);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
 
   const getNextRoundedHour = (): string => {
-    // Obtener la hora actual, redondearla a HH:00:00 y luego sumarle una hora
     const now = new Date();
     const roundedHour = set(now, { minutes: 0, seconds: 0, milliseconds: 0 });
     const nextHour = addHours(roundedHour, 1); // Sumamos una hora
@@ -64,10 +56,10 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
     try {
 
-      const updatedHours: MovilHours = { ...movilHours };
+      const updatedHours: PredicitionByHour = { ...movilHours };
 
       for (const hour of Object.keys(movilHours)) {
-        const requestData: AccesoBancaMovilInput = {
+        const requestData: CommonInputDateandTime = {
           fecha: filterDate,
           hora: hour,
         };
@@ -120,11 +112,10 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
         // Configurar intervalo para cada hora
         intervalId = setInterval(() => {
           fetchPredictionForNextHour();
-        }, 3600000); // 3600000 ms = 1 hora
+        }, 3600000); //1 hora
       }, calculateTimeUntilNextHour());
     
 
-    // Función de limpieza que siempre se retorna
     return () => {
       if (timeoutId !== undefined) clearTimeout(timeoutId);
       if (intervalId !== undefined) clearInterval(intervalId);

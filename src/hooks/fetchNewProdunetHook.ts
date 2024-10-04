@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {  addHours, differenceInMilliseconds} from 'date-fns';
 import { convertToISO } from '../helper/convertDateToISOHelper';
+import { PredicitionByHour } from '../types/predictionTypes';
 
 
 interface AccesoProdunetOutPut {
@@ -14,12 +15,7 @@ const getHour = (completeHour:string) => {
     return extractedHour;
 }
 
-type  ProdunetHours = {
-  [key: string]: number;
-};
-
-
-export const produnetHours: ProdunetHours = {
+export const produnetHours: PredicitionByHour = {
   '00:00:00': 0,
   '01:00:00': 0,
   '02:00:00': 0,
@@ -49,7 +45,7 @@ export const produnetHours: ProdunetHours = {
 
 
 const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
-  const [data, setData] = useState<ProdunetHours>(produnetHours);
+  const [data, setData] = useState<PredicitionByHour>(produnetHours);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -72,7 +68,7 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
     const todayDate = getTodayDate();
     try {
 
-      const updatedHours: ProdunetHours = { ...produnetHours };
+      const updatedHours: PredicitionByHour = { ...produnetHours };
       for(const hour in produnetHours){
         const dataToSend = {
           Inputs: {

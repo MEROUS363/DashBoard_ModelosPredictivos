@@ -26,7 +26,7 @@ const getSumOfScores = (data: Record<string, number>) => {
   return Object.values(data).reduce((sum, value) => sum + value, 0);
 };
 
-const HorizontalBarChart: React.FC = () => {
+const ModulosProdunetYmovil: React.FC = () => {
   const { date, loadingContext, typeOfData, hour } = useDateContext();
 
   const {
@@ -206,4 +206,4 @@ const HorizontalBarChart: React.FC = () => {
   }
 };
 
-export default HorizontalBarChart;
+export default ModulosProdunetYmovil;

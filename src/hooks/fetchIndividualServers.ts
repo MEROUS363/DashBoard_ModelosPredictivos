@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format, addHours, differenceInMilliseconds, set } from 'date-fns';
-
-interface PredictAllInput {
-  fecha: string; // Date as string
-  hora: string;  // Time as string
-}
+import { CommonInputDateandTime } from '../types/predictionTypes';
 
 export interface PredictSingleOutput {
   bffProcessorScore: number;
@@ -37,7 +33,7 @@ const usePredictSingleServers = (filteredDate:string, filteredHour:string) => {
 
 
     try {
-      const requestData: PredictAllInput = {
+      const requestData: CommonInputDateandTime = {
         fecha: filteredDate,
         hora: filteredHour,
       };

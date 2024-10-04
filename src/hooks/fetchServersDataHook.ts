@@ -2,11 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format, addHours, differenceInMilliseconds, set } from 'date-fns';
 import { ServerData } from '../ModalServidor';
+import { CommonInputDateandTime } from '../types/predictionTypes';
 
-interface PredictInput {
-  fecha: string; // Date as string
-  hora: string;  // Time as string
-}
 
 const usePredictServers = (filteredDate:string, filteredHour:string) => {
   const [data, setData] = useState<ServerData[] | null>(null);
@@ -30,7 +27,7 @@ const usePredictServers = (filteredDate:string, filteredHour:string) => {
 
     
     try {
-      const requestData: PredictInput = {
+      const requestData: CommonInputDateandTime = {
         fecha: filteredDate,
         hora: filteredHour,
       };

@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { CommonInputDateandTime, PredicitionByHour } from '../types/predictionTypes';
 
-interface ConsumoTarjetasDebitoInput {
-  fecha: string;
-  hora: string;
-}
 
 interface ConsumoTarjetasDebitoOutput {
   score: number;
@@ -12,11 +9,7 @@ interface ConsumoTarjetasDebitoOutput {
   peakHour: number;
 }
 
-type Hours = {
-  [key: string]: number;
-};
-
-export const hours: Hours = {
+export const hours: PredicitionByHour = {
   '00:00:00': 0,
   '01:00:00': 0,
   '02:00:00': 0,
@@ -45,7 +38,7 @@ export const hours: Hours = {
 };
 
 const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
-  const [data, setData] = useState<Hours>(hours);
+  const [data, setData] = useState<PredicitionByHour>(hours);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -58,10 +51,10 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
     setError(null);
 
     try {
-      const updatedHours: Hours = { ...hours };
+      const updatedHours: PredicitionByHour = { ...hours };
 
       for (const hour of Object.keys(hours)) {
-        const requestData: ConsumoTarjetasDebitoInput = {
+        const requestData: CommonInputDateandTime = {
           fecha: fecha,
           hora: hour,
         };
