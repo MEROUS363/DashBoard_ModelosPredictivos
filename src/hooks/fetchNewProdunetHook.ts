@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {  addHours, differenceInMilliseconds} from 'date-fns';
-import { convertToISO } from '../helper/convertDateToISOHelper';
+import { convertToISO } from '../helper/dateAndTimeHelpers';
 import { PredicitionByHour } from '../types/predictionTypes';
 
 

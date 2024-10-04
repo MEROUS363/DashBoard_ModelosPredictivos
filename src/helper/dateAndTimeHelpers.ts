@@ -1,3 +1,5 @@
+import { addHours, format, set } from "date-fns";
+
 export const convertToISO = (dateString:string) => {
     // Dividimos la cadena de entrada en mes, día y año
     const [monthStr, dayStr, yearStr] = dateString.split('/');
@@ -19,4 +21,13 @@ export const convertToISO = (dateString:string) => {
     const isoString = dateUTC.toISOString();
    
     return isoString;
-   }
+}
+
+
+export const getNextRoundedHour = (): string => {
+    // Obtener la hora actual, redondearla a HH:00:00 y luego sumarle una hora
+    const now = new Date();
+    const roundedHour = set(now, { minutes: 0, seconds: 0, milliseconds: 0 });
+    const nextHour = addHours(roundedHour, 1); // Sumamos una hora
+    return format(nextHour, 'HH:mm:ss');
+  };

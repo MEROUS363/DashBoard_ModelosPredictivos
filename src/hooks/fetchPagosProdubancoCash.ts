@@ -4,7 +4,7 @@ import {
   addHours,
   differenceInMilliseconds,
 } from "date-fns";
-import { convertToISO } from "../helper/convertDateToISOHelper";
+import { convertToISO } from "../helper/dateAndTimeHelpers";
 
 interface AccesoProdunetOutPut {
   Results: number[];

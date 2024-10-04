@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { format, addHours, differenceInMilliseconds, set } from 'date-fns';
+import { addHours, differenceInMilliseconds} from 'date-fns';
 import { CommonInputDateandTime } from '../types/predictionTypes';
+import { getNextRoundedHour } from '../helper/dateAndTimeHelpers';
 
 
 export interface PredictAllOutput {
@@ -18,13 +19,6 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
   const [currentHour, setCurrentHour] = useState<string | null>(null);
 
 
-  const getNextRoundedHour = (): string => {
-    // Obtener la hora actual, redondearla a HH:00:00 y luego sumarle una hora
-    const now = new Date();
-    const roundedHour = set(now, { minutes: 0, seconds: 0, milliseconds: 0 });
-    const nextHour = addHours(roundedHour, 1); // Sumamos una hora
-    return format(nextHour, 'HH:mm:ss');
-  };
 
   const fetchPredictionForNextHour = async () => {
     setLoading(true);

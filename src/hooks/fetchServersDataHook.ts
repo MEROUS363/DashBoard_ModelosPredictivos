@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { format, addHours, differenceInMilliseconds, set } from 'date-fns';
+import { addHours, differenceInMilliseconds} from 'date-fns';
 import { ServerData } from '../ModalServidor';
 import { CommonInputDateandTime } from '../types/predictionTypes';
+import { getNextRoundedHour } from '../helper/dateAndTimeHelpers';
 
 
 const usePredictServers = (filteredDate:string, filteredHour:string) => {
@@ -11,13 +12,7 @@ const usePredictServers = (filteredDate:string, filteredHour:string) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
 
-  const getNextRoundedHour = (): string => {
-    // Obtener la hora actual, redondearla a HH:00:00 y luego sumarle una hora
-    const now = new Date();
-    const roundedHour = set(now, { minutes: 0, seconds: 0, milliseconds: 0 });
-    const nextHour = addHours(roundedHour, 1); // Sumamos una hora
-    return format(nextHour, 'HH:mm:ss');
-  };
+
 
   const fetchPredictionForNextHour = async () => {
     setLoading(true);
