@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { format } from 'date-fns';
 
 interface ConsumoTarjetasDebitoInput {
   fecha: string;

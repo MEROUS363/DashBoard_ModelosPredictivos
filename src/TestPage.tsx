@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import "./index.css";
 import NavBar from "./Navbar";
 import Filtro from "./Filtro";
@@ -7,13 +6,9 @@ import TopTenTable from "./TopTenTable";
 import CantModulos from "./CantModulos";
 import ConsumoTarjetaDeb from "./ConsumosTarjetasD.tsx";
 import TransSPI2 from "./CantTransferenciasSPI2.tsx";
+import PagosProdubanco from "./PagosProdubanco.tsx";
 
 const TestPage: React.FC = () => {
-  const [date, setdate] = useState<string>("");
-
-  const filterDataByDate = (dateFromFilter: string) => {
-    setdate(dateFromFilter);
-  };
   return (
     <div
       className="w-full p-1 pb-6 bg-gray-50"
@@ -22,7 +17,7 @@ const TestPage: React.FC = () => {
       <div className="mb-5 relative bg-gray-200 rounded-lg temp-show-off">
         {/* Btn Filtro Selectivo */}
         <NavBar />
-        <Filtro onFilter={filterDataByDate} />
+        <Filtro />
       </div>
 
       <div className="grid grid-cols-10 gap-5 p-4 mt-4">
@@ -43,7 +38,9 @@ const TestPage: React.FC = () => {
           <TransSPI2 />
         </div>{" "}
         {/* SPI */}
-        <div className="w-full h-[200px] bg-white col-span-6 rounded-lg shadow-st "></div>{" "}
+        <div className="w-full h-[200px] bg-white col-span-6 rounded-lg shadow-st ">
+          <PagosProdubanco></PagosProdubanco>
+        </div>{" "}
         {/* Grafico */}
       </div>
     </div>

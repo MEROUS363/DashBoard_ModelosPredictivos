@@ -1,21 +1,24 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { format, addHours, differenceInMilliseconds } from 'date-fns';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  addHours,
+  differenceInMilliseconds,
+} from "date-fns";
+import { convertToISO } from "../helper/convertDateToISOHelper";
 
-interface AccesoTransSPI2 {
-  fecha: string; // Date as string in MM/DD/YYYY format
-  corte: number;  // Cut-off number as a number
-}
-
-interface ProdubancoCashOutPut {
+interface AccesoProdunetOutPut {
   Results: number[];
 }
 
-const useFetchProdubancoCash = (filterDate:string) => {
-  const [data, setData] = useState<Record<number, ProdubancoCashOutPut | null>>({});
+const initialDataPagoProdubancoCash = {
+  Results: [0],
+};
+const useFetchPagosProdubanco = (filterDate: string) => {
+  const [data, setData] = useState<AccesoProdunetOutPut>(
+    initialDataPagoProdubancoCash
+  );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [currentCorte, setCurrentCorte] = useState<number | null>(null);
 
   const getTodayDate = (): string => {
     const now = new Date();
@@ -23,44 +26,41 @@ const useFetchProdubancoCash = (filterDate:string) => {
     return now.toISOString();
   };
 
-  const fetchPredictionForCutOff = async (corte: number) => {
+
+  const fecha = convertToISO(filterDate);
+
+  const fetchProdubancoCash = async () => {
     setLoading(true);
     setError(null);
 
     const todayDate = getTodayDate();
-
-
     try {
       const dataToSend = {
         Inputs: {
           data: [
             {
-              FECHA: filterDate ?? todayDate,
-              CORTE: corte,
+              FechaProceso: fecha ?? todayDate,
             },
           ],
         },
       };
 
-      const response = await axios.post<ProdubancoCashOutPut>(
-        '/apicash/score',
+      const response = await axios.post<AccesoProdunetOutPut>(
+        "/cash/score",
         dataToSend,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         }
       );
-
-
-
-      setData(prevData => ({ ...prevData, [corte]: response.data }));
+      setData(response.data);
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.error('Error response:', err.response?.data);
-        setError('Error response: ' + err.response?.data);
+        console.error("Error response:", err.response?.data);
+        setError("Error response: " + err.response?.data);
       } else {
-        console.error('Unexpected error:', err);
+        console.error("Unexpected error:", err);
       }
     } finally {
       setLoading(false);
@@ -68,15 +68,10 @@ const useFetchProdubancoCash = (filterDate:string) => {
   };
 
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    let intervalId: ReturnType<typeof setInterval> | undefined;
 
-
-    const fetchAllCutOffs = async () => {
-      // Ejecuta todas las llamadas API concurrentemente
-      const cortes = [1, 2, 3];
-      await Promise.all(cortes.map(fetchPredictionForCutOff));
-    };
-
-    fetchAllCutOffs();
+    fetchProdubancoCash();
 
     const calculateTimeUntilNextHour = (): number => {
       const now = new Date();
@@ -86,33 +81,34 @@ const useFetchProdubancoCash = (filterDate:string) => {
         nextHour.getMonth(),
         nextHour.getDate(),
         nextHour.getHours(),
-        0, 0, 0 // Set to start of the next hour
+        0,
+        0,
+        0 // Set to start of the next hour
       );
       return differenceInMilliseconds(startOfNextHour, now);
     };
 
-    const timeoutId = setTimeout(() => {
-
-
-      fetchAllCutOffs();
+    timeoutId = setTimeout(() => {
+      fetchProdubancoCash();
 
       const intervalId = setInterval(() => {
-
-        fetchAllCutOffs();
+        fetchProdubancoCash();
       }, 3600000); // 3600000 ms = 1 hora
 
       return () => clearInterval(intervalId);
     }, calculateTimeUntilNextHour());
 
-    return () => clearTimeout(timeoutId);
+    return () => {
+      if (timeoutId !== undefined) clearTimeout(timeoutId);
+      if (intervalId !== undefined) clearInterval(intervalId);
+    };
   }, [filterDate]); // Dependencias vacías para ejecutar solo al montar
 
   return {
     data,
-    currentCorte,
     error,
     loading,
   };
 };
 
-export default useFetchProdubancoCash;
+export default useFetchPagosProdubanco;

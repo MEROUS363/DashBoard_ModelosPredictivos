@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDateContext } from "../contexts/DateContext";
 import "./App.css";
 import usePredictAll from "./hooks/fetchPicosRendimientoHooh";
@@ -11,7 +11,7 @@ const Picos: React.FC = () => {
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-  const { date, hour, loadingContext, typeOfData } = useDateContext();
+  const { date, hour, loadingContext } = useDateContext();
   const { data, loading, error } = usePredictAll(date, hour);
   const {
     data: dataIndividual,

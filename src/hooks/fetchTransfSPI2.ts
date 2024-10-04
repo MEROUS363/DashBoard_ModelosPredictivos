@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { format, addHours, differenceInMilliseconds } from 'date-fns';
+import {addHours, differenceInMilliseconds } from 'date-fns';
 
-interface AccesoTransSPI2 {
-  fecha: string; // Date as string in MM/DD/YYYY format
-  corte: number;  // Cut-off number as a number
-}
+
 
 interface AccesoTransSPI2OutPut {
   Results: number[];
@@ -15,7 +12,7 @@ const TransSPI2 = (filterDate:string) => {
   const [data, setData] = useState<Record<number, AccesoTransSPI2OutPut | null>>({});
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [currentCorte, setCurrentCorte] = useState<number | null>(null);
+
 
   const getTodayDate = (): string => {
     const now = new Date();
@@ -109,7 +106,6 @@ const TransSPI2 = (filterDate:string) => {
 
   return {
     data,
-    currentCorte,
     error,
     loading,
   };

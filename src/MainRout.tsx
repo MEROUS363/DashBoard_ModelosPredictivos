@@ -7,25 +7,15 @@ import "./index.css";
 
 import Picos from "./PicosRendimiento.tsx";
 import Filtro from "./Filtro.tsx";
-import { useState } from "react";
 import Top10Days from "./Top10.tsx";
 import TransSPI2 from "./CantTransferenciasSPI2.tsx";
 
-
-
 const MainRouter: React.FC = () => {
-  const [date, setdate] = useState<string>("");
-
-
-  const filterDataByDate = (dateFromFilter: string) => {
-    setdate(dateFromFilter);
-  };
-
   return (
     <div className="flex">
       <div className="bg-[#FDFDFD] min-h-screen">
         <NavBar />
-        <Filtro onFilter={filterDataByDate} />
+        <Filtro />
         <div className="bg-[#FDFDFD] w-full grid grid-cols-7 gap-4">
           <div className="col-span-2">
             <Top10Days />

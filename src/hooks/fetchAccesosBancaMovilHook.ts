@@ -11,16 +11,43 @@ interface AccesoBancaMovilOutput {
   score: number;
 }
 
+type MovilHours = {
+  [key: string]: number;
+};
+
+export const movilHours: MovilHours = {
+  '00:00:00': 0,
+  '01:00:00': 0,
+  '02:00:00': 0,
+  '03:00:00': 0,
+  '04:00:00': 0,
+  '05:00:00': 0,
+  '06:00:00': 0,
+  '07:00:00': 0,
+  '08:00:00': 0,
+  '09:00:00': 0,
+  '10:00:00': 0,
+  '11:00:00': 0,
+  '12:00:00': 0,
+  '13:00:00': 0,
+  '14:00:00': 0,
+  '15:00:00': 0,
+  '16:00:00': 0,
+  '17:00:00': 0,
+  '18:00:00': 0,
+  '19:00:00': 0,
+  '20:00:00': 0,
+  '21:00:00': 0,
+  '22:00:00': 0,
+  '23:00:00': 0,
+
+};
+
 const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
-  const [data, setData] = useState<AccesoBancaMovilOutput | null>(null);
+  const [data, setData] = useState<MovilHours>(movilHours);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
-
-
-  const getTodayDate = (): string => {
-    return format(new Date(), 'MM/dd/yyyy');
-  };
 
   const getNextRoundedHour = (): string => {
     // Obtener la hora actual, redondearla a HH:00:00 y luego sumarle una hora
@@ -34,25 +61,29 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
     setLoading(true);
     setError(null);
 
-    const todayDate = getTodayDate();
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
-
-
     try {
-      const requestData: AccesoBancaMovilInput = {
-        fecha: filterDate,
-        hora: filterHour,
-      };
-      const response = await axios.post<AccesoBancaMovilOutput>(
-        'https://localhost:7123/api/Prediction/accesoBancaMovil',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
+
+      const updatedHours: MovilHours = { ...movilHours };
+
+      for (const hour of Object.keys(movilHours)) {
+        const requestData: AccesoBancaMovilInput = {
+          fecha: filterDate,
+          hora: hour,
+        };
+        const response = await axios.post<AccesoBancaMovilOutput>(
+          'https://localhost:7123/api/Prediction/accesoBancaMovil',
+          requestData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            }
           }
-        }
-      );
-      setData(response.data);
+        );
+
+        updatedHours[hour] = response.data.score;
+      }
+      setData(updatedHours);
       setCurrentHour(nextHour);
     } catch (err) {
       setError('Error during API request');
@@ -65,14 +96,6 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
     let intervalId: ReturnType<typeof setInterval> | undefined;
-
-    if (filterHour === "Todo el día") {
-      setData(null);
-      setCurrentHour(null);
-      setError(null);
-      setLoading(false);
-    } else {
-
       // Llamada inmediata
       fetchPredictionForNextHour();
 
@@ -94,13 +117,12 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
       timeoutId = setTimeout(() => {
         // Llamada en la siguiente hora completa
         fetchPredictionForNextHour();
-
         // Configurar intervalo para cada hora
         intervalId = setInterval(() => {
           fetchPredictionForNextHour();
         }, 3600000); // 3600000 ms = 1 hora
       }, calculateTimeUntilNextHour());
-    }
+    
 
     // Función de limpieza que siempre se retorna
     return () => {

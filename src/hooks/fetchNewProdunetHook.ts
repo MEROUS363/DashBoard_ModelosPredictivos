@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {  addHours, differenceInMilliseconds, format, formatISO, parse, set } from 'date-fns';
+import {  addHours, differenceInMilliseconds} from 'date-fns';
 import { convertToISO } from '../helper/convertDateToISOHelper';
 
 
@@ -14,8 +14,42 @@ const getHour = (completeHour:string) => {
     return extractedHour;
 }
 
+type  ProdunetHours = {
+  [key: string]: number;
+};
+
+
+export const produnetHours: ProdunetHours = {
+  '00:00:00': 0,
+  '01:00:00': 0,
+  '02:00:00': 0,
+  '03:00:00': 0,
+  '04:00:00': 0,
+  '05:00:00': 0,
+  '06:00:00': 0,
+  '07:00:00': 0,
+  '08:00:00': 0,
+  '09:00:00': 0,
+  '10:00:00': 0,
+  '11:00:00': 0,
+  '12:00:00': 0,
+  '13:00:00': 0,
+  '14:00:00': 0,
+  '15:00:00': 0,
+  '16:00:00': 0,
+  '17:00:00': 0,
+  '18:00:00': 0,
+  '19:00:00': 0,
+  '20:00:00': 0,
+  '21:00:00': 0,
+  '22:00:00': 0,
+  '23:00:00': 0,
+
+};
+
+
 const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
-  const [data, setData] = useState<number[] | null>([]);
+  const [data, setData] = useState<ProdunetHours>(produnetHours);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -27,15 +61,7 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
     return now.toISOString();
   };
 
-  const getNextRoundedHour = (): string => {
-    // Obtener la hora actual, redondearla a HH:00:00 y luego sumarle una hora
-    const now = new Date();
-    const roundedHour = set(now, { minutes: 0, seconds: 0, milliseconds: 0 });
-    const nextHour = addHours(roundedHour, 1); // Sumamos una hora
-    return format(nextHour, 'HH:mm:ss');
-  };
-
-  const hora = parseInt(getHour(filterHour));
+ 
   const fecha = convertToISO(filterDate);
 
   
@@ -44,32 +70,35 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
     setError(null);
 
     const todayDate = getTodayDate();
-    const nextHour = getNextRoundedHour(); 
-
-    console.log("fecha y hora a mndar en produnet", fecha, hora, todayDate);
     try {
-      const dataToSend = {
-        Inputs: {
-          data: [
-            {
-              FECHA: fecha ?? todayDate,
-              HORA: hora,
-            },
-          ],
-        },
-      };
 
-      const response = await axios.post<AccesoProdunetOutPut>(
-        '/produnet/score',
-        dataToSend,
-        {
-          headers: {
-            'Content-Type': 'application/json',
+      const updatedHours: ProdunetHours = { ...produnetHours };
+      for(const hour in produnetHours){
+        const dataToSend = {
+          Inputs: {
+            data: [
+              {
+                FECHA: fecha ?? todayDate,
+                HORA: parseInt(getHour(hour)),
+              },
+            ],
           },
-        }
-      );
-
-      setData(response.data.Results);
+        };
+  
+        const response = await axios.post<AccesoProdunetOutPut>(
+          '/produnet/score',
+          dataToSend,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        updatedHours[hour] = response.data.Results[0];
+      }
+      
+      console.log("updated hours produnet",updatedHours);
+      setData(updatedHours);
 
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -86,12 +115,6 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
     let intervalId: ReturnType<typeof setInterval> | undefined;
-    if (filterHour === "Todo el día") {
-      setData(null);
-
-      setError(null);
-      setLoading(false);
-    } else{
 
     fetchProdunetPrediction();
 
@@ -120,7 +143,6 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
 
       return () => clearInterval(intervalId);
     }, calculateTimeUntilNextHour());
-  }
 
     return () => {
       if (timeoutId !== undefined) clearTimeout(timeoutId);

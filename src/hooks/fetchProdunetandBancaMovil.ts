@@ -89,7 +89,6 @@ const useProdunetAndMovil = (fecha: string, hour: string) => {
             return 0;
           }
         };
-        console.log("peticion para", fecha, hora);
         produnetResultsPromises.push(fetchProdunetData(hora));
       }
 

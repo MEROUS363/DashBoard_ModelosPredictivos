@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { format } from 'date-fns';
+
 
 
 export interface ProdunetAndBancaMovilTop10 {
@@ -20,7 +20,7 @@ const useTop10Table = (selectedTab:number) => {
     setError(null);
 
     try {
-        const endpoint = selectedTab === 0 ? 'yearlySum' : 'yearlySumDebitCard';
+        const endpoint = selectedTab === 0 ? 'yearlySumTesting' : 'yearlySumDebitCard';
         const response = await axios.get<ProdunetAndBancaMovilTop10[]>(
           `https://localhost:7123/api/Prediction/${endpoint}`,
         );

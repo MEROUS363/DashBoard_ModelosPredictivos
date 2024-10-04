@@ -1,4 +1,3 @@
-import { useState } from "react";
 import usePredictAll from "./hooks/fetchPicosRendimientoHooh";
 import { useDateContext } from "../contexts/DateContext";
 import usePredictSingleServers from "./hooks/fetchIndividualServers";
@@ -6,11 +5,7 @@ import AllDayServers from "./AllDayServers";
 import SingleDayServers from "./SingleDayServers";
 
 const PicosServidores: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
-  const { date, hour, loadingContext, typeOfData } = useDateContext();
+  const { date, hour, loadingContext } = useDateContext();
   const { data, loading, error } = usePredictAll(date, hour);
   const {
     data: dataIndividual,

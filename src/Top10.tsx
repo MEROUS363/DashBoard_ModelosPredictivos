@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useDateContext } from "../contexts/DateContext";
-import axios from "axios";
+import React, { useState } from "react";
 import { Info } from "lucide-react";
-import { Line } from "react-chartjs-2";
 import { LineGraphTop10 } from "./LineGraphTop10";
 import useTop10Table, {
   ProdunetAndBancaMovilTop10,

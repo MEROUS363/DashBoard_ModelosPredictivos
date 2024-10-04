@@ -32,8 +32,8 @@ const getSumOfScores = (data: Record<string, number>) => {
 };
 
 const LineChart: React.FC = () => {
-  const { date, hour, loadingContext, typeOfData } = useDateContext();
-  const { data, error, loading, maxScore, peakHour } = useConsumoTarjetasDebito(
+  const { date, hour, loadingContext } = useDateContext();
+  const { data, error, loading, maxScore } = useConsumoTarjetasDebito(
     date,
     hour
   ); // No need to call fetchScoresForDay manually

@@ -11,10 +11,10 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
-      '/apicash': {
+      '/cash': {
         target: 'http://5dcf1698-a42d-47b8-8fc2-b6611fbe7953.westus2.azurecontainer.io',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/apicash/, ''),
+        rewrite: (path) => path.replace(/^\/cash/, ''),
       },
       '/produnet': {
         target: 'http://e795f5d6-3414-4512-985f-c70bc1db2eb7.westus2.azurecontainer.io',
