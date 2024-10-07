@@ -8,7 +8,7 @@ import ConsumoTarjetaDeb from "./components/tarjetasDebito/ConsumosTarjetasD.tsx
 import TransSPI2 from "./components/spi/CantTransferenciasSPI2.tsx";
 import PagosProdubanco from "./components/pagoscash/PagosProdubanco.tsx";
 
-const TestPage: React.FC = () => {
+const MainPage: React.FC = () => {
   return (
     <div
       className="w-full p-1 pb-6 bg-gray-50"
@@ -47,4 +47,4 @@ const TestPage: React.FC = () => {
   );
 };
 
-export default TestPage;
+export default MainPage;
