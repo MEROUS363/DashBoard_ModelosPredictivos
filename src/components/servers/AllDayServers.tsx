@@ -1,4 +1,4 @@
-import { PredictAllOutput } from "./hooks/fetchPicosRendimientoHooh";
+import { PredictAllOutput } from "../../hooks/fetchPicosRendimientoHooh";
 
 interface AlldayServerProps {
   data: PredictAllOutput | null;

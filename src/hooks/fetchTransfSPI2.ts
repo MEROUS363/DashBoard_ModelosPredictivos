@@ -1,16 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {addHours, differenceInMilliseconds } from 'date-fns';
 import { calculateTimeUntilNextHour } from '../helper/dateAndTimeHelpers';
+import { CommonOutputResultsFromAzure } from '../types/predictionTypes';
 
-
-
-interface AccesoTransSPI2OutPut {
-  Results: number[];
-}
 
 const TransSPI2 = (filterDate:string) => {
-  const [data, setData] = useState<Record<number, AccesoTransSPI2OutPut | null>>({});
+  const [data, setData] = useState<Record<number, CommonOutputResultsFromAzure | null>>({});
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -40,7 +35,7 @@ const TransSPI2 = (filterDate:string) => {
         },
       };
 
-      const response = await axios.post<AccesoTransSPI2OutPut>(
+      const response = await axios.post<CommonOutputResultsFromAzure>(
         '/api/score',
         dataToSend,
         {

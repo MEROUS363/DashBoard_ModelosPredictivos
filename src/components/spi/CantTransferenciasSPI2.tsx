@@ -1,5 +1,5 @@
-import { useDateContext } from "../contexts/DateContext";
-import TransSPI2 from "./hooks/fetchTransfSPI2";
+import { useDateContext } from "../../contexts/DateContext";
+import TransSPI2 from "../../hooks/fetchTransfSPI2";
 
 const CantTransd = () => {
   const { date, loadingContext } = useDateContext();

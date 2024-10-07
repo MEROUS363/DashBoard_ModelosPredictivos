@@ -1,6 +1,6 @@
-import usePredictAll from "./hooks/fetchPicosRendimientoHooh";
-import { useDateContext } from "../contexts/DateContext";
-import usePredictSingleServers from "./hooks/fetchIndividualServers";
+import usePredictAll from "../../hooks/fetchPicosRendimientoHooh";
+import { useDateContext } from "../../contexts/DateContext";
+import usePredictSingleServers from "../../hooks/fetchIndividualServers";
 import AllDayServers from "./AllDayServers";
 import SingleDayServers from "./SingleDayServers";
 

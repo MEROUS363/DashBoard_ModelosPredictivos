@@ -1,5 +1,5 @@
 import React from "react";
-import startPro from "./assets/startPro.png";
+import startPro from "../../assets/startPro.png";
 
 const NavBar: React.FC = () => {
   return (

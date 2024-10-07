@@ -11,8 +11,8 @@ import {
   PointElement,
   Filler,
 } from "chart.js";
-import { useDateContext } from "../contexts/DateContext";
-import useFetchPagosProdubanco from "./hooks/fetchPagosProdubancoCash";
+import { useDateContext } from "../../contexts/DateContext";
+import useFetchPagosProdubanco from "../../hooks/fetchPagosProdubancoCash";
 
 ChartJS.register(
   CategoryScale,

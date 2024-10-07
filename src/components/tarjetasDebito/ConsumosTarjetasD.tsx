@@ -13,8 +13,8 @@ import {
 } from "chart.js";
 import useConsumoTarjetasDebito, {
   hours,
-} from "./hooks/fetchConsumoTarjetasHook";
-import { useDateContext } from "../contexts/DateContext";
+} from "../../hooks/fetchConsumoTarjetasHook";
+import { useDateContext } from "../../contexts/DateContext";
 
 ChartJS.register(
   CategoryScale,

@@ -1,5 +1,5 @@
 import { Line } from "react-chartjs-2";
-import useTop10Graph, { Top10Output } from "./hooks/fetchTop10GraphHook";
+import useTop10Graph, { Top10Output } from "../../hooks/fetchTop10GraphHook";
 import { Chart, registerables } from "chart.js";
 
 interface LineGraphTop10Props {

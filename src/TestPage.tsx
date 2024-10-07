@@ -1,12 +1,12 @@
 import "./index.css";
-import NavBar from "./Navbar";
-import Filtro from "./Filtro";
-import PicosServidores from "./PicosServidores";
-import TopTenTable from "./TopTenTable";
-import CantModulos from "./CantModulos";
-import ConsumoTarjetaDeb from "./ConsumosTarjetasD.tsx";
-import TransSPI2 from "./CantTransferenciasSPI2.tsx";
-import PagosProdubanco from "./PagosProdubanco.tsx";
+import NavBar from "./components/general/Navbar.tsx";
+import Filtro from "./components/general/Filtro.tsx";
+import PicosServidores from "./components/servers/PicosServidores.tsx";
+import TopTenTable from "./components/topten/TopTenTable.tsx";
+import CantModulos from "./components/produnetandmovil/CantModulos.tsx";
+import ConsumoTarjetaDeb from "./components/tarjetasDebito/ConsumosTarjetasD.tsx";
+import TransSPI2 from "./components/spi/CantTransferenciasSPI2.tsx";
+import PagosProdubanco from "./components/pagoscash/PagosProdubanco.tsx";
 
 const TestPage: React.FC = () => {
   return (

@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { calculateTimeUntilNextHour, convertToISO } from "../helper/dateAndTimeHelpers";
-
-interface AccesoProdunetOutPut {
-  Results: number[];
-}
+import { CommonOutputResultsFromAzure } from "../types/predictionTypes";
 
 const initialDataPagoProdubancoCash = {
   Results: [0],
 };
 const useFetchPagosProdubanco = (filterDate: string) => {
-  const [data, setData] = useState<AccesoProdunetOutPut>(
+  const [data, setData] = useState<CommonOutputResultsFromAzure>(
     initialDataPagoProdubancoCash
   );
   const [error, setError] = useState<string | null>(null);
@@ -41,7 +38,7 @@ const useFetchPagosProdubanco = (filterDate: string) => {
         },
       };
 
-      const response = await axios.post<AccesoProdunetOutPut>(
+      const response = await axios.post<CommonOutputResultsFromAzure>(
         "/cash/score",
         dataToSend,
         {

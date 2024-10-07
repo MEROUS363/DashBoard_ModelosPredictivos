@@ -3,7 +3,7 @@ import { Tab, Tabs, TabList } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import useTop10Table, {
   ProdunetAndBancaMovilTop10,
-} from "./hooks/fetchTop10TableHook";
+} from "../../hooks/fetchTop10TableHook";
 import { Info } from "lucide-react";
 import { LineGraphTop10 } from "./LineGraphTop10";
 

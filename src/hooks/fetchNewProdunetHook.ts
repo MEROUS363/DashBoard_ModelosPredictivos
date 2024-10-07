@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { calculateTimeUntilNextHour, convertToISO } from '../helper/dateAndTimeHelpers';
-import { PredicitionByHour } from '../types/predictionTypes';
+import { CommonOutputResultsFromAzure, PredicitionByHour } from '../types/predictionTypes';
 
 
-interface AccesoProdunetOutPut {
-  Results: number[];
-}
 
 
 const getHour = (completeHour:string) => {
@@ -80,7 +77,7 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
           },
         };
   
-        const response = await axios.post<AccesoProdunetOutPut>(
+        const response = await axios.post<CommonOutputResultsFromAzure>(
           '/produnet/score',
           dataToSend,
           {

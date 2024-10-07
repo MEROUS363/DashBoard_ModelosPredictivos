@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ServerData } from '../ModalServidor';
+import { ServerData } from '../components/servers/ModalServidor';
 import { CommonInputDateandTime } from '../types/predictionTypes';
 import { calculateTimeUntilNextHour, getNextRoundedHour } from '../helper/dateAndTimeHelpers';
 
@@ -10,8 +10,6 @@ const usePredictServers = (filteredDate:string, filteredHour:string) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
-
-
 
   const fetchPredictionForNextHour = async () => {
     setLoading(true);
@@ -45,12 +43,8 @@ const usePredictServers = (filteredDate:string, filteredHour:string) => {
   };
 
   useEffect(() => {
-
-
     // Realiza la primera llamada inmediatamente con la hora redondeada a la siguiente hora completa
     fetchPredictionForNextHour();
-
-
     const timeoutId = setTimeout(() => {
 
 

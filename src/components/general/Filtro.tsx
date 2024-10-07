@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import React, { useState } from "react";
-import { useDateContext } from "../contexts/DateContext";
-import { hoursWithAllDay } from "./constants/hours";
+import { useDateContext } from "../../contexts/DateContext";
+import { hoursWithAllDay } from "../../constants/hours";
 
 const getCurrentDate = () => {
   const today = new Date();

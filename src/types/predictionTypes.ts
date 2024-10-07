@@ -6,3 +6,7 @@ export type CommonInputDateandTime = {
     fecha: string;
     hora: string;
 }
+
+export type CommonOutputResultsFromAzure = {
+    Results: number[];
+}

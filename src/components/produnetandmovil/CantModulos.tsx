@@ -9,9 +9,9 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import useAccesoBancaMovil from "./hooks/fetchAccesosBancaMovilHook";
-import { useDateContext } from "../contexts/DateContext";
-import useFetchNewProdunetHook from "./hooks/fetchNewProdunetHook";
+import useAccesoBancaMovil from "../../hooks/fetchAccesosBancaMovilHook";
+import { useDateContext } from "../../contexts/DateContext";
+import useFetchNewProdunetHook from "../../hooks/fetchNewProdunetHook";
 
 ChartJS.register(
   CategoryScale,

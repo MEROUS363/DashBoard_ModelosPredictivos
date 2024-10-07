@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PredictSingleOutput } from "./hooks/fetchIndividualServers";
+import { PredictSingleOutput } from "../../hooks/fetchIndividualServers";
 import { CircleEllipsis } from "lucide-react";
 import ModalServidor from "./ModalServidor";
 

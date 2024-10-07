@@ -7,7 +7,6 @@ interface AccesoBancaMovilOutput {
   score: number;
 }
 
-
 export const movilHours: PredicitionByHour = {
   '00:00:00': 0,
   '01:00:00': 0,

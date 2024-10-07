@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ServerIcon, Search } from "lucide-react";
-import { useDateContext } from "../contexts/DateContext";
-import usePredictServers from "./hooks/fetchServersDataHook";
+import { useDateContext } from "../../contexts/DateContext";
+import usePredictServers from "../../hooks/fetchServersDataHook";
 
 export interface ServerData {
   id: number;
