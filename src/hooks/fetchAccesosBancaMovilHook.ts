@@ -1,62 +1,74 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { format, addHours, differenceInMilliseconds, set } from 'date-fns';
-
-interface AccesoBancaMovilInput {
-  fecha: string; // Date as string
-  hora: string;  // Time as string
-}
+import { CommonInputDateandTime, PredicitionByHour } from '../types/predictionTypes';
+import { calculateTimeUntilNextHour, getNextRoundedHour } from '../helper/dateAndTimeHelpers';
 
 interface AccesoBancaMovilOutput {
   score: number;
 }
 
-const useAccesoBancaMovil = () => {
-  const [data, setData] = useState<AccesoBancaMovilOutput | null>(null);
+export const movilHours: PredicitionByHour = {
+  '00:00:00': 0,
+  '01:00:00': 0,
+  '02:00:00': 0,
+  '03:00:00': 0,
+  '04:00:00': 0,
+  '05:00:00': 0,
+  '06:00:00': 0,
+  '07:00:00': 0,
+  '08:00:00': 0,
+  '09:00:00': 0,
+  '10:00:00': 0,
+  '11:00:00': 0,
+  '12:00:00': 0,
+  '13:00:00': 0,
+  '14:00:00': 0,
+  '15:00:00': 0,
+  '16:00:00': 0,
+  '17:00:00': 0,
+  '18:00:00': 0,
+  '19:00:00': 0,
+  '20:00:00': 0,
+  '21:00:00': 0,
+  '22:00:00': 0,
+  '23:00:00': 0,
+
+};
+
+const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
+  const [data, setData] = useState<PredicitionByHour>(movilHours);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
 
-  const getTodayDate = (): string => {
-    return format(new Date(), 'MM/dd/yyyy');
-  };
-
-  const getNextRoundedHour = (): string => {
-    // Obtener la hora actual, redondearla a HH:00:00 y luego sumarle una hora
-    const now = new Date();
-    const roundedHour = set(now, { minutes: 0, seconds: 0, milliseconds: 0 });
-    const nextHour = addHours(roundedHour, 1); // Sumamos una hora
-    return format(nextHour, 'HH:mm:ss');
-  };
 
   const fetchPredictionForNextHour = async () => {
     setLoading(true);
     setError(null);
 
-    const todayDate = getTodayDate();
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
-
-    console.log(`Making API call for date: ${todayDate} and hour: ${nextHour}`);
-
     try {
-      const requestData: AccesoBancaMovilInput = {
-        fecha: todayDate,
-        hora: nextHour,
-      };
 
-      const response = await axios.post<AccesoBancaMovilOutput>(
-        'https://localhost:7123/api/Prediction/accesoBancaMovil',
-        requestData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
+      const updatedHours: PredicitionByHour = { ...movilHours };
+
+      for (const hour of Object.keys(movilHours)) {
+        const requestData: CommonInputDateandTime = {
+          fecha: filterDate,
+          hora: hour,
+        };
+        const response = await axios.post<AccesoBancaMovilOutput>(
+          'https://localhost:7123/api/Prediction/accesoBancaMovil',
+          requestData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            }
           }
-        }
-      );
+        );
 
-      console.log('API Response:', response.data);
-
-      setData(response.data);
+        updatedHours[hour] = response.data.score;
+      }
+      setData(updatedHours);
       setCurrentHour(nextHour);
     } catch (err) {
       setError('Error during API request');
@@ -67,43 +79,28 @@ const useAccesoBancaMovil = () => {
   };
 
   useEffect(() => {
-    console.log("useEffect has been triggered");
-
-    // Realiza la primera llamada inmediatamente con la hora redondeada a la siguiente hora completa
-    fetchPredictionForNextHour();
-
-    const calculateTimeUntilNextHour = (): number => {
-      const now = new Date();
-      const nextHour = addHours(now, 1);
-      const startOfNextHour = new Date(
-        nextHour.getFullYear(), 
-        nextHour.getMonth(), 
-        nextHour.getDate(), 
-        nextHour.getHours(), 
-        0, 0, 0 // Set to start of the next hour
-      );
-      return differenceInMilliseconds(startOfNextHour, now);
-    };
-
-    const timeoutId = setTimeout(() => {
-      console.log("Initial timeout triggered");
-
-      // Realiza la primera llamada en la siguiente hora completa
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+      // Llamada inmediata
       fetchPredictionForNextHour();
 
-      // Establece un intervalo para realizar la llamada cada hora completa
-      const intervalId = setInterval(() => {
-        console.log("Interval triggered");
+
+      timeoutId = setTimeout(() => {
+        // Llamada en la siguiente hora completa
         fetchPredictionForNextHour();
-      }, 3600000); // 3600000 ms = 1 hora
+        // Configurar intervalo para cada hora
+        intervalId = setInterval(() => {
+          fetchPredictionForNextHour();
+        }, 3600000); //1 hora
+      }, calculateTimeUntilNextHour());
+    
 
-      // Limpiar el intervalo si el componente se desmonta
-      return () => clearInterval(intervalId);
-    }, calculateTimeUntilNextHour());
-
-    // Limpiar el timeout si el componente se desmonta
-    return () => clearTimeout(timeoutId);
-  }, []);
+    return () => {
+      if (timeoutId !== undefined) clearTimeout(timeoutId);
+      if (intervalId !== undefined) clearInterval(intervalId);
+    };
+  }, [filterDate, filterHour]);
+  
 
   return {
     data,

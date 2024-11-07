@@ -3,20 +3,18 @@ import axios from 'axios';
 import { CommonInputDateandTime } from '../types/predictionTypes';
 import { calculateTimeUntilNextHour, getNextRoundedHour } from '../helper/dateAndTimeHelpers';
 
-
-export interface PredictAllOutput {
-  bffProcessorScores: Record<string, number>;
-  microProcessorScores: Record<string, number>;
-  bffMemoryScores: Record<string, number>;
-  microMemoryScores: Record<string, number>;
+export interface PredictSingleOutput {
+  bffProcessorScore: number;
+  microProcessorScore: number;
+  bffMemoryScore: number;
+  microMemoryScore: number;
 }
 
-const usePredictAll = (filteredDate:string, filteredHour:string) => {
-  const [data, setData] = useState<PredictAllOutput | null>(null);
+const usePredictSingleServers = (filteredDate:string, filteredHour:string) => {
+  const [data, setData] = useState<PredictSingleOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
-
 
 
   const fetchPredictionForNextHour = async () => {
@@ -32,8 +30,8 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
         hora: filteredHour,
       };
 
-      const response = await axios.post<PredictAllOutput>(
-        'https://localhost:7123/api/Prediction/predictMaxHourly',
+      const response = await axios.post<PredictSingleOutput>(
+        'https://localhost:7123/api/Prediction/predictAll',
         requestData,
         {
           headers: {
@@ -58,6 +56,7 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
 
     // Realiza la primera llamada inmediatamente con la hora redondeada a la siguiente hora completa
     fetchPredictionForNextHour();
+
 
     const timeoutId = setTimeout(() => {
 
@@ -87,4 +86,4 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
   };
 };
 
-export default usePredictAll;
+export default usePredictSingleServers;

@@ -1,39 +1,29 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ServerData } from '../components/servers/ModalServidor';
 import { CommonInputDateandTime } from '../types/predictionTypes';
 import { calculateTimeUntilNextHour, getNextRoundedHour } from '../helper/dateAndTimeHelpers';
 
 
-export interface PredictAllOutput {
-  bffProcessorScores: Record<string, number>;
-  microProcessorScores: Record<string, number>;
-  bffMemoryScores: Record<string, number>;
-  microMemoryScores: Record<string, number>;
-}
-
-const usePredictAll = (filteredDate:string, filteredHour:string) => {
-  const [data, setData] = useState<PredictAllOutput | null>(null);
+const usePredictServers = (filteredDate:string, filteredHour:string) => {
+  const [data, setData] = useState<ServerData[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
-
-
 
   const fetchPredictionForNextHour = async () => {
     setLoading(true);
     setError(null);
 
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
-
-
     try {
       const requestData: CommonInputDateandTime = {
         fecha: filteredDate,
         hora: filteredHour,
       };
 
-      const response = await axios.post<PredictAllOutput>(
-        'https://localhost:7123/api/Prediction/predictMaxHourly',
+      const response = await axios.post<ServerData[]>(
+        'https://localhost:7123/api/Prediction/serverPredictions',
         requestData,
         {
           headers: {
@@ -41,7 +31,6 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
           }
         }
       );
-
 
       setData(response.data);
       setCurrentHour(nextHour);
@@ -54,11 +43,8 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
   };
 
   useEffect(() => {
-
-
     // Realiza la primera llamada inmediatamente con la hora redondeada a la siguiente hora completa
     fetchPredictionForNextHour();
-
     const timeoutId = setTimeout(() => {
 
 
@@ -87,4 +73,4 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
   };
 };
 
-export default usePredictAll;
+export default usePredictServers;

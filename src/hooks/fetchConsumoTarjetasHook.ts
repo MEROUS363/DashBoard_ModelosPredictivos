@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { format } from 'date-fns';
+import { CommonInputDateandTime, PredicitionByHour } from '../types/predictionTypes';
 
-interface ConsumoTarjetasDebitoInput {
-  fecha: string;
-  hora: string;
-}
 
 interface ConsumoTarjetasDebitoOutput {
   score: number;
@@ -13,64 +9,57 @@ interface ConsumoTarjetasDebitoOutput {
   peakHour: number;
 }
 
-type Hours = {
-  [key: string]: number | null;
+export const hours: PredicitionByHour = {
+  '00:00:00': 0,
+  '01:00:00': 0,
+  '02:00:00': 0,
+  '03:00:00': 0,
+  '04:00:00': 0,
+  '05:00:00': 0,
+  '06:00:00': 0,
+  '07:00:00': 0,
+  '08:00:00': 0,
+  '09:00:00': 0,
+  '10:00:00': 0,
+  '11:00:00': 0,
+  '12:00:00': 0,
+  '13:00:00': 0,
+  '14:00:00': 0,
+  '15:00:00': 0,
+  '16:00:00': 0,
+  '17:00:00': 0,
+  '18:00:00': 0,
+  '19:00:00': 0,
+  '20:00:00': 0,
+  '21:00:00': 0,
+  '22:00:00': 0,
+  '23:00:00': 0,
+
 };
 
-export const hours: Hours = {
-  '00:00:00': null,
-  '01:00:00': null,
-  '02:00:00': null,
-  '03:00:00': null,
-  '04:00:00': null,
-  '05:00:00': null,
-  '06:00:00': null,
-  '07:00:00': null,
-  '08:00:00': null,
-  '09:00:00': null,
-  '10:00:00': null,
-  '11:00:00': null,
-  '12:00:00': null,
-  '13:00:00': null,
-  '14:00:00': null,
-  '15:00:00': null,
-  '16:00:00': null,
-  '17:00:00': null,
-  '18:00:00': null,
-  '19:00:00': null,
-  '20:00:00': null,
-  '21:00:00': null,
-  '22:00:00': null,
-  '23:00:00': null,
-};
-
-const useConsumoTarjetasDebito = () => {
-  const [data, setData] = useState<Hours>(hours);
+const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
+  const [data, setData] = useState<PredicitionByHour>(hours);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [currentDate, setCurrentDate] = useState<string>(() => {
-    const now = new Date();
-    return format(now, 'dd/MM/yyyy');
-  });
+
 
   const [maxScore, setMaxScore] = useState<number | null>(null);
   const [peakHour, setPeakHour] = useState<string | null>(null);
 
-  const fetchScoresForDay = async (fecha: string) => {
+  const fetchScoresForDay = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const updatedHours: Hours = { ...hours };
+      const updatedHours: PredicitionByHour = { ...hours };
 
       for (const hour of Object.keys(hours)) {
-        const requestData: ConsumoTarjetasDebitoInput = {
+        const requestData: CommonInputDateandTime = {
           fecha: fecha,
           hora: hour,
         };
-
         const response = await axios.post<ConsumoTarjetasDebitoOutput>(
-          'https://localhost:7123/api/Prediction/consumoTarjetasDebito',
+          'https://localhost:7123/api/Prediction/consumoTarjetasDebitoActual',
           requestData,
           {
             headers: {
@@ -80,6 +69,7 @@ const useConsumoTarjetasDebito = () => {
         );
 
         updatedHours[hour] = response.data.score;
+        
       }
 
       setData(updatedHours);
@@ -97,16 +87,10 @@ const useConsumoTarjetasDebito = () => {
   };
 
   useEffect(() => {
-    const now = format(new Date(), 'dd/MM/yyyy');
-    
-    if (now !== currentDate) {
-      setCurrentDate(now);
-      fetchScoresForDay(now);
-    } else {
-      // This ensures the fetch happens once on mount if the date matches
-      fetchScoresForDay(now);
-    }
-  }, [currentDate]);
+      fetchScoresForDay();
+  }, [fecha, hora]);
+ 
+
 
   return {
     data,
