@@ -59,7 +59,7 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
           hora: hour,
         };
         const response = await axios.post<ConsumoTarjetasDebitoOutput>(
-          'https://localhost:7123/api/Prediction/consumoTarjetasDebito',
+          'https://localhost:7123/api/Prediction/consumoTarjetasDebitoActual',
           requestData,
           {
             headers: {

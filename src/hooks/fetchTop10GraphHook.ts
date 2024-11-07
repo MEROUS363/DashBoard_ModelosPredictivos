@@ -21,8 +21,9 @@ const useTop10Graph = (fecha: string, selectedTab: number) => {
     setError(null);
 
     try {
-
-        const endpoint = selectedTab === 0 ? 'top10PredictionSum' : 'top10PredictionSumDebitCard';
+        console.log("fechaaaa actualizada", fecha);
+        const endpoint = selectedTab === 0 ? 'top10PredictionSum' : 'top10PredictionSumDebitCardActual';
+        console.log("endpoint", endpoint);
         const requestData: Top10Input = {
           fecha: fecha,
         };

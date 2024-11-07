@@ -12,13 +12,13 @@ const CantTransd = () => {
   if (error) return <p>Error: {error}</p>;
   return (
     <div className=" flex h-[200px] w-full text-center items-center rounded-xl  bg-emerald-700 ">
-      <h1 className=" text-lg font-bold w-48 mr-6 text-white text-center">
+      <h1 className=" text-lg font-bold w-46 mr-6 text-white text-center">
         Cantidad de Transferencia SPI2
       </h1>
 
       <div className="p-3 bg-white rounded-lg h-44 w-96 items-center justify-center ">
         <div className="flex  ">
-          <div className=" w-28 h-28  p-1">
+          <div className="items-center justify-center w-28 h-28 ml-3 p-1">
             <h1>Corte 1</h1>
 
             <div className="relative w-full h-full">

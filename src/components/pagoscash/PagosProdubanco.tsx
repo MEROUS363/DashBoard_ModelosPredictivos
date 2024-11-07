@@ -37,7 +37,7 @@ const LineChart: React.FC = () => {
       {
         label: "Cantidad",
         data: [Math.round(data.Results[0])],
-        backgroundColor: ["rgba(104, 211, 145, 1)"],
+        backgroundColor: ["#78BE20"],
       },
     ],
   };
