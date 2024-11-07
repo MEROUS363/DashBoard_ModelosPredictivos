@@ -16,10 +16,10 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/cash/, ''),
       },
-      '/produnet': {
-        target: 'http://e795f5d6-3414-4512-985f-c70bc1db2eb7.westus2.azurecontainer.io',
+      '/produnethora': {
+        target: 'https://mlproduccionpbo-uktln.westus2.inference.ml.azure.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/produnet/, ''),
+        rewrite: (path) => path.replace(/^\/produnethora/, ''),
       },
     },
   },

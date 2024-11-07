@@ -76,13 +76,15 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
             ],
           },
         };
-  
+        const token = `${import.meta.env.VITE_KEY_ACCESOSPRODUNET_HORA}`;
+        console.log("token",token);
         const response = await axios.post<CommonOutputResultsFromAzure>(
-          '/produnet/score',
+          '/produnethora/score',
           dataToSend,
           {
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
             },
           }
         );
