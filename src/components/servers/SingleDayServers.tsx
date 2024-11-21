@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { PredictSingleOutput } from "../../hooks/fetchIndividualServers";
-import { CircleEllipsis } from "lucide-react";
+import { Server } from "lucide-react";
 import ModalServidor from "./ModalServidor";
 
 interface SingleDayServersProps {
@@ -150,10 +150,16 @@ const SingleDayServers: React.FC<SingleDayServersProps> = ({
           Memoria%
         </p>
       </div>
-      <CircleEllipsis
-        className="flex items-center justify-center bg-blue-500 rounded-full h-16 w-9 mt-[60px] transition-transform transform hover:scale-105 text-sm text-white"
+      <div className="w-full h-full flex-col flex items-center  justify-center  col-span-2 
+      ">
+      <div className="transition-transform transform cursor-pointer hover:scale-105s flex flex-col items-center">
+      <Server
+        className="flex items-center justify-center p-2 rounded-lg text-emerald-700 h-16 w-16   text-sm "
         onClick={toggleModal}
       />
+      <p className="italic p-1">Ver Servidores</p>
+      </div>
+      </div>
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50 ">
