@@ -55,8 +55,6 @@ const ModulosProdunetYmovil: React.FC = () => {
   const sumOfMovilScores = getSumOfScores(movilData || {});
   const sumOfProducNetScores = getSumOfScores(producNetData || {});
 
-  console.log("producNetData en el componente", producNetData);
-
   // DATOS PARA LA GRAFICA DE LINEAS
   const lineChartData = {
     labels: Object.keys(movilData), // Las horas del día en el eje X
