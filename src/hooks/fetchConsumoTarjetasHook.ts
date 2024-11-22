@@ -38,47 +38,20 @@ export const hours: PredicitionByHour = {
 };
 
 const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
-  const [dataByHour, setDataByHour] = useState<PredicitionByHour>(hours);
-  const [dataByDay, setDataByDay] = useState<number>(0);
+  const [dataAllHours, setDataAllHours] = useState<PredicitionByHour>(hours);
+  const [dataByHour, setDataByHour] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingAllHours, setLoadingAllHours] = useState<boolean>(false);
+  const [loadingByHour, setLoadingByHour] = useState<boolean>(false);
 
 
   const [maxScore, setMaxScore] = useState<number | null>(null);
   const [peakHour, setPeakHour] = useState<string | null>(null);
   
-  const fetchScoresForDay = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-        const endpoint =`${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_DEBITODIA}`;
-        const requestData: CommonInputDate = {
-          fecha: fecha,
-        };
-
-        const response = await axios.post<number>(
-          endpoint,
-          requestData,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-     
-      setDataByDay(response.data);
-    } catch (err) {
-      setError('Error al realizar la petición');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
 
-  const fetchScoresForHour = async () => {
-    setLoading(true);
+  const fetchScoresForAllHours = async () => {
+    setLoadingAllHours(true);
     setError(null);
     const endpoint = `${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_DEBITOHORA}`;
 
@@ -90,7 +63,7 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
           fecha: fecha,
           hora: hour,
         };
-        const response = await axios.post<ConsumoTarjetasDebitoOutput>(
+        const response = await axios.post<number>(
           endpoint,
           requestData,
           {
@@ -100,41 +73,75 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
           }
         );
 
-        updatedHours[hour] = response.data.score;
+        updatedHours[hour] = response.data;
         
       }
 
-      setDataByHour(updatedHours);
+      console.log(updatedHours);
+      setDataAllHours(updatedHours);
       const maxScore = Math.max(...Object.values(updatedHours).filter((score): score is number => score !== null));
       const peakHour = Object.keys(updatedHours).find(hour => updatedHours[hour] === maxScore) || null;
 
       setMaxScore(maxScore);
+      console.log(maxScore);
       setPeakHour(peakHour);
+      console.log(peakHour);
     } catch (err) {
       setError('Error al realizar la petición');
       console.error(err);
     } finally {
-      setLoading(false);
+      setLoadingAllHours(false);
     }
   };
+
+  const fetchScoresForHour = async () => {
+    setLoadingByHour(true);
+    setError(null);
+    const endpoint = `${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_DEBITOHORA}`;
+
+    try {
+        const requestData: CommonInputDateandTime = {
+          fecha: fecha,
+          hora: hora,
+        };
+        const response = await axios.post<number>(
+          endpoint,
+          requestData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+      
+      setDataByHour(response.data);
+    } catch (err) {
+      setError('Error al realizar la petición');
+      console.error(err);
+    } finally {
+      setLoadingByHour(false);
+    }
+  };
+
 
   
   useEffect(() => {
     if (hora === "Todo el día") {
-      fetchScoresForDay();
+      console.log("fetching all hours");
+      fetchScoresForAllHours();
     } else {
+      console.log("fetching just an hour");
       fetchScoresForHour();
     }
   }, [fecha, hora]);
  
 
-
   return {
+    dataAllHours,
     dataByHour,
-    dataByDay,
     error,
-    loading,
-    fetchScoresForDay,
+    loadingAllHours,
+    loadingByHour,
     maxScore, 
     peakHour
   };

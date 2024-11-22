@@ -33,12 +33,17 @@ const getSumOfScores = (data: Record<string, number>) => {
 
 const LineChart: React.FC = () => {
   const { date, hour, loadingContext } = useDateContext();
-  const { data, error, loading, maxScore } = useConsumoTarjetasDebito(
-    date,
-    hour
-  );
+  const {
+    dataAllHours,
+    dataByHour,
+    error,
+    loadingAllHours,
+    loadingByHour,
+    maxScore,
+  } = useConsumoTarjetasDebito(date, hour);
 
-  const sumOfScores = getSumOfScores(data);
+  console.log("en el componente", dataAllHours);
+  const sumOfScores = getSumOfScores(dataAllHours);
 
   const dataAdditional = Object.fromEntries(
     Array.from({ length: 24 }, (_, i) => [i, maxScore])
@@ -52,7 +57,7 @@ const LineChart: React.FC = () => {
     datasets: [
       {
         label: "Consumo Predicho",
-        data: Object.values(data).map((value) =>
+        data: Object.values(dataAllHours).map((value) =>
           value !== null && value !== undefined ? Math.round(value) : 0
         ),
         borderColor: "rgba(75, 192, 192, 1)",
@@ -109,7 +114,7 @@ const LineChart: React.FC = () => {
     datasets: [
       {
         label: "Cantidad",
-        data: [Math.round(data[hour])],
+        data: [dataByHour],
         backgroundColor: ["rgba(104, 211, 145, 1)"],
       },
     ],
@@ -130,7 +135,8 @@ const LineChart: React.FC = () => {
     },
   };
 
-  if (loading || loadingContext) return <p>Cargando...</p>;
+  if (loadingAllHours || loadingByHour || loadingContext)
+    return <p>Cargando...</p>;
   if (error) return <p>Error: {error}</p>;
 
   if (hour === "Todo el día") {
@@ -161,7 +167,7 @@ const LineChart: React.FC = () => {
             Cantidad de Consumos
           </h2>
           <p className="text-lg  ">
-            <span className="font-bold">{Math.round(data[hour])}</span>
+            <span className="font-bold">{dataByHour}</span>
           </p>
         </div>
       </div>

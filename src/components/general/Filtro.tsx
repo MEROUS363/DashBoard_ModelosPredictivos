@@ -13,7 +13,7 @@ const getCurrentDate = () => {
 const getCurrentHour = () => {
   const now = new Date();
   const hour = String(now.getHours()).padStart(2, "0");
-  return `${hour}:00:00`;
+  return `${hour}:00`;
 };
 
 const Filtro: React.FC = () => {

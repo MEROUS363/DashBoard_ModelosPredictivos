@@ -27,7 +27,7 @@ export const convertToISO = (dateString:string) => {
 export const getNextRoundedHour = (): string => {
     // Obtener la hora actual, redondearla a HH:00:00 y luego sumarle una hora
     const now = new Date();
-    const roundedHour = set(now, { minutes: 0, seconds: 0, milliseconds: 0 });
+    const roundedHour = set(now, { minutes: 0});
     const nextHour = addHours(roundedHour, 1); // Sumamos una hora
     return format(nextHour, 'HH:mm:ss');
   };
