@@ -36,7 +36,7 @@ const LineChart: React.FC = () => {
   const { data, error, loading, maxScore } = useConsumoTarjetasDebito(
     date,
     hour
-  ); // No need to call fetchScoresForDay manually
+  );
 
   const sumOfScores = getSumOfScores(data);
 

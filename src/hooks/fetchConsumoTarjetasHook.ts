@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { CommonInputDateandTime, PredicitionByHour } from '../types/predictionTypes';
+import { CommonInputDate, CommonInputDateandTime, PredicitionByHour } from '../types/predictionTypes';
 
 
 interface ConsumoTarjetasDebitoOutput {
@@ -38,17 +38,49 @@ export const hours: PredicitionByHour = {
 };
 
 const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
-  const [data, setData] = useState<PredicitionByHour>(hours);
+  const [dataByHour, setDataByHour] = useState<PredicitionByHour>(hours);
+  const [dataByDay, setDataByDay] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
 
   const [maxScore, setMaxScore] = useState<number | null>(null);
   const [peakHour, setPeakHour] = useState<string | null>(null);
-
+  
   const fetchScoresForDay = async () => {
     setLoading(true);
     setError(null);
+
+    try {
+        const endpoint =`${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_DEBITODIA}`;
+        const requestData: CommonInputDate = {
+          fecha: fecha,
+        };
+
+        const response = await axios.post<number>(
+          endpoint,
+          requestData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+     
+      setDataByDay(response.data);
+    } catch (err) {
+      setError('Error al realizar la petición');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  const fetchScoresForHour = async () => {
+    setLoading(true);
+    setError(null);
+    const endpoint = `${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_DEBITOHORA}`;
 
     try {
       const updatedHours: PredicitionByHour = { ...hours };
@@ -59,7 +91,7 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
           hora: hour,
         };
         const response = await axios.post<ConsumoTarjetasDebitoOutput>(
-          'https://localhost:7123/api/Prediction/consumoTarjetasDebitoActual',
+          endpoint,
           requestData,
           {
             headers: {
@@ -72,7 +104,7 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
         
       }
 
-      setData(updatedHours);
+      setDataByHour(updatedHours);
       const maxScore = Math.max(...Object.values(updatedHours).filter((score): score is number => score !== null));
       const peakHour = Object.keys(updatedHours).find(hour => updatedHours[hour] === maxScore) || null;
 
@@ -86,14 +118,20 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
     }
   };
 
+  
   useEffect(() => {
+    if (hora === "Todo el día") {
       fetchScoresForDay();
+    } else {
+      fetchScoresForHour();
+    }
   }, [fecha, hora]);
  
 
 
   return {
-    data,
+    dataByHour,
+    dataByDay,
     error,
     loading,
     fetchScoresForDay,

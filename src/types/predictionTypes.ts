@@ -10,3 +10,11 @@ export type CommonInputDateandTime = {
 export type CommonOutputResultsFromAzure = {
     Results: number[];
 }
+
+export type CommonInputDate = {
+    fecha: string;
+}
+
+export type CommonResponse = {
+    data: number;
+}
