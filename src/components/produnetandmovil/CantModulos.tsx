@@ -31,13 +31,16 @@ const ModulosProdunetYmovil: React.FC = () => {
 
   const {
     dataAllHours: movilDataAllHours,
+    dataByHour: movilDataByHour,
     loadingAllHours: movilLoadingAllHours,
     loadingByHour: movilLoadingByHour,
     error: movilError,
   } = useAccesoBancaMovil(date, hour); // Usa el hook de Banca Movil
   const {
-    data: producNetData,
-    loading: producNetLoading,
+    dataAllHours: producNetData,
+    dataByHour: producNetDataByHour,
+    loadingAllHours: producNetLoading,
+    loadingByHour: producNetLoadingByHour,
     error: producNetError,
   } = useFetchNewProdunetHook(date, hour); // Usa el hook de ProducNet
 
@@ -120,10 +123,7 @@ const ModulosProdunetYmovil: React.FC = () => {
     datasets: [
       {
         label: "Cantidad",
-        data: [
-          Math.round(producNetData[hour]),
-          Math.round(movilDataAllHours[hour]),
-        ],
+        data: [producNetDataByHour, movilDataByHour],
         backgroundColor: [
           BarColor, // Color para 'ProduNet'
           BarColor, // Color para 'Movil'
@@ -156,6 +156,7 @@ const ModulosProdunetYmovil: React.FC = () => {
     movilLoadingAllHours ||
     movilLoadingByHour ||
     producNetLoading ||
+    producNetLoadingByHour ||
     loadingContext
   )
     return <p>Cargando...</p>;
@@ -171,7 +172,7 @@ const ModulosProdunetYmovil: React.FC = () => {
         </div>
         <div className="pt-2 rounded-lg">
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-2">
-            Accesos ProduNet
+            Accesos Produnet
           </h2>
           <p className="text-lg">
             <span className="font-bold">
@@ -198,7 +199,7 @@ const ModulosProdunetYmovil: React.FC = () => {
             Accesos Produnet
           </h2>
           <p className="text-lg  ">
-            <span className="font-bold">{Math.round(producNetData[hour])}</span>
+            <span className="font-bold">{producNetDataByHour}</span>
           </p>
         </div>
         <div>
@@ -206,9 +207,7 @@ const ModulosProdunetYmovil: React.FC = () => {
             Accesos Móvil
           </h2>
           <p className="text-lg  ">
-            <span className="font-bold">
-              {Math.round(movilDataAllHours[hour])}
-            </span>
+            <span className="font-bold">{movilDataByHour}</span>
           </p>
         </div>
       </div>
