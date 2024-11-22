@@ -1,15 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { CommonInputDate, CommonInputDateandTime, PredicitionByHour } from '../types/predictionTypes';
+import { CommonInputDateandTime, PredictionByHour } from '../types/predictionTypes';
 
 
-interface ConsumoTarjetasDebitoOutput {
-  score: number;
-  maxScore: number; 
-  peakHour: number;
-}
-
-export const hours: PredicitionByHour = {
+export const hours: PredictionByHour = {
   '00:00': 0,
   '01:00': 0,
   '02:00': 0,
@@ -38,7 +32,7 @@ export const hours: PredicitionByHour = {
 };
 
 const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
-  const [dataAllHours, setDataAllHours] = useState<PredicitionByHour>(hours);
+  const [dataAllHours, setDataAllHours] = useState<PredictionByHour>(hours);
   const [dataByHour, setDataByHour] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [loadingAllHours, setLoadingAllHours] = useState<boolean>(false);
@@ -47,16 +41,15 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
 
   const [maxScore, setMaxScore] = useState<number | null>(null);
   const [peakHour, setPeakHour] = useState<string | null>(null);
-  
+  const endpoint = `${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_DEBITOHORA}`;
 
 
   const fetchScoresForAllHours = async () => {
     setLoadingAllHours(true);
     setError(null);
-    const endpoint = `${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_DEBITOHORA}`;
 
     try {
-      const updatedHours: PredicitionByHour = { ...hours };
+      const updatedHours: PredictionByHour = { ...hours };
 
       for (const hour of Object.keys(hours)) {
         const requestData: CommonInputDateandTime = {
@@ -97,7 +90,7 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
   const fetchScoresForHour = async () => {
     setLoadingByHour(true);
     setError(null);
-    const endpoint = `${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_DEBITOHORA}`;
+
 
     try {
         const requestData: CommonInputDateandTime = {
@@ -123,8 +116,6 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
     }
   };
 
-
-  
   useEffect(() => {
     if (hora === "Todo el día") {
       console.log("fetching all hours");

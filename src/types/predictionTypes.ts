@@ -1,4 +1,4 @@
-export type PredicitionByHour ={
+export type PredictionByHour ={
     [key: string]: number;
 }
 

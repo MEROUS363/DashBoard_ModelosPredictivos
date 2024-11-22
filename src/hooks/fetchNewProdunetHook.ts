@@ -1,47 +1,20 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { calculateTimeUntilNextHour, convertToISO } from '../helper/dateAndTimeHelpers';
-import { CommonOutputResultsFromAzure, PredicitionByHour } from '../types/predictionTypes';
-
-
-
+import { CommonOutputResultsFromAzure, PredictionByHour } from '../types/predictionTypes';
+import { allDayhours } from '../constants/hours';
 
 const getHour = (completeHour:string) => {
     const extractedHour = completeHour.split(':')[0];
     return extractedHour;
 }
 
-export const produnetHours: PredicitionByHour = {
-  '00:00:00': 0,
-  '01:00:00': 0,
-  '02:00:00': 0,
-  '03:00:00': 0,
-  '04:00:00': 0,
-  '05:00:00': 0,
-  '06:00:00': 0,
-  '07:00:00': 0,
-  '08:00:00': 0,
-  '09:00:00': 0,
-  '10:00:00': 0,
-  '11:00:00': 0,
-  '12:00:00': 0,
-  '13:00:00': 0,
-  '14:00:00': 0,
-  '15:00:00': 0,
-  '16:00:00': 0,
-  '17:00:00': 0,
-  '18:00:00': 0,
-  '19:00:00': 0,
-  '20:00:00': 0,
-  '21:00:00': 0,
-  '22:00:00': 0,
-  '23:00:00': 0,
 
-};
 
 
 const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
-  const [data, setData] = useState<PredicitionByHour>(produnetHours);
+  const [dataAllHours, setData] = useState<PredictionByHour>(allDayhours);
+  const [dataByHour, setDataByHour] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -57,15 +30,15 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
   const fecha = convertToISO(filterDate);
 
   
-  const fetchProdunetPrediction = async () => {
+  const fetchProdunetAllHours = async () => {
     setLoading(true);
     setError(null);
 
     const todayDate = getTodayDate();
     try {
 
-      const updatedHours: PredicitionByHour = { ...produnetHours };
-      for(const hour in produnetHours){
+      const updatedHours: PredictionByHour = { ...allDayhours };
+      for(const hour in allDayhours){
         const dataToSend = {
           Inputs: {
             data: [
@@ -110,17 +83,17 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
     let intervalId: ReturnType<typeof setInterval> | undefined;
 
-    fetchProdunetPrediction();
+    fetchProdunetAllHours();
 
 
       timeoutId = setTimeout(() => {
 
 
-      fetchProdunetPrediction();
+      fetchProdunetAllHours();
 
       const intervalId = setInterval(() => {
 
-        fetchProdunetPrediction();
+        fetchProdunetAllHours();
       }, 3600000); // 3600000 ms = 1 hora
 
       return () => clearInterval(intervalId);
@@ -133,7 +106,7 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
   }, [filterDate, filterHour]); // Dependencias vacías para ejecutar solo al montar
 
   return {
-    data,
+    data: dataAllHours,
     error,
     loading,
   };

@@ -30,8 +30,9 @@ const ModulosProdunetYmovil: React.FC = () => {
   const { date, loadingContext, typeOfData, hour } = useDateContext();
 
   const {
-    data: movilData,
-    loading: movilLoading,
+    dataAllHours: movilDataAllHours,
+    loadingAllHours: movilLoadingAllHours,
+    loadingByHour: movilLoadingByHour,
     error: movilError,
   } = useAccesoBancaMovil(date, hour); // Usa el hook de Banca Movil
   const {
@@ -41,7 +42,7 @@ const ModulosProdunetYmovil: React.FC = () => {
   } = useFetchNewProdunetHook(date, hour); // Usa el hook de ProducNet
 
   // Si los valores devueltos por las APIs están disponibles, los usamos; de lo contrario, mostramos un valor por defecto
-  const movilScore = movilData ? movilData.score : null;
+  const movilScore = movilDataAllHours ? movilDataAllHours.score : null;
   const producNetScore = producNetData ? producNetData[0] : null;
   const TotalMovilProduct =
     movilScore && producNetScore ? movilScore + producNetScore : 0;
@@ -52,16 +53,16 @@ const ModulosProdunetYmovil: React.FC = () => {
       ? "rgba(251, 191, 36, 1)"
       : "rgba(104, 211, 145, 1)";
 
-  const sumOfMovilScores = getSumOfScores(movilData || {});
+  const sumOfMovilScores = getSumOfScores(movilDataAllHours || {});
   const sumOfProducNetScores = getSumOfScores(producNetData || {});
 
   // DATOS PARA LA GRAFICA DE LINEAS
   const lineChartData = {
-    labels: Object.keys(movilData), // Las horas del día en el eje X
+    labels: Object.keys(movilDataAllHours), // Las horas del día en el eje X
     datasets: [
       {
         label: "Movil",
-        data: Object.values(movilData).map((value) =>
+        data: Object.values(movilDataAllHours).map((value) =>
           value !== null && value !== undefined ? Math.round(value) : 0
         ),
         borderColor: "rgba(75, 192, 192, 1)",
@@ -119,7 +120,10 @@ const ModulosProdunetYmovil: React.FC = () => {
     datasets: [
       {
         label: "Cantidad",
-        data: [Math.round(producNetData[hour]), Math.round(movilData[hour])],
+        data: [
+          Math.round(producNetData[hour]),
+          Math.round(movilDataAllHours[hour]),
+        ],
         backgroundColor: [
           BarColor, // Color para 'ProduNet'
           BarColor, // Color para 'Movil'
@@ -148,8 +152,14 @@ const ModulosProdunetYmovil: React.FC = () => {
     },
   };
 
-  if (movilLoading || producNetLoading || loadingContext)
+  if (
+    movilLoadingAllHours ||
+    movilLoadingByHour ||
+    producNetLoading ||
+    loadingContext
+  )
     return <p>Cargando...</p>;
+
   if (movilError || producNetError)
     return <p>Error: {movilError || producNetError}</p>;
 
@@ -169,7 +179,7 @@ const ModulosProdunetYmovil: React.FC = () => {
             </span>
           </p>
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-4">
-            Accesos Movil
+            Accesos Móvil
           </h2>
           <p className="text-lg">
             <span className="font-bold">{Math.round(sumOfMovilScores)}</span>
@@ -185,7 +195,7 @@ const ModulosProdunetYmovil: React.FC = () => {
         </div>
         <div>
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">
-            Accesos produnet
+            Accesos Produnet
           </h2>
           <p className="text-lg  ">
             <span className="font-bold">{Math.round(producNetData[hour])}</span>
@@ -193,10 +203,12 @@ const ModulosProdunetYmovil: React.FC = () => {
         </div>
         <div>
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">
-            Accesos Movil
+            Accesos Móvil
           </h2>
           <p className="text-lg  ">
-            <span className="font-bold">{Math.round(movilData[hour])}</span>
+            <span className="font-bold">
+              {Math.round(movilDataAllHours[hour])}
+            </span>
           </p>
         </div>
       </div>
