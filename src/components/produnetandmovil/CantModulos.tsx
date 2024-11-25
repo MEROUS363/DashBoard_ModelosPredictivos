@@ -12,6 +12,7 @@ import {
 import useAccesoBancaMovil from "../../hooks/fetchAccesosBancaMovilHook";
 import { useDateContext } from "../../contexts/DateContext";
 import useFetchNewProdunetHook from "../../hooks/fetchNewProdunetHook";
+import { da } from "date-fns/locale";
 
 ChartJS.register(
   CategoryScale,
@@ -22,7 +23,8 @@ ChartJS.register(
   Legend
 );
 
-const getSumOfScores = (data: Record<string, number>) => {
+const getSumOfScores = (data: Record<string, number>, type: string) => {
+  console.log(type, "   ", data);
   return Object.values(data).reduce((sum, value) => sum + value, 0);
 };
 
@@ -56,8 +58,8 @@ const ModulosProdunetYmovil: React.FC = () => {
       ? "rgba(251, 191, 36, 1)"
       : "rgba(104, 211, 145, 1)";
 
-  const sumOfMovilScores = getSumOfScores(movilDataAllHours || {});
-  const sumOfProducNetScores = getSumOfScores(producNetData || {});
+  const sumOfMovilScores = getSumOfScores(movilDataAllHours || {}, "Movil");
+  const sumOfProducNetScores = getSumOfScores(producNetData || {}, "Produnet");
 
   // DATOS PARA LA GRAFICA DE LINEAS
   const lineChartData = {
@@ -176,14 +178,16 @@ const ModulosProdunetYmovil: React.FC = () => {
           </h2>
           <p className="text-lg">
             <span className="font-bold">
-              {Math.round(sumOfProducNetScores)}
+              {Math.round(sumOfProducNetScores).toLocaleString("en-US")}
             </span>
           </p>
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-4">
             Accesos Móvil
           </h2>
           <p className="text-lg">
-            <span className="font-bold">{Math.round(sumOfMovilScores)}</span>
+            <span className="font-bold">
+              {Math.round(sumOfMovilScores).toLocaleString("en-US")}
+            </span>
           </p>
         </div>
       </div>
@@ -199,7 +203,9 @@ const ModulosProdunetYmovil: React.FC = () => {
             Accesos Produnet
           </h2>
           <p className="text-lg  ">
-            <span className="font-bold">{producNetDataByHour}</span>
+            <span className="font-bold">
+              {producNetDataByHour.toLocaleString("en-US")}
+            </span>
           </p>
         </div>
         <div>
@@ -207,7 +213,9 @@ const ModulosProdunetYmovil: React.FC = () => {
             Accesos Móvil
           </h2>
           <p className="text-lg  ">
-            <span className="font-bold">{movilDataByHour}</span>
+            <span className="font-bold">
+              {movilDataByHour.toLocaleString("en-US")}
+            </span>
           </p>
         </div>
       </div>
