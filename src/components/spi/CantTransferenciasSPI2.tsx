@@ -24,7 +24,7 @@ const CantTransd = () => {
             <div className="relative w-full h-full">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-1xl font-bold text-primary">
-                  {data[1] && <p>{Math.round(data[1].Results[0])}</p>}
+                  {data[1] && <p>{Math.round(data[1])}</p>}
                 </div>
               </div>
               <div className="absolute inset-0 rounded-full border-[10px]  border-gray-400" />
@@ -38,7 +38,7 @@ const CantTransd = () => {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-1xl font-bold text-primary">
                   {" "}
-                  {data[2] && <p>{Math.round(data[2].Results[0])}</p>}
+                  {data[2] && <p>{Math.round(data[2])}</p>}
                 </div>
               </div>
               <div className="absolute inset-0 rounded-full border-[10px]  border-gray-400" />
@@ -52,7 +52,7 @@ const CantTransd = () => {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-1xl font-bold text-primary">
                   {" "}
-                  {data[3] && <p>{Math.round(data[3].Results[0])}</p>}
+                  {data[3] && <p>{Math.round(data[3])}</p>}
                 </div>
               </div>
               <div className="absolute inset-0 rounded-full border-[10px]  border-gray-400" />

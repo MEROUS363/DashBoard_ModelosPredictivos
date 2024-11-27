@@ -28,7 +28,7 @@ const MainPage: React.FC = () => {
         <TopTenTable />
         <div className="w-full h-[200px] bg-white col-span-6 rounded-lg shadow-st ">
           <ConsumoTarjetaDeb />
-        </div>{" "}
+        </div>
         {/* Grafico */}
         <div className="w-full h-[200px] bg-white col-span-6 rounded-lg shadow-st ">
           <CantModulos />
@@ -36,11 +36,11 @@ const MainPage: React.FC = () => {
         {/* Grafico */}
         <div className="w-full h-[200px] bg-white col-span-4 rounded-lg shadow-st ">
           <TransSPI2 />
-        </div>{" "}
+        </div>
         {/* SPI */}
-        <div className="w-full h-[200px] bg-white col-span-6 rounded-lg shadow-st ">
+        {/*<div className="w-full h-[200px] bg-white col-span-6 rounded-lg shadow-st ">
           <PagosProdubanco></PagosProdubanco>
-        </div>{" "}
+        </div>}*/}
         {/* Grafico */}
       </div>
     </div>

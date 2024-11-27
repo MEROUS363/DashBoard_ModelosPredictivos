@@ -12,7 +12,6 @@ import {
 import useAccesoBancaMovil from "../../hooks/fetchAccesosBancaMovilHook";
 import { useDateContext } from "../../contexts/DateContext";
 import useFetchNewProdunetHook from "../../hooks/fetchNewProdunetHook";
-import { da } from "date-fns/locale";
 
 ChartJS.register(
   CategoryScale,
