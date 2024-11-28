@@ -4,7 +4,7 @@ import "react-tabs/style/react-tabs.css";
 import useTop10Table, {
   ProdunetAndBancaMovilTop10,
 } from "../../hooks/fetchTop10TableHook";
-import { Info } from "lucide-react";
+import { Database, DatabaseBackup, DatabaseZap, Info, ServerOffIcon, UnplugIcon } from "lucide-react";
 import { LineGraphTop10 } from "./LineGraphTop10";
 
 const TopTenTable: React.FC = () => {
@@ -27,23 +27,40 @@ const TopTenTable: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="w-full h-full col-span-4 row-span-3 animate-pulse">
-        <div className="bg-slate-400 w-full h-full">Cargando</div>
+      <div className="w-full h-full col-span-4 row-span-3 animate-pulse rounded-lg">
+        <div className="w-full h-full flex justify-center items-center rounded-lg bg-gray-200 py-1">
+          <div className="w-10 h-10 border-4 border-t-green-500 border-gray-400 rounded-full animate-spin"></div>
+          <p className="ml-2">Cargando...</p>
+        </div>
       </div>
     );
   }
 
   if (error) {
-    return <div>Error al cargar los datos</div>;
+  return (
+    <div className="w-full h-full col-span-4 row-span-3 rounded-lg shadow-md">
+      <div className="w-full h-full flex justify-center items-center rounded-lg bg-gray-200 py-1">
+        <DatabaseBackup className='h-28 mr-2' />
+        <p className="ml-2">Error al cargar los datos</p>
+      </div>
+    </div>
+  );
   }
 
   if (!data) {
-    return <div>No hay datos disponibles</div>;
+    return (
+      <div className="w-full h-full col-span-4 row-span-3 rounded-lg shadow-md">
+        <div className="w-full h-full flex justify-center items-center rounded-lg bg-gray-200 py-1">
+          <ServerOffIcon className='h-28 mr-2' />
+          <p className="ml-2">No hay datos disponibles</p>
+        </div>
+      </div>
+    );
   }
   // Determinar qué datos mostrar en la tabla en función de la pestaña seleccionada
 
   return (
-    <div className="w-full h-full bg-white col-span-4 row-span-3 shadow-st rounded-lg flex">
+    <div className="w-full h-full bg-white col-span-4 row-span-3 shadow-md rounded-lg flex">
       {/* Sección de Tabs en la parte izquierda */}
       <div className="h-full w-40 bg-[#ECECEC] rounded-l-lg p-1">
         <Tabs
@@ -92,7 +109,7 @@ const TopTenTable: React.FC = () => {
                 >
                   <td className="px-4 py-2 text-left">{prediction.date}</td>
                   <td className="px-4 py-2 border-l border-gray-300">
-                    {Math.round(prediction.sumPrediction)}
+                    {Math.round(prediction.sumPrediction).toLocaleString()}
                   </td>
                   <td className="px-4 py-2 border-l border-gray-300 text-center">
                     <label

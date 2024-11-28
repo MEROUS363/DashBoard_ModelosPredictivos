@@ -6,9 +6,9 @@ interface AlldayServerProps {
 
 const AllDayServers: React.FC<AlldayServerProps> = ({ data }) => {
   return (
-    <div className="w-full h-[150px] bg-white col-span-10 rounded-lg shadow-st  py-1 grid grid-cols-8">
+    <div className="w-full h-[150px] bg-white col-span-10 rounded-lg shadow-md py-1 grid grid-cols-12">
       {/* Procesador BFF */}
-      <div className="w-full h-full col-span-2 rounded-l-lg border-r-2 border-gray-300 p-3">
+      <div className="w-full h-full col-span-3 rounded-l-lg border-r-2 border-gray-300 p-3">
         <h2 className="text-lg font-bold text-foreground text-emerald-700">
           Procesador BFF
         </h2>
@@ -40,7 +40,7 @@ const AllDayServers: React.FC<AlldayServerProps> = ({ data }) => {
       </div>
 
       {/* Memoria BFF */}
-      <div className="w-full h-full p-3 col-span-2 border-r-2 border-gray-300">
+      <div className="w-full h-full p-3 col-span-3 border-r-2 border-gray-300">
         <h2 className="text-lg font-bold text-foreground text-emerald-700">
           Promedio de Memoria BFF
         </h2>
@@ -72,7 +72,7 @@ const AllDayServers: React.FC<AlldayServerProps> = ({ data }) => {
       </div>
 
       {/* Procesador Micro */}
-      <div className="w-full h-full col-span-2 border-r-2 border-gray-300 p-3">
+      <div className="w-full h-full col-span-3 border-r-2 border-gray-300 p-3">
         <h2 className="text-lg font-bold text-foreground text-emerald-700">
           Procesador Micro
         </h2>
@@ -104,7 +104,7 @@ const AllDayServers: React.FC<AlldayServerProps> = ({ data }) => {
       </div>
 
       {/* Memoria Micro */}
-      <div className="w-full h-full col-span-2  p-3">
+      <div className="w-full h-full col-span-3  p-3">
         <h2 className="text-lg font-bold text-foreground text-emerald-700">
           Memoria Micro
         </h2>
