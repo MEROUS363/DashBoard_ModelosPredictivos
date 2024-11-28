@@ -38,7 +38,7 @@ const Filtro: React.FC = () => {
 
   console.log("selected hour inicial", selectedHour);
   return (
-    <div className="w-full h-20 flex justify-center items-center p-4 bg-[#ECECEC]">
+    <div className="w-full h-20 flex justify-center items-center p-4 bg-gray-100">
       <div className="grid grid-cols-5 gap-4 items-center w-2/4">
         <div className="col-span-2">
           <label className="block text-sm font-medium text-[#00693C]">
@@ -48,7 +48,7 @@ const Filtro: React.FC = () => {
             type="date"
             id="date"
             name="date"
-            className="block w-full mt-1 p-2 border border-input rounded-md focus:outline-none focus:ring focus:ring-primary"
+            className="block w-full mt-1 p-2 border border-input rounded-md focus:outline-none focus:ring focus:ring-primary text-[#222]"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
@@ -61,7 +61,7 @@ const Filtro: React.FC = () => {
           <select
             value={selectedHour}
             onChange={(e) => setSelectedHour(e.target.value)}
-            className="block w-full mt-1 p-2 border border-input rounded-md focus:outline-none focus:ring focus:ring-primary"
+            className="block w-full mt-1 p-2 border border-input rounded-md focus:outline-none focus:ring focus:ring-primary text-[#222]"
           >
             {hoursWithAllDay.map((hour) => (
               <option key={hour} value={hour}>

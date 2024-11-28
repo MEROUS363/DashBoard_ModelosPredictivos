@@ -10,13 +10,13 @@ import TransSPI2 from "./components/spi/CantTransferenciasSPI2.tsx";
 const MainPage: React.FC = () => {
   return (
     <div
-      className="w-full p-1 pb-6 bg-gray-50"
+      className="w-full pb-6 bg-gray-50"
       style={{ minHeight: "calc(100vh - 5rem)" }}
     >
       <div className="mb-5 relative bg-gray-200 rounded-lg temp-show-off">
         {/* Btn Filtro Selectivo */}
         <NavBar />
-        <Filtro />
+        {/* <Filtro /> */}
       </div>
 
       <div className="grid grid-cols-10 gap-5 p-4 mt-4">
