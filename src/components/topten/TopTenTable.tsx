@@ -26,7 +26,11 @@ const TopTenTable: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return (
+      <div className="w-full h-full col-span-4 row-span-3 animate-pulse">
+        <div className="bg-slate-400 w-full h-full">Cargando</div>
+      </div>
+    );
   }
 
   if (error) {
@@ -39,7 +43,7 @@ const TopTenTable: React.FC = () => {
   // Determinar qué datos mostrar en la tabla en función de la pestaña seleccionada
 
   return (
-    <div className="w-full h-[420px] bg-white col-span-4 row-span-2 shadow-st rounded-lg flex">
+    <div className="w-full h-full bg-white col-span-4 row-span-3 shadow-st rounded-lg flex">
       {/* Sección de Tabs en la parte izquierda */}
       <div className="h-full w-40 bg-[#ECECEC] rounded-l-lg p-1">
         <Tabs

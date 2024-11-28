@@ -11,48 +11,48 @@ const CantTransd = () => {
   if (loading || loadingContext) return <p>Cargando...</p>;
   if (error) return <p>Error: {error}</p>;
   return (
-    <div className=" flex h-[200px] w-full text-center items-center rounded-xl  bg-emerald-700 ">
-      <h1 className=" text-lg font-bold w-46 mr-6 text-white text-center">
-        Cantidad de Transferencia SPI2
+    <div className=" flex h-[200px] w-full rounded-xl  bg-white justify-center items-center">
+      <h1 className=" text-lg font-bold w-46 mr-6 text-emerald-700 text-center">
+        Cantidad de Transferencias SPI 2
       </h1>
 
       <div className="p-3 bg-white rounded-lg h-44 w-96 items-center justify-center ">
         <div className="flex  ">
-          <div className="items-center justify-center w-28 h-28 ml-3 p-1">
-            <h1>Corte 1</h1>
+          <div className="flex flex-col items-center gap-2  justify-center w-28 h-28 ml-3 p-1">
+            <h1 className="text-emerald-700">Corte 1</h1>
 
             <div className="relative w-full h-full">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-1xl font-bold text-primary">
-                  {data[1] && <p>{Math.round(data[1].Results[0])}</p>}
+              <div className="absolute inset-0 flex items-center justify-center ">
+                <div className="text-1xl font-bold">
+                  {data[1] && <p>{Math.round(data[1])}</p>}
                 </div>
               </div>
               <div className="absolute inset-0 rounded-full border-[10px]  border-gray-400" />
             </div>
           </div>
 
-          <div className=" items-center justify-center w-28 h-28 ml-3 p-1">
-            <h1>Corte 2</h1>
+          <div className="flex flex-col gap-2 justify-center text-center w-28 h-28 ml-3 p-1">
+            <h1 className="text-emerald-700">Corte 2</h1>
 
             <div className="relative w-full h-full">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-1xl font-bold text-primary">
+                <div className="text-1xl font-bold text-">
                   {" "}
-                  {data[2] && <p>{Math.round(data[2].Results[0])}</p>}
+                  {data[2] && <p>{Math.round(data[2])}</p>}
                 </div>
               </div>
               <div className="absolute inset-0 rounded-full border-[10px]  border-gray-400" />
             </div>
           </div>
 
-          <div className=" items-center justify-center w-28 h-28 ml-3 p-1">
-            <h1>Corte 3</h1>
+          <div className="flex flex-col gap-2 items-center justify-center w-28 h-28 ml-3 p-1">
+            <h1 className="text-emerald-700">Corte 3</h1>
 
             <div className="relative w-full h-full">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-1xl font-bold text-primary">
+                <div className="text-1xl font-bold">
                   {" "}
-                  {data[3] && <p>{Math.round(data[3].Results[0])}</p>}
+                  {data[3] && <p>{Math.round(data[3])}</p>}
                 </div>
               </div>
               <div className="absolute inset-0 rounded-full border-[10px]  border-gray-400" />

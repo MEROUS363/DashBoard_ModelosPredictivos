@@ -22,7 +22,8 @@ ChartJS.register(
   Legend
 );
 
-const getSumOfScores = (data: Record<string, number>) => {
+const getSumOfScores = (data: Record<string, number>, type: string) => {
+  console.log(type, "   ", data);
   return Object.values(data).reduce((sum, value) => sum + value, 0);
 };
 
@@ -30,18 +31,22 @@ const ModulosProdunetYmovil: React.FC = () => {
   const { date, loadingContext, typeOfData, hour } = useDateContext();
 
   const {
-    data: movilData,
-    loading: movilLoading,
+    dataAllHours: movilDataAllHours,
+    dataByHour: movilDataByHour,
+    loadingAllHours: movilLoadingAllHours,
+    loadingByHour: movilLoadingByHour,
     error: movilError,
   } = useAccesoBancaMovil(date, hour); // Usa el hook de Banca Movil
   const {
-    data: producNetData,
-    loading: producNetLoading,
+    dataAllHours: producNetData,
+    dataByHour: producNetDataByHour,
+    loadingAllHours: producNetLoading,
+    loadingByHour: producNetLoadingByHour,
     error: producNetError,
   } = useFetchNewProdunetHook(date, hour); // Usa el hook de ProducNet
 
   // Si los valores devueltos por las APIs están disponibles, los usamos; de lo contrario, mostramos un valor por defecto
-  const movilScore = movilData ? movilData.score : null;
+  const movilScore = movilDataAllHours ? movilDataAllHours.score : null;
   const producNetScore = producNetData ? producNetData[0] : null;
   const TotalMovilProduct =
     movilScore && producNetScore ? movilScore + producNetScore : 0;
@@ -52,16 +57,16 @@ const ModulosProdunetYmovil: React.FC = () => {
       ? "rgba(251, 191, 36, 1)"
       : "rgba(104, 211, 145, 1)";
 
-  const sumOfMovilScores = getSumOfScores(movilData || {});
-  const sumOfProducNetScores = getSumOfScores(producNetData || {});
+  const sumOfMovilScores = getSumOfScores(movilDataAllHours || {}, "Movil");
+  const sumOfProducNetScores = getSumOfScores(producNetData || {}, "Produnet");
 
   // DATOS PARA LA GRAFICA DE LINEAS
   const lineChartData = {
-    labels: Object.keys(movilData), // Las horas del día en el eje X
+    labels: Object.keys(movilDataAllHours), // Las horas del día en el eje X
     datasets: [
       {
         label: "Movil",
-        data: Object.values(movilData).map((value) =>
+        data: Object.values(movilDataAllHours).map((value) =>
           value !== null && value !== undefined ? Math.round(value) : 0
         ),
         borderColor: "rgba(75, 192, 192, 1)",
@@ -119,7 +124,7 @@ const ModulosProdunetYmovil: React.FC = () => {
     datasets: [
       {
         label: "Cantidad",
-        data: [Math.round(producNetData[hour]), Math.round(movilData[hour])],
+        data: [producNetDataByHour, movilDataByHour],
         backgroundColor: [
           BarColor, // Color para 'ProduNet'
           BarColor, // Color para 'Movil'
@@ -148,8 +153,15 @@ const ModulosProdunetYmovil: React.FC = () => {
     },
   };
 
-  if (movilLoading || producNetLoading || loadingContext)
+  if (
+    movilLoadingAllHours ||
+    movilLoadingByHour ||
+    producNetLoading ||
+    producNetLoadingByHour ||
+    loadingContext
+  )
     return <p>Cargando...</p>;
+
   if (movilError || producNetError)
     return <p>Error: {movilError || producNetError}</p>;
 
@@ -161,18 +173,20 @@ const ModulosProdunetYmovil: React.FC = () => {
         </div>
         <div className="pt-2 rounded-lg">
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-2">
-            Accesos ProduNet
+            Accesos Produnet
           </h2>
           <p className="text-lg">
             <span className="font-bold">
-              {Math.round(sumOfProducNetScores)}
+              {Math.round(sumOfProducNetScores).toLocaleString("en-US")}
             </span>
           </p>
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-4">
-            Accesos Movil
+            Accesos Móvil
           </h2>
           <p className="text-lg">
-            <span className="font-bold">{Math.round(sumOfMovilScores)}</span>
+            <span className="font-bold">
+              {Math.round(sumOfMovilScores).toLocaleString("en-US")}
+            </span>
           </p>
         </div>
       </div>
@@ -185,18 +199,22 @@ const ModulosProdunetYmovil: React.FC = () => {
         </div>
         <div>
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">
-            Accesos produnet
+            Accesos Produnet
           </h2>
           <p className="text-lg  ">
-            <span className="font-bold">{Math.round(producNetData[hour])}</span>
+            <span className="font-bold">
+              {producNetDataByHour.toLocaleString("en-US")}
+            </span>
           </p>
         </div>
         <div>
           <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">
-            Accesos Movil
+            Accesos Móvil
           </h2>
           <p className="text-lg  ">
-            <span className="font-bold">{Math.round(movilData[hour])}</span>
+            <span className="font-bold">
+              {movilDataByHour.toLocaleString("en-US")}
+            </span>
           </p>
         </div>
       </div>

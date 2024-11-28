@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { calculateTimeUntilNextHour } from '../helper/dateAndTimeHelpers';
-import { CommonOutputResultsFromAzure } from '../types/predictionTypes';
+
 
 
 const TransSPI2 = (filterDate:string) => {
-  const [data, setData] = useState<Record<number, CommonOutputResultsFromAzure | null>>({});
+  const [data, setData] = useState<Record<number, number | null>>({});
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-
+  const endpoint = `${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_SPI}`;
   const getTodayDate = (): string => {
     const now = new Date();
     now.setUTCHours(0, 0, 0, 0); // Establece la hora a 00:00:00 UTC
@@ -21,22 +21,19 @@ const TransSPI2 = (filterDate:string) => {
     setError(null);
 
     const todayDate = getTodayDate();
+    console.log("endpointaaaaaaaa", endpoint);
 
 
     try {
       const dataToSend = {
-        Inputs: {
-          data: [
-            {
-              FECHA: filterDate ?? todayDate,
-              CORTE: corte,
-            },
-          ],
-        },
+              fecha: filterDate ?? todayDate,
+              corte: corte.toString(),
       };
 
-      const response = await axios.post<CommonOutputResultsFromAzure>(
-        '/api/score',
+      console.log("ahhhhh",dataToSend);
+
+      const response = await axios.post<number>(
+        endpoint,
         dataToSend,
         {
           headers: {
@@ -44,8 +41,6 @@ const TransSPI2 = (filterDate:string) => {
           },
         }
       );
-
-
 
       setData(prevData => ({ ...prevData, [corte]: response.data }));
     } catch (err) {
@@ -64,9 +59,9 @@ const TransSPI2 = (filterDate:string) => {
 
 
     const fetchAllCutOffs = async () => {
-      // Ejecuta todas las llamadas API concurrentemente
-      const cortes = [1, 2, 3];
-      await Promise.all(cortes.map(fetchPredictionForCutOff));
+      await fetchPredictionForCutOff(1);
+      await fetchPredictionForCutOff(2);
+      await fetchPredictionForCutOff(3);
     };
 
     fetchAllCutOffs();

@@ -1,63 +1,33 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { CommonInputDateandTime, PredicitionByHour } from '../types/predictionTypes';
-import { calculateTimeUntilNextHour, getNextRoundedHour } from '../helper/dateAndTimeHelpers';
-
-interface AccesoBancaMovilOutput {
-  score: number;
-}
-
-export const movilHours: PredicitionByHour = {
-  '00:00:00': 0,
-  '01:00:00': 0,
-  '02:00:00': 0,
-  '03:00:00': 0,
-  '04:00:00': 0,
-  '05:00:00': 0,
-  '06:00:00': 0,
-  '07:00:00': 0,
-  '08:00:00': 0,
-  '09:00:00': 0,
-  '10:00:00': 0,
-  '11:00:00': 0,
-  '12:00:00': 0,
-  '13:00:00': 0,
-  '14:00:00': 0,
-  '15:00:00': 0,
-  '16:00:00': 0,
-  '17:00:00': 0,
-  '18:00:00': 0,
-  '19:00:00': 0,
-  '20:00:00': 0,
-  '21:00:00': 0,
-  '22:00:00': 0,
-  '23:00:00': 0,
-
-};
+import { CommonInputDateandTime, PredictionByHour } from '../types/predictionTypes';
+import { getNextRoundedHour } from '../helper/dateAndTimeHelpers';
+import { allDayhours } from '../constants/hours';
 
 const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
-  const [data, setData] = useState<PredicitionByHour>(movilHours);
+  const [dataAllHours, setDataAllHours] = useState<PredictionByHour>(allDayhours);
+  const [dataByHour, setDataByHour] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingAllHours, setLoadingForAllHours] = useState<boolean>(false);
+  const [loadingByHour, setLoadingByHour] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
+  const endpoint = `${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_MOVILHORA}`;
 
-
-  const fetchPredictionForNextHour = async () => {
-    setLoading(true);
+  const fetchPredictionForAllHours = async () => {
+    setLoadingForAllHours(true);
     setError(null);
-
     const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
     try {
 
-      const updatedHours: PredicitionByHour = { ...movilHours };
+      const updatedHours: PredictionByHour = { ...allDayhours };
 
-      for (const hour of Object.keys(movilHours)) {
+      for (const hour of Object.keys(allDayhours)) {
         const requestData: CommonInputDateandTime = {
           fecha: filterDate,
           hora: hour,
         };
-        const response = await axios.post<AccesoBancaMovilOutput>(
-          'https://localhost:7123/api/Prediction/accesoBancaMovil',
+        const response = await axios.post<number>(
+          endpoint,
           requestData,
           {
             headers: {
@@ -66,47 +36,66 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
           }
         );
 
-        updatedHours[hour] = response.data.score;
+        updatedHours[hour] = response.data;
       }
-      setData(updatedHours);
+      setDataAllHours(updatedHours);
       setCurrentHour(nextHour);
     } catch (err) {
       setError('Error during API request');
       console.error(err);
     } finally {
-      setLoading(false);
+      setLoadingForAllHours(false);
+    }
+  };
+
+  const fetchPredictionForHour = async () => {
+    setLoadingByHour(true);
+    setError(null);
+
+    const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
+    try {
+        const requestData: CommonInputDateandTime = {
+          fecha: filterDate,
+          hora: filterHour,
+        };
+        const response = await axios.post<number>(
+          endpoint,
+          requestData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }
+        );
+
+      setDataByHour(response.data);
+      setCurrentHour(nextHour);
+    } catch (err) {
+      setError('Error during API request');
+      console.error(err);
+    } finally {
+      setLoadingByHour(false);
     }
   };
 
   useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    let intervalId: ReturnType<typeof setInterval> | undefined;
-      // Llamada inmediata
-      fetchPredictionForNextHour();
-
-
-      timeoutId = setTimeout(() => {
-        // Llamada en la siguiente hora completa
-        fetchPredictionForNextHour();
-        // Configurar intervalo para cada hora
-        intervalId = setInterval(() => {
-          fetchPredictionForNextHour();
-        }, 3600000); //1 hora
-      }, calculateTimeUntilNextHour());
-    
-
-    return () => {
-      if (timeoutId !== undefined) clearTimeout(timeoutId);
-      if (intervalId !== undefined) clearInterval(intervalId);
-    };
+    if (filterHour === "Todo el día") {
+      console.log("fetching movil all hours");
+      fetchPredictionForAllHours();
+    } else {
+      console.log("fetching movil just an hour");
+      fetchPredictionForHour();
+    }
   }, [filterDate, filterHour]);
   
 
   return {
-    data,
+    dataAllHours,
+    dataByHour,
     currentHour,
     error,
-    loading,
+    loadingAllHours,
+    loadingByHour,
   };
 };
 

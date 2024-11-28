@@ -1,97 +1,42 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { calculateTimeUntilNextHour, convertToISO } from '../helper/dateAndTimeHelpers';
-import { CommonOutputResultsFromAzure, PredicitionByHour } from '../types/predictionTypes';
-
-
-
-
-const getHour = (completeHour:string) => {
-    const extractedHour = completeHour.split(':')[0];
-    return extractedHour;
-}
-
-export const produnetHours: PredicitionByHour = {
-  '00:00:00': 0,
-  '01:00:00': 0,
-  '02:00:00': 0,
-  '03:00:00': 0,
-  '04:00:00': 0,
-  '05:00:00': 0,
-  '06:00:00': 0,
-  '07:00:00': 0,
-  '08:00:00': 0,
-  '09:00:00': 0,
-  '10:00:00': 0,
-  '11:00:00': 0,
-  '12:00:00': 0,
-  '13:00:00': 0,
-  '14:00:00': 0,
-  '15:00:00': 0,
-  '16:00:00': 0,
-  '17:00:00': 0,
-  '18:00:00': 0,
-  '19:00:00': 0,
-  '20:00:00': 0,
-  '21:00:00': 0,
-  '22:00:00': 0,
-  '23:00:00': 0,
-
-};
+import { CommonInputDateandTime, PredictionByHour } from '../types/predictionTypes';
+import { allDayhours } from '../constants/hours';
 
 
 const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
-  const [data, setData] = useState<PredicitionByHour>(produnetHours);
+  const [dataAllHours, setData] = useState<PredictionByHour>(allDayhours);
+  const [dataByHour, setDataByHour] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingAllHours, setLoadingAllHours] = useState<boolean>(false);
+  const [loadingByHour, setLoadingByHour] = useState<boolean>(false);
 
-
-
-  const getTodayDate = (): string => {
-    const now = new Date();
-    now.setUTCHours(0, 0, 0, 0); // Establece la hora a 00:00:00 UTC
-    return now.toISOString();
-  };
-
- 
-  const fecha = convertToISO(filterDate);
+  const endpoint = `${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_PRODUNETHORA}`;
 
   
-  const fetchProdunetPrediction = async () => {
-    setLoading(true);
+  const fetchProdunetAllHours = async () => {
+    setLoadingAllHours(true);
     setError(null);
-
-    const todayDate = getTodayDate();
     try {
 
-      const updatedHours: PredicitionByHour = { ...produnetHours };
-      for(const hour in produnetHours){
-        const dataToSend = {
-          Inputs: {
-            data: [
-              {
-                FECHA: fecha ?? todayDate,
-                HORA: parseInt(getHour(hour)),
-              },
-            ],
-          },
+      const updatedHours: PredictionByHour = { ...allDayhours };
+      for(const hour in allDayhours){
+        const requestData: CommonInputDateandTime = {
+          fecha: filterDate,
+          hora: hour,
         };
-        const token = `${import.meta.env.VITE_KEY_ACCESOSPRODUNET_HORA}`;
-        console.log("token",token);
-        const response = await axios.post<CommonOutputResultsFromAzure>(
-          '/produnethora/score',
-          dataToSend,
+        const response = await axios.post<number>(
+          endpoint,
+          requestData,
           {
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
             },
           }
         );
-        updatedHours[hour] = response.data.Results[0];
+        updatedHours[hour] = response.data;
       }
       
-      console.log("updated hours produnet",updatedHours);
       setData(updatedHours);
 
     } catch (err) {
@@ -102,40 +47,58 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
         console.error('Unexpected error:', err);
       }
     } finally {
-      setLoading(false);
+      setLoadingAllHours(false);
+    }
+  };
+
+
+  const fetchProdunetByHour = async () => {
+    setLoadingByHour(true);
+    setError(null);
+    try {
+      const requestData: CommonInputDateandTime = {
+        fecha: filterDate,
+        hora: filterHour,
+      };
+        const response = await axios.post<number>(
+          endpoint,
+          requestData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        setDataByHour(response.data);
+
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error('Error response:', err.response?.data);
+        setError('Error response: ' + err.response?.data);
+      } else {
+        console.error('Unexpected error:', err);
+      }
+    } finally {
+      setLoadingByHour(false);
     }
   };
 
   useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    let intervalId: ReturnType<typeof setInterval> | undefined;
-
-    fetchProdunetPrediction();
-
-
-      timeoutId = setTimeout(() => {
-
-
-      fetchProdunetPrediction();
-
-      const intervalId = setInterval(() => {
-
-        fetchProdunetPrediction();
-      }, 3600000); // 3600000 ms = 1 hora
-
-      return () => clearInterval(intervalId);
-    }, calculateTimeUntilNextHour());
-
-    return () => {
-      if (timeoutId !== undefined) clearTimeout(timeoutId);
-      if (intervalId !== undefined) clearInterval(intervalId);
-    };
+    if (filterHour === "Todo el día") {
+      console.log("fetching produnet all hours");
+      fetchProdunetAllHours();
+    } else {
+      console.log("fetching produnet just an hour");
+      fetchProdunetByHour();
+    }
   }, [filterDate, filterHour]); // Dependencias vacías para ejecutar solo al montar
 
   return {
-    data,
+    dataAllHours,
+    dataByHour,
     error,
-    loading,
+    loadingAllHours,
+    loadingByHour
   };
 };
 

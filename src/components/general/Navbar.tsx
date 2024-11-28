@@ -7,7 +7,7 @@ const NavBar: React.FC = () => {
       <div className="col-span-5 w-full flex items-center">
         <img src={startPro} className="h-10 px-4" />
         <h2 className="text-xl font-bold text-[#00693C] leading-10 ">
-          Servicios & Aplicaciones Producción
+          Cargas de trabajo balanceadas
         </h2>
       </div>
     </div>

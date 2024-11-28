@@ -13,7 +13,7 @@ const getCurrentDate = () => {
 const getCurrentHour = () => {
   const now = new Date();
   const hour = String(now.getHours()).padStart(2, "0");
-  return `${hour}:00:00`;
+  return `${hour}:00`;
 };
 
 const Filtro: React.FC = () => {
@@ -36,6 +36,7 @@ const Filtro: React.FC = () => {
     return true;
   };
 
+  console.log("selected hour inicial", selectedHour);
   return (
     <div className="w-full h-20 flex justify-center items-center p-4 bg-[#ECECEC]">
       <div className="grid grid-cols-5 gap-4 items-center w-2/4">

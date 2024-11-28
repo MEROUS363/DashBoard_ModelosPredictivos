@@ -1,4 +1,4 @@
-export type PredicitionByHour ={
+export type PredictionByHour ={
     [key: string]: number;
 }
 
@@ -9,4 +9,12 @@ export type CommonInputDateandTime = {
 
 export type CommonOutputResultsFromAzure = {
     Results: number[];
+}
+
+export type CommonInputDate = {
+    fecha: string;
+}
+
+export type CommonResponse = {
+    data: number;
 }
