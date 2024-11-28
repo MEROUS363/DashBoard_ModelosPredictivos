@@ -59,9 +59,9 @@ const TransSPI2 = (filterDate:string) => {
 
 
     const fetchAllCutOffs = async () => {
-      // Ejecuta todas las llamadas API concurrentemente
-      const cortes = [1, 2,3];
-      await Promise.all(cortes.map(fetchPredictionForCutOff));
+      await fetchPredictionForCutOff(1);
+      await fetchPredictionForCutOff(2);
+      await fetchPredictionForCutOff(3);
     };
 
     fetchAllCutOffs();

@@ -36,6 +36,7 @@ const Filtro: React.FC = () => {
     return true;
   };
 
+  console.log("selected hour inicial", selectedHour);
   return (
     <div className="w-full h-20 flex justify-center items-center p-4 bg-[#ECECEC]">
       <div className="grid grid-cols-5 gap-4 items-center w-2/4">

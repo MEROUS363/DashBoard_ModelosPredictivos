@@ -6,7 +6,6 @@ import TopTenTable from "./components/topten/TopTenTable.tsx";
 import CantModulos from "./components/produnetandmovil/CantModulos.tsx";
 import ConsumoTarjetaDeb from "./components/tarjetasDebito/ConsumosTarjetasD.tsx";
 import TransSPI2 from "./components/spi/CantTransferenciasSPI2.tsx";
-import PagosProdubanco from "./components/pagoscash/PagosProdubanco.tsx";
 
 const MainPage: React.FC = () => {
   return (
@@ -34,7 +33,7 @@ const MainPage: React.FC = () => {
           <CantModulos />
         </div>{" "}
         {/* Grafico */}
-        <div className="w-full h-[200px] bg-white col-span-4 rounded-lg shadow-st ">
+        <div className="w-full h-[200px] bg-white col-span-6 rounded-lg shadow-st ">
           <TransSPI2 />
         </div>
         {/* SPI */}
