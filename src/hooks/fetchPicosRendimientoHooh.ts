@@ -16,6 +16,7 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
+  const endpoint = `${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_MAXHOURLY}`;
 
 
 
@@ -33,7 +34,7 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
       };
 
       const response = await axios.post<PredictAllOutput>(
-        'https://localhost:7123/api/Prediction/predictMaxHourly',
+        endpoint,
         requestData,
         {
           headers: {

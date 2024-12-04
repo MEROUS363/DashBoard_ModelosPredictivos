@@ -22,7 +22,7 @@ const useTop10Table = (selectedTab:number) => {
     try {
         const endpoint = selectedTab === 0 ? 'yearlySumTesting' : 'yearlySumDebitCardActual';
         const response = await axios.get<ProdunetAndBancaMovilTop10[]>(
-          `https://localhost:7123/api/Prediction/${endpoint}`,
+          `${import.meta.env.VITE_BASE_URL}${endpoint}`,
         );
       setData(response.data);
     } catch (err) {

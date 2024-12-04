@@ -21,7 +21,7 @@ const TransSPI2 = (filterDate:string) => {
     setError(null);
 
     const todayDate = getTodayDate();
-    console.log("endpointaaaaaaaa", endpoint);
+   
 
 
     try {

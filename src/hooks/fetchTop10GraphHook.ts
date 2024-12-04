@@ -28,7 +28,7 @@ const useTop10Graph = (fecha: string, selectedTab: number) => {
           fecha: fecha,
         };
         const response = await axios.post<Top10Output[]>(
-          `https://localhost:7123/api/Prediction/${endpoint}`,
+          `${import.meta.env.VITE_BASE_URL}${endpoint}`,
           requestData,
           {
             headers: {

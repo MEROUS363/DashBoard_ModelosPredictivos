@@ -10,6 +10,7 @@ const usePredictServers = (filteredDate:string, filteredHour:string) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [currentHour, setCurrentHour] = useState<string | null>(null);
+  const endpoint = `${import.meta.env.VITE_BASE_URL}${import.meta.env.VITE_ENDPOINT_SERVERPREDICTIONS}`;
 
   const fetchPredictionForNextHour = async () => {
     setLoading(true);
@@ -23,7 +24,7 @@ const usePredictServers = (filteredDate:string, filteredHour:string) => {
       };
 
       const response = await axios.post<ServerData[]>(
-        'https://localhost:7123/api/Prediction/serverPredictions',
+        endpoint,
         requestData,
         {
           headers: {
