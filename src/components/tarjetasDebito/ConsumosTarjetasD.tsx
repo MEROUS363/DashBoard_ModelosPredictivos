@@ -15,6 +15,7 @@ import useConsumoTarjetasDebito, {
   hours,
 } from "../../hooks/fetchConsumoTarjetasHook";
 import { useDateContext } from "../../contexts/DateContext";
+import { UnplugIcon } from "lucide-react";
 
 ChartJS.register(
   CategoryScale,
@@ -110,10 +111,10 @@ const LineChart: React.FC = () => {
 
   //const BarColor = sumOfScores > 20000 ? "rgba(239, 68, 68, 1)" : sumOfScores > 25000 ? "rgba(251, 191, 36, 1)" : "rgba(104, 211, 145, 1)";
   const chartDataBar = {
-    labels: ["Consumos Tarjeta de Débito"],
+    labels: [""],
     datasets: [
       {
-        label: "Cantidad",
+        label: "Consumo",
         data: [dataByHour],
         backgroundColor: ["rgba(104, 211, 145, 1)"],
       },
@@ -123,7 +124,7 @@ const LineChart: React.FC = () => {
   const barOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: "y" as const,
+    indexAxis: "y" as const ,
     plugins: {
       legend: {
         position: "right" as const,
@@ -136,21 +137,39 @@ const LineChart: React.FC = () => {
   };
 
   if (loadingAllHours || loadingByHour || loadingContext)
-    return <p>Cargando...</p>;
-  if (error) return <p>Error: {error}</p>;
+    return (<>
+      <div className="flex bg-white  h-[200px] rounded-lg">
+        <div className="w-full h-full flex justify-center items-center bg-gray-200 animate-pulse rounded-md">
+          <div className="w-10 h-10 border-4 border-t-green-500 border-gray-400 rounded-full animate-spin"></div>
+          <p className="ml-2">Cargando...</p>
+        </div>
+      </div>
+    </>
+    );
+
+  if (error)
+    return (<>
+      <div className="flex bg-white  h-[200px] rounded-lg">
+        <div className="w-full h-full flex justify-center items-center bg-gray-200 rounded-md">
+          <UnplugIcon className='h-28 mr-2' />
+          <p className="ml-2"><strong>Error: </strong> {error}</p>
+        </div>
+      </div>
+    </>
+    );
 
   if (hour === "Todo el día") {
     return (
-      <div className="flex bg-white max-w-[790px] h-[200px]  rounded-lg">
+      <div className="flex bg-white max-w-[790px] h-[200px] rounded-lg shadow-lg">
         <div className="justify-center ml-10 h-[200px] w-full rounded-lg  bg-white">
           <Line data={chartData} options={options} />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">
+          <h2 className="text-lg font-bold text-foreground text-emerald-700 pt-6">
             Total de Consumos
           </h2>
-          <p className="text-lg  ">
-            <span className="font-bold">{Math.round(sumOfScores)}</span>
+          <p className="text-lg font-normal">
+            <span className="">{Math.round(sumOfScores).toLocaleString()}</span>
           </p>
         </div>
       </div>
@@ -158,16 +177,16 @@ const LineChart: React.FC = () => {
   }
   if (hour !== "FiltroXHora") {
     return (
-      <div className="flex bg-white max-w-[790px] h-[200px]  rounded-lg">
-        <div className="justify-center ml-10 h-[200px] w-full rounded-lg  bg-white">
+      <div className="flex bg-white w-full h-[200px] rounded-lg shadow-lg py-2">
+        <div className="justify-center w-full h-full rounded-l-lg py-2 border-r-2 border-gray-300">
           <Bar data={chartDataBar} options={barOptions} />
         </div>
-        <div>
-          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">
+        <div className="p-2">
+          <h2 className="text-lg font-bold text-foreground text-emerald-700">
             Cantidad de Consumos
           </h2>
-          <p className="text-lg  ">
-            <span className="font-bold">{dataByHour}</span>
+          <p className="text-lg font-normal">
+            {dataByHour.toLocaleString()}
           </p>
         </div>
       </div>

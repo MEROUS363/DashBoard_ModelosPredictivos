@@ -106,7 +106,7 @@ export default function ServerStatusCards() {
                 Servidor: <br /> {server.name}
               </div>
             </div>
-            <div className="p-3 flex flex-col items-center">
+            <div className="p-3 flex flex-col items-center cursor-default">
               <DonutChart percentage={Math.round(server.usage)} />
             </div>
           </div>

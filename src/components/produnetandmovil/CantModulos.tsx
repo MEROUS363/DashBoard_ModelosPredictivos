@@ -12,6 +12,7 @@ import {
 import useAccesoBancaMovil from "../../hooks/fetchAccesosBancaMovilHook";
 import { useDateContext } from "../../contexts/DateContext";
 import useFetchNewProdunetHook from "../../hooks/fetchNewProdunetHook";
+import { UnplugIcon } from "lucide-react";
 
 ChartJS.register(
   CategoryScale,
@@ -56,6 +57,7 @@ const ModulosProdunetYmovil: React.FC = () => {
       : TotalMovilProduct > 25000
       ? "rgba(251, 191, 36, 1)"
       : "rgba(104, 211, 145, 1)";
+  
 
   const sumOfMovilScores = getSumOfScores(movilDataAllHours || {}, "Movil");
   const sumOfProducNetScores = getSumOfScores(producNetData || {}, "Produnet");
@@ -123,7 +125,7 @@ const ModulosProdunetYmovil: React.FC = () => {
     labels: ["ProduNet", "Movil"],
     datasets: [
       {
-        label: "Cantidad",
+        label: "Accesos",
         data: [producNetDataByHour, movilDataByHour],
         backgroundColor: [
           BarColor, // Color para 'ProduNet'
@@ -160,23 +162,39 @@ const ModulosProdunetYmovil: React.FC = () => {
     producNetLoadingByHour ||
     loadingContext
   )
-    return <p>Cargando...</p>;
+    return (<>
+      <div className="flex bg-white  h-[200px] rounded-lg shadow-lg">
+        <div className="w-full h-full flex justify-center items-center bg-gray-200 animate-pulse rounded-md">
+          <div className="w-10 h-10 border-4 border-t-green-500 border-gray-400 rounded-full animate-spin"></div>
+          <p className="ml-2">Cargando...</p>
+        </div>
+      </div>
+    </>
+    );
 
   if (movilError || producNetError)
-    return <p>Error: {movilError || producNetError}</p>;
+  return (<>
+    <div className="flex bg-white  h-[200px] rounded-lg shadow-lg">
+      <div className="w-full h-full flex justify-center items-center bg-gray-200 rounded-md">
+        <UnplugIcon className='h-28 mr-2' />
+        <p className="ml-2"><strong>Error: </strong> {movilError || producNetError}</p>
+      </div>
+    </div>
+  </>
+  );
 
   if (hour === "Todo el día") {
     return (
-      <div className="flex bg-white max-w-[805px] ml-4 mr-4 h-[200px]  rounded-lg">
+      <div className="flex bg-white w-full ml-4 mr-4 h-[200px] rounded-lg shadow-lg">
         <div className="justify-center h-[200px] w-full rounded-lg  bg-white">
           <Line data={lineChartData} options={lineDataoptions} />
         </div>
-        <div className="pt-2 rounded-lg">
-          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-2">
+        <div className="px-2">
+          <h2 className="text-lg font-bold text-foreground text-emerald-700">
             Accesos Produnet
           </h2>
           <p className="text-lg">
-            <span className="font-bold">
+            <span className="">
               {Math.round(sumOfProducNetScores).toLocaleString("en-US")}
             </span>
           </p>
@@ -184,7 +202,7 @@ const ModulosProdunetYmovil: React.FC = () => {
             Accesos Móvil
           </h2>
           <p className="text-lg">
-            <span className="font-bold">
+            <span className="">
               {Math.round(sumOfMovilScores).toLocaleString("en-US")}
             </span>
           </p>
@@ -192,27 +210,29 @@ const ModulosProdunetYmovil: React.FC = () => {
       </div>
     );
   } else {
+
     return (
-      <div className="flex bg-white max-w-[790px] h-[200px]  rounded-lg">
-        <div className="justify-center ml-10 h-[200px] w-full rounded-lg  bg-white">
+      <div className="flex bg-white w-full h-[200px] rounded-lg shadow-lg py-2">
+        {/* <div className="justify-center ml-5 h-[200px] w-full rounded-lg  bg-white"> */}
+        <div className="justify-center w-full h-full rounded-l-lg py-2 border-r-2 border-gray-300">
           <Bar data={chartData} options={options} />
         </div>
-        <div>
-          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">
+        <div className="pl-2">
+          <h2 className="text-lg font-bold text-foreground text-emerald-700">
             Accesos Produnet
           </h2>
           <p className="text-lg  ">
-            <span className="font-bold">
+            <span className="">
               {producNetDataByHour.toLocaleString("en-US")}
             </span>
           </p>
         </div>
-        <div>
-          <h2 className="text-xl font-bold text-foreground text-emerald-700 pt-6">
+        <div className="pr-2">
+          <h2 className="text-xl font-bold text-foreground text-emerald-700">
             Accesos Móvil
           </h2>
           <p className="text-lg  ">
-            <span className="font-bold">
+            <span className="">
               {movilDataByHour.toLocaleString("en-US")}
             </span>
           </p>

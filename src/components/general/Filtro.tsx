@@ -48,6 +48,7 @@ const Filtro: React.FC = () => {
             type="date"
             id="date"
             name="date"
+            min={format(new Date(), 'yyyy-MM-dd')}
             className="block w-full mt-1 p-2 border border-input rounded-md focus:outline-none focus:ring focus:ring-primary text-[#222]"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}

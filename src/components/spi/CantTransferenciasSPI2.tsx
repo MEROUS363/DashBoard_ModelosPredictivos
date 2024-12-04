@@ -1,3 +1,4 @@
+import { UnplugIcon } from "lucide-react";
 import { useDateContext } from "../../contexts/DateContext";
 import TransSPI2 from "../../hooks/fetchTransfSPI2";
 
@@ -5,13 +6,32 @@ const CantTransd = () => {
   const { date, loadingContext } = useDateContext();
   const { data, error, loading } = TransSPI2(date); // No need to call fetchScoresForDay manually
 
-  if (loading || loadingContext) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading || loadingContext) 
+    return (<>
+      <div className="flex bg-white  h-[200px] rounded-lg shadow-lg">
+        <div className="w-full h-full flex justify-center items-center bg-gray-200 animate-pulse rounded-md">
+          <div className="w-10 h-10 border-4 border-t-green-500 border-gray-400 rounded-full animate-spin"></div>
+          <p className="ml-2">Cargando...</p>
+        </div>
+      </div>
+    </>
+    );
 
-  if (loading || loadingContext) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) 
+    return (<>
+      <div className="flex bg-white  h-[200px] rounded-lg shadow-lg">
+        <div className="w-full h-full flex justify-center items-center bg-gray-200 rounded-md">
+          <UnplugIcon className='h-28 mr-2' />
+          <p className="ml-2"><strong>Error: </strong> {error}</p>
+        </div>
+      </div>
+    </>
+    );
+
+  // if (loading || loadingContext) return <p>Cargando...</p>;
+  // if (error) return <p>Error: {error}</p>;
   return (
-    <div className=" flex h-[200px] w-full rounded-xl  bg-white justify-center items-center">
+    <div className=" flex h-[200px] w-full rounded-xl bg-white justify-center items-center shadow-lg">
       <h1 className=" text-lg font-bold w-46 mr-6 text-emerald-700 text-center">
         Cantidad de Transferencias SPI 2
       </h1>
@@ -24,7 +44,7 @@ const CantTransd = () => {
             <div className="relative w-full h-full">
               <div className="absolute inset-0 flex items-center justify-center ">
                 <div className="text-1xl font-bold">
-                  {data[1] && <p>{Math.round(data[1])}</p>}
+                  {data[1] && <p>{Math.round(data[1]).toLocaleString()}</p>}
                 </div>
               </div>
               <div className="absolute inset-0 rounded-full border-[10px]  border-gray-400" />
@@ -38,7 +58,7 @@ const CantTransd = () => {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-1xl font-bold text-">
                   {" "}
-                  {data[2] && <p>{Math.round(data[2])}</p>}
+                  {data[2] && <p>{Math.round(data[2]).toLocaleString()}</p>}
                 </div>
               </div>
               <div className="absolute inset-0 rounded-full border-[10px]  border-gray-400" />
@@ -52,7 +72,7 @@ const CantTransd = () => {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-1xl font-bold">
                   {" "}
-                  {data[3] && <p>{Math.round(data[3])}</p>}
+                  {data[3] && <p>{Math.round(data[3]).toLocaleString()}</p>}
                 </div>
               </div>
               <div className="absolute inset-0 rounded-full border-[10px]  border-gray-400" />
