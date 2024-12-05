@@ -16,7 +16,7 @@ const usePredictServers = (filteredDate:string, filteredHour:string) => {
     setLoading(true);
     setError(null);
 
-    const nextHour = getNextRoundedHour(); // Utilizar la siguiente hora redondeada
+    const nextHour = getNextRoundedHour(); 
     try {
       const requestData: CommonInputDateandTime = {
         fecha: filteredDate,
@@ -44,25 +44,24 @@ const usePredictServers = (filteredDate:string, filteredHour:string) => {
   };
 
   useEffect(() => {
-    // Realiza la primera llamada inmediatamente con la hora redondeada a la siguiente hora completa
+
     fetchPredictionForNextHour();
     const timeoutId = setTimeout(() => {
 
 
-      // Realiza la primera llamada en la siguiente hora completa
       fetchPredictionForNextHour();
 
-      // Establece un intervalo para realizar la llamada cada hora completa
+          
       const intervalId = setInterval(() => {
 
         fetchPredictionForNextHour();
-      }, 3600000); // 3600000 ms = 1 hora
+      }, 3600000); 
 
-      // Limpiar el intervalo si el componente se desmonta
+
       return () => clearInterval(intervalId);
     }, calculateTimeUntilNextHour());
 
-    // Limpiar el timeout si el componente se desmonta
+
     return () => clearTimeout(timeoutId);
   }, [filteredDate, filteredHour]);
 

@@ -20,7 +20,7 @@ const useTop10Table = (selectedTab:number) => {
     setError(null);
 
     try {
-        const endpoint = selectedTab === 0 ? 'yearlySumTesting' : 'yearlySumDebitCardActual';
+        const endpoint = selectedTab === 0 ? 'yearlySum' : 'yearlySumDebitCardActual';
         const response = await axios.get<ProdunetAndBancaMovilTop10[]>(
           `${import.meta.env.VITE_BASE_URL}${endpoint}`,
         );
