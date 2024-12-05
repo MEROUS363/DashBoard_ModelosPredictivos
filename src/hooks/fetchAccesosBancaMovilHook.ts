@@ -41,7 +41,7 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
       setDataAllHours(updatedHours);
       setCurrentHour(nextHour);
     } catch (err) {
-      setError('Error during API request');
+      setError('Error en la petición a la API');
       console.error(err);
     } finally {
       setLoadingForAllHours(false);
@@ -71,7 +71,7 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
       setDataByHour(response.data);
       setCurrentHour(nextHour);
     } catch (err) {
-      setError('Error during API request');
+      setError('Error en la petición a la API');
       console.error(err);
     } finally {
       setLoadingByHour(false);

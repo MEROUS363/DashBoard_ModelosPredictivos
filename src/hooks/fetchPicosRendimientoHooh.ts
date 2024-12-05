@@ -47,7 +47,7 @@ const usePredictAll = (filteredDate:string, filteredHour:string) => {
       setData(response.data);
       setCurrentHour(nextHour);
     } catch (err) {
-      setError('Error during API request');
+      setError('Error en la petición a la API');
       console.error(err);
     } finally {
       setLoading(false);
