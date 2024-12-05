@@ -23,7 +23,7 @@ ChartJS.register(
   Legend
 );
 
-const getSumOfScores = (data: Record<string, number>, type: string) => {
+const getSumOfScores = (data: Record<string, number>) => {
   return Object.values(data).reduce((sum, value) => sum + value, 0);
 };
 
@@ -45,7 +45,6 @@ const ModulosProdunetYmovil: React.FC = () => {
     error: producNetError,
   } = useFetchNewProdunetHook(date, hour); // Usa el hook de ProducNet
 
-  // Si los valores devueltos por las APIs están disponibles, los usamos; de lo contrario, mostramos un valor por defecto
   const movilScore = movilDataAllHours ? movilDataAllHours.score : null;
   const producNetScore = producNetData ? producNetData[0] : null;
   const TotalMovilProduct =
@@ -57,8 +56,8 @@ const ModulosProdunetYmovil: React.FC = () => {
       ? "rgba(251, 191, 36, 1)"
       : "rgba(104, 211, 145, 1)";
 
-  const sumOfMovilScores = getSumOfScores(movilDataAllHours || {}, "Movil");
-  const sumOfProducNetScores = getSumOfScores(producNetData || {}, "Produnet");
+  const sumOfMovilScores = getSumOfScores(movilDataAllHours || {});
+  const sumOfProducNetScores = getSumOfScores(producNetData || {});
 
   // DATOS PARA LA GRAFICA DE LINEAS
   const lineChartData = {
