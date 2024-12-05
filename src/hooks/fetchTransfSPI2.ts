@@ -30,7 +30,7 @@ const TransSPI2 = (filterDate:string) => {
               corte: corte.toString(),
       };
 
-      console.log("ahhhhh",dataToSend);
+   
 
       const response = await axios.post<number>(
         endpoint,

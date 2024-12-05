@@ -24,7 +24,6 @@ ChartJS.register(
 );
 
 const getSumOfScores = (data: Record<string, number>, type: string) => {
-  console.log(type, "   ", data);
   return Object.values(data).reduce((sum, value) => sum + value, 0);
 };
 
@@ -57,7 +56,6 @@ const ModulosProdunetYmovil: React.FC = () => {
       : TotalMovilProduct > 25000
       ? "rgba(251, 191, 36, 1)"
       : "rgba(104, 211, 145, 1)";
-  
 
   const sumOfMovilScores = getSumOfScores(movilDataAllHours || {}, "Movil");
   const sumOfProducNetScores = getSumOfScores(producNetData || {}, "Produnet");
@@ -162,26 +160,30 @@ const ModulosProdunetYmovil: React.FC = () => {
     producNetLoadingByHour ||
     loadingContext
   )
-    return (<>
-      <div className="flex bg-white  h-[200px] rounded-lg shadow-lg">
-        <div className="w-full h-full flex justify-center items-center bg-gray-200 animate-pulse rounded-md">
-          <div className="w-10 h-10 border-4 border-t-green-500 border-gray-400 rounded-full animate-spin"></div>
-          <p className="ml-2">Cargando...</p>
+    return (
+      <>
+        <div className="flex bg-white  h-[200px] rounded-lg shadow-lg">
+          <div className="w-full h-full flex justify-center items-center bg-gray-200 animate-pulse rounded-md">
+            <div className="w-10 h-10 border-4 border-t-green-500 border-gray-400 rounded-full animate-spin"></div>
+            <p className="ml-2">Cargando...</p>
+          </div>
         </div>
-      </div>
-    </>
+      </>
     );
 
   if (movilError || producNetError)
-  return (<>
-    <div className="flex bg-white  h-[200px] rounded-lg shadow-lg">
-      <div className="w-full h-full flex justify-center items-center bg-gray-200 rounded-md">
-        <UnplugIcon className='h-28 mr-2' />
-        <p className="ml-2"><strong>Error: </strong> {movilError || producNetError}</p>
-      </div>
-    </div>
-  </>
-  );
+    return (
+      <>
+        <div className="flex bg-white  h-[200px] rounded-lg shadow-lg">
+          <div className="w-full h-full flex justify-center items-center bg-gray-200 rounded-md">
+            <UnplugIcon className="h-28 mr-2" />
+            <p className="ml-2">
+              <strong>Error: </strong> {movilError || producNetError}
+            </p>
+          </div>
+        </div>
+      </>
+    );
 
   if (hour === "Todo el día") {
     return (
@@ -210,7 +212,6 @@ const ModulosProdunetYmovil: React.FC = () => {
       </div>
     );
   } else {
-
     return (
       <div className="flex bg-white w-full h-[200px] rounded-lg shadow-lg py-2">
         {/* <div className="justify-center ml-5 h-[200px] w-full rounded-lg  bg-white"> */}
@@ -232,9 +233,7 @@ const ModulosProdunetYmovil: React.FC = () => {
             Accesos Móvil
           </h2>
           <p className="text-lg  ">
-            <span className="">
-              {movilDataByHour.toLocaleString("en-US")}
-            </span>
+            <span className="">{movilDataByHour.toLocaleString("en-US")}</span>
           </p>
         </div>
       </div>

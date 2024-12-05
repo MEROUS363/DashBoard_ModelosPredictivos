@@ -43,7 +43,6 @@ const LineChart: React.FC = () => {
     maxScore,
   } = useConsumoTarjetasDebito(date, hour);
 
-  console.log("en el componente", dataAllHours);
   const sumOfScores = getSumOfScores(dataAllHours);
 
   const dataAdditional = Object.fromEntries(
@@ -124,7 +123,7 @@ const LineChart: React.FC = () => {
   const barOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: "y" as const ,
+    indexAxis: "y" as const,
     plugins: {
       legend: {
         position: "right" as const,
@@ -137,25 +136,29 @@ const LineChart: React.FC = () => {
   };
 
   if (loadingAllHours || loadingByHour || loadingContext)
-    return (<>
-      <div className="flex bg-white  h-[200px] rounded-lg">
-        <div className="w-full h-full flex justify-center items-center bg-gray-200 animate-pulse rounded-md">
-          <div className="w-10 h-10 border-4 border-t-green-500 border-gray-400 rounded-full animate-spin"></div>
-          <p className="ml-2">Cargando...</p>
+    return (
+      <>
+        <div className="flex bg-white  h-[200px] rounded-lg">
+          <div className="w-full h-full flex justify-center items-center bg-gray-200 animate-pulse rounded-md">
+            <div className="w-10 h-10 border-4 border-t-green-500 border-gray-400 rounded-full animate-spin"></div>
+            <p className="ml-2">Cargando...</p>
+          </div>
         </div>
-      </div>
-    </>
+      </>
     );
 
   if (error)
-    return (<>
-      <div className="flex bg-white  h-[200px] rounded-lg">
-        <div className="w-full h-full flex justify-center items-center bg-gray-200 rounded-md">
-          <UnplugIcon className='h-28 mr-2' />
-          <p className="ml-2"><strong>Error: </strong> {error}</p>
+    return (
+      <>
+        <div className="flex bg-white  h-[200px] rounded-lg">
+          <div className="w-full h-full flex justify-center items-center bg-gray-200 rounded-md">
+            <UnplugIcon className="h-28 mr-2" />
+            <p className="ml-2">
+              <strong>Error: </strong> {error}
+            </p>
+          </div>
         </div>
-      </div>
-    </>
+      </>
     );
 
   if (hour === "Todo el día") {
@@ -185,9 +188,7 @@ const LineChart: React.FC = () => {
           <h2 className="text-lg font-bold text-foreground text-emerald-700">
             Cantidad de Consumos
           </h2>
-          <p className="text-lg font-normal">
-            {dataByHour.toLocaleString()}
-          </p>
+          <p className="text-lg font-normal">{dataByHour.toLocaleString()}</p>
         </div>
       </div>
     );

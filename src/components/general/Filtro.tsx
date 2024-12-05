@@ -36,7 +36,6 @@ const Filtro: React.FC = () => {
     return true;
   };
 
-  console.log("selected hour inicial", selectedHour);
   return (
     <div className="w-full h-20 flex justify-center items-center p-4 bg-gray-100">
       <div className="grid grid-cols-5 gap-4 items-center w-2/4">
@@ -48,7 +47,7 @@ const Filtro: React.FC = () => {
             type="date"
             id="date"
             name="date"
-            min={format(new Date(), 'yyyy-MM-dd')}
+            min={format(new Date(), "yyyy-MM-dd")}
             className="block w-full mt-1 p-2 border border-input rounded-md focus:outline-none focus:ring focus:ring-primary text-[#222]"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}

@@ -80,10 +80,10 @@ const useAccesoBancaMovil = (filterDate: string, filterHour: string) => {
 
   useEffect(() => {
     if (filterHour === "Todo el día") {
-      console.log("fetching movil all hours");
+   
       fetchPredictionForAllHours();
     } else {
-      console.log("fetching movil just an hour");
+    
       fetchPredictionForHour();
     }
   }, [filterDate, filterHour]);

@@ -70,15 +70,15 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
         
       }
 
-      console.log(updatedHours);
+     
       setDataAllHours(updatedHours);
       const maxScore = Math.max(...Object.values(updatedHours).filter((score): score is number => score !== null));
       const peakHour = Object.keys(updatedHours).find(hour => updatedHours[hour] === maxScore) || null;
 
       setMaxScore(maxScore);
-      console.log(maxScore);
+    
       setPeakHour(peakHour);
-      console.log(peakHour);
+    
     } catch (err) {
       setError('Error al realizar la petición');
       console.error(err);
@@ -118,10 +118,10 @@ const useConsumoTarjetasDebito = (fecha: string, hora: string) => {
 
   useEffect(() => {
     if (hora === "Todo el día") {
-      console.log("fetching all hours");
+      
       fetchScoresForAllHours();
     } else {
-      console.log("fetching just an hour");
+    
       fetchScoresForHour();
     }
   }, [fecha, hora]);

@@ -85,10 +85,10 @@ const useFetchNewProdunetHook = (filterDate:string, filterHour: string) => {
 
   useEffect(() => {
     if (filterHour === "Todo el día") {
-      console.log("fetching produnet all hours");
+      
       fetchProdunetAllHours();
     } else {
-      console.log("fetching produnet just an hour");
+      
       fetchProdunetByHour();
     }
   }, [filterDate, filterHour]); // Dependencias vacías para ejecutar solo al montar
