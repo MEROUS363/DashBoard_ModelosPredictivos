@@ -1,7 +1,7 @@
 import { addHours, differenceInMilliseconds, format, set } from "date-fns";
 
 export const convertToISO = (dateString:string) => {
-    // Dividimos la cadena de entrada en mes, día y año
+    
     const [monthStr, dayStr, yearStr] = dateString.split('/');
    
     // Convertimos las cadenas a números enteros
@@ -41,7 +41,7 @@ export const getNextRoundedHour = (): string => {
       nextHour.getMonth(),
       nextHour.getDate(),
       nextHour.getHours(),
-      0, 0, 0 // Set to start of the next hour
+      0, 0, 0 
     );
     return differenceInMilliseconds(startOfNextHour, now);
   };

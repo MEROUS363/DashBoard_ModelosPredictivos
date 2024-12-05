@@ -29,7 +29,6 @@ export const DateProvider: React.FC<DateProviderProps> = ({ children }) => {
   const actualTime = new Date();
   actualTime.setMinutes(0, 0);
 
-  // Increment the hour by one if desired
   actualTime.setHours(actualTime.getHours() + 1);
 
   const [date, setDate] = useState<string>(format(new Date(), "MM/dd/yyyy"));
@@ -38,8 +37,7 @@ export const DateProvider: React.FC<DateProviderProps> = ({ children }) => {
   const [typeOfData, setTypeOfData] = useState<string>("FiltroXFecha");
 
   useEffect(() => {
-    // Simulating an initial load or async operation
-    const initialDate = format(new Date(), "MM/dd/yyyy"); // Replace this with any initial fetch or computation
+    const initialDate = format(new Date(), "MM/dd/yyyy");
     setDate(initialDate);
     setLoading(false);
   }, []);

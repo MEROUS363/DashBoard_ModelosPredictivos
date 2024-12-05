@@ -72,7 +72,7 @@ const useFetchPagosProdubanco = (filterDate: string) => {
 
       const intervalId = setInterval(() => {
         fetchProdubancoCash();
-      }, 3600000); // 3600000 ms = 1 hora
+      }, 3600000); 
 
       return () => clearInterval(intervalId);
     }, calculateTimeUntilNextHour());
@@ -81,7 +81,7 @@ const useFetchPagosProdubanco = (filterDate: string) => {
       if (timeoutId !== undefined) clearTimeout(timeoutId);
       if (intervalId !== undefined) clearInterval(intervalId);
     };
-  }, [filterDate]); // Dependencias vacías para ejecutar solo al montar
+  }, [filterDate]); 
 
   return {
     data,
