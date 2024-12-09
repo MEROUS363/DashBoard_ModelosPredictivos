@@ -1,6 +1,5 @@
 import "./index.css";
 import NavBar from "./components/general/Navbar.tsx";
-import Filtro from "./components/general/Filtro.tsx";
 import PicosServidores from "./components/servers/PicosServidores.tsx";
 import TopTenTable from "./components/topten/TopTenTable.tsx";
 import CantModulos from "./components/produnetandmovil/CantModulos.tsx";

@@ -4,7 +4,7 @@ import "react-tabs/style/react-tabs.css";
 import useTop10Table, {
   ProdunetAndBancaMovilTop10,
 } from "../../hooks/fetchTop10TableHook";
-import { Database, DatabaseBackup, DatabaseZap, Info, ServerOffIcon, UnplugIcon } from "lucide-react";
+import { DatabaseBackup, Info, ServerOffIcon } from "lucide-react";
 import { LineGraphTop10 } from "./LineGraphTop10";
 
 const TopTenTable: React.FC = () => {
@@ -37,21 +37,21 @@ const TopTenTable: React.FC = () => {
   }
 
   if (error) {
-  return (
-    <div className="w-full h-full col-span-4 row-span-3 rounded-lg shadow-md">
-      <div className="w-full h-full flex justify-center items-center rounded-lg bg-gray-200 py-1">
-        <DatabaseBackup className='h-28 mr-2' />
-        <p className="ml-2">Error al cargar los datos</p>
+    return (
+      <div className="w-full h-full col-span-4 row-span-3 rounded-lg shadow-md">
+        <div className="w-full h-full flex justify-center items-center rounded-lg bg-gray-200 py-1">
+          <DatabaseBackup className="h-28 mr-2" />
+          <p className="ml-2">Error al cargar los datos</p>
+        </div>
       </div>
-    </div>
-  );
+    );
   }
 
   if (!data) {
     return (
       <div className="w-full h-full col-span-4 row-span-3 rounded-lg shadow-md">
         <div className="w-full h-full flex justify-center items-center rounded-lg bg-gray-200 py-1">
-          <ServerOffIcon className='h-28 mr-2' />
+          <ServerOffIcon className="h-28 mr-2" />
           <p className="ml-2">No hay datos disponibles</p>
         </div>
       </div>
@@ -96,9 +96,9 @@ const TopTenTable: React.FC = () => {
                 <th className="px-4 py-2 text-left text-emerald-700 font-semibold">
                   Accesos totales
                 </th>
-                <th className="px-4 py-2 text-emerald-700 font-semibold text-center">
+                {/*<th className="px-4 py-2 text-emerald-700 font-semibold text-center">
                   Detalle diario
-                </th>
+                </th>*/}
               </tr>
             </thead>
             <tbody>
@@ -111,7 +111,7 @@ const TopTenTable: React.FC = () => {
                   <td className="px-4 py-2 border-l border-gray-300">
                     {Math.round(prediction.sumPrediction).toLocaleString()}
                   </td>
-                  <td className="px-4 py-2 border-l border-gray-300 text-center">
+                  {/*<td className="px-4 py-2 border-l border-gray-300 text-center">
                     <label
                       htmlFor="prediction-modal"
                       className="btn btn-sm btn-ghost text-emerald-600"
@@ -119,7 +119,7 @@ const TopTenTable: React.FC = () => {
                     >
                       <Info color="#00693C" />
                     </label>
-                  </td>
+                  </td>*/}
                 </tr>
               ))}
             </tbody>
