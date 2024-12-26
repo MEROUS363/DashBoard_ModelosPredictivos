@@ -212,7 +212,7 @@ const ModulosProdunetYmovil: React.FC = () => {
     );
   } else {
     return (
-      <div className="flex bg-white w-full h-[200px] rounded-lg shadow-lg py-2">
+      <div className="flex justify-between bg-white w-full h-[200px] rounded-lg shadow-lg py-2">
         {/* <div className="justify-center ml-5 h-[200px] w-full rounded-lg  bg-white"> */}
         <div className="justify-center w-full h-full rounded-l-lg py-2 border-r-2 border-gray-300">
           <Bar data={chartData} options={options} />

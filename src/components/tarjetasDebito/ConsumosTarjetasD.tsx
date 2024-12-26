@@ -180,8 +180,8 @@ const LineChart: React.FC = () => {
   }
   if (hour !== "FiltroXHora") {
     return (
-      <div className="flex bg-white w-full h-[200px] rounded-lg shadow-lg py-2">
-        <div className="justify-center w-full h-full rounded-l-lg py-2 border-r-2 border-gray-300">
+      <div className="flex justify-between bg-white w-full h-[200px] rounded-lg shadow-lg py-2">
+        <div className=" w-full h-full rounded-l-lg py-2 border-r-2 border-gray-300">
           <Bar data={chartDataBar} options={barOptions} />
         </div>
         <div className="p-2">
